@@ -6,7 +6,7 @@ const Header = (props) => {
   )//
 }
 
-const Content = (props) => {
+const Part = (props) => {
   return (
     <p>
       {props.part.name} {props.part.exercises}
@@ -14,9 +14,19 @@ const Content = (props) => {
   )
 }
 
+const Content = (props) => {
+  return (
+    <>
+        <Part part={props.parts[0]} />
+        <Part part={props.parts[1]} />
+        <Part part={props.parts[2]} />
+    </>
+  )
+}
+
 const Total = (props) => {
   let sum=0;
-  for(let i=0;i<props.part.length;i++){
+  for(let i=0; i<props.part.length; i++){
     sum=sum+props.part[i].exercises
   }
   return (
@@ -37,9 +47,7 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      <Content part={parts[0]} />
-      <Content part={parts[1]} />
-      <Content part={parts[2]} />
+      <Content parts={parts} />
       <Total part={parts} />
     </div>
   )
