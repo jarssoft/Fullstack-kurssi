@@ -11,12 +11,19 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+  
   const [selected, setSelected] = useState(0)
+
+  const randomAnecdote = () => {
+     let i = Math.floor(Math.random() * anecdotes.length);
+//     console.log(i)
+     setSelected(i);
+  }
 
   return (
     <div>
       {anecdotes[selected]}
+      <p><button onClick={()=>randomAnecdote()}>Random anecdote</button></p>
     </div>
   )
 }
