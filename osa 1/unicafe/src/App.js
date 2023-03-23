@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const StatitisticLine = ({text, value}) => {
-    return (<li>{text} {value}</li>)
+    return (<tr><td>{text}</td><td>{value}</td></tr>)
 }
 
 const Button = (props) => (
@@ -16,14 +16,16 @@ const Statistics = ({good, neutral, bad}) => {
 
     if(all>0){
         return(           
-            <ul>
+          <table>
+            <tbody>
               <StatitisticLine text={"good"} value={good} />
               <StatitisticLine text={"neutral"} value={neutral} />
               <StatitisticLine text={"bad"} value={bad} />
               <StatitisticLine text={"all"} value={all} />
               <StatitisticLine text={"average"} value={(good-bad)/all} />
               <StatitisticLine text={"positive"} value={good/all*100 + "%"} />
-            </ul>
+            </tbody>
+          </table>
         )//
     }else{
         return(
