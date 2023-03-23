@@ -1,5 +1,15 @@
 import { useState } from 'react'
 
+const StatitisticLine = ({text, value}) => {
+    return (<li>{text} {value}</li>)
+}
+
+const Button = (props) => (
+  <button onClick={props.handleClick}>
+    {props.text}
+  </button>
+)
+
 const Statistics = ({good, neutral, bad}) => {
 
     const all=good+neutral+bad;
@@ -7,12 +17,12 @@ const Statistics = ({good, neutral, bad}) => {
     if(all>0){
         return(           
             <ul>
-              <li>good {good}</li>
-              <li>neutral {neutral}</li>
-              <li>bad {bad}</li>
-              <li>all {all}</li>
-              <li>average {(good-bad)/all}</li>
-              <li>positive {good/all*100} %</li>
+              <StatitisticLine text={"good"} value={good} />
+              <StatitisticLine text={"neutral"} value={neutral} />
+              <StatitisticLine text={"bad"} value={bad} />
+              <StatitisticLine text={"all"} value={all} />
+              <StatitisticLine text={"average"} value={(good-bad)/all} />
+              <StatitisticLine text={"positive"} value={good/all*100 + "%"} />
             </ul>
         )//
     }else{
@@ -32,15 +42,9 @@ const App = () => {
     <>
     <h1>give feedback</h1>
     <div>
-      <button onClick={() => setGood(good+1)}>
-        Good
-      </button>
-      <button onClick={() => setNeutral(neutral+1)}>
-        Neutral
-      </button>
-      <button onClick={() => setBad(bad+1)}>
-        Bad
-      </button>
+      <Button handleClick={() => setGood(good+1)} text="Good" />
+      <Button handleClick={() => setNeutral(neutral+1)} text="Neutral" />
+      <Button handleClick={() => setBad(bad+1)} text="Bad" />
     </div>
     <h1>statistic</h1>
     <Statistics good={good} neutral={neutral} bad={bad} />
