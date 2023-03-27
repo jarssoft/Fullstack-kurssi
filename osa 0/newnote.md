@@ -9,9 +9,9 @@ sequenceDiagram
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
     
-    Note left of server: The server stores the new note to array and redirects browser back to notes
+    Note left of server: The server stores the new note to array
     
-    server-->>browser: Redirect to https://studies.cs.helsinki.fi/exampleapp/notes
+    server-->>browser: Status 302 Found and Redirect to ./notes
     deactivate server
     
     
