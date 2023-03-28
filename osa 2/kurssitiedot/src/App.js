@@ -21,10 +21,12 @@ const Content = ({course}) => {
 }
 
 const Total = (props) => {
-  let sum=0;
-  for(let i=0; i<props.course.parts.length; i++){
-    sum=sum+props.course.parts[i].exercises
-  }
+  const sum = 
+  props.course.parts.reduce((s, p) => {
+    console.log(s)
+    return (s + p.exercises)
+  }, 0 )
+
   return (
     <p><b>Number of exercises {sum}</b></p>
   )
