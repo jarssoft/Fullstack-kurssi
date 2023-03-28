@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const Person = ({person}) => {  
-  return (<div>{person.name} {person.number}</div>)
+  return (<li>{person.name} {person.number}</li>)
 }
 
 const Input = ({value, onChange, text}) => { 
@@ -9,18 +9,22 @@ const Input = ({value, onChange, text}) => {
     <div>
         {text} :  
         <input 
-        value={value} 
-        onChange={onChange} />
+          type="text"
+          value={value} 
+          onChange={onChange} 
+        />
     </div>
   )
 }
 
 const App = () => {
+
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '+31-231-12314' }
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [findText, setFindText] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
@@ -39,12 +43,21 @@ const App = () => {
 
   const changeHandler = (hander) => ((event) => hander(event.target.value))
 
-  console.log(persons);
-
   return (
     <div>
 
       <h2>Puhelinluettelo</h2>
+
+      <form>
+        <Input 
+            text={"Etsi nimeä"} 
+            value={findText} 
+            onChange={changeHandler(setFindText)} 
+        />
+      </form>
+
+      <h2>Lisäys</h2>
+
       <form onSubmit={addName}>
         <Input 
             text={"Nimi"} 
@@ -56,16 +69,25 @@ const App = () => {
             value={newNumber} 
             onChange={changeHandler(setNewNumber)} 
         />  
-
         <div>
-          <button type="submit">add</button>
+          <button type="submit">Lisää</button>
         </div>
       </form>
 
       <h2>Numerot</h2>
-      {persons.map(person => 
-          <Person person={person} key={person.name} />
-      )}
+      
+      <ul>
+      {
+        findText == '' ? 
+          persons
+              .map(person => 
+              <Person person={person} key={person.name} />) :
+          persons
+              .filter(person => (person.name.indexOf(findText) >= 0))
+              .map(person => 
+              <Person person={person} key={person.name} />) 
+      }
+      </ul>
 
     </div>
   )
