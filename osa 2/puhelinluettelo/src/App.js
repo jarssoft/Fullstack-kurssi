@@ -11,10 +11,14 @@ const App = () => {
   const [newName, setNewName] = useState('')
 
   const addName = (event) => {
-    event.preventDefault()
-    let newPerson = { name: newName }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
+    event.preventDefault()    
+    if(persons.find((p)=>(p.name===newName))===undefined){
+      let newPerson = { name: newName }
+      setPersons(persons.concat(newPerson))
+      setNewName('')
+    }else{
+      alert(`${newName} on jo listassa`)      
+    }
   }
 
   return (
