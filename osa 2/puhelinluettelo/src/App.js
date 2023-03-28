@@ -4,6 +4,17 @@ const Person = ({person}) => {
   return (<div>{person.name} {person.number}</div>)
 }
 
+const Input = ({value, onChange, text}) => { 
+  return ( 
+    <div>
+        {text} :  
+        <input 
+        value={value} 
+        onChange={onChange} />
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '+31-231-12314' }
@@ -26,6 +37,8 @@ const App = () => {
     }
   }
 
+  const changeHandler = (hander) => ((event) => hander(event.target.value))
+
   console.log(persons);
 
   return (
@@ -33,16 +46,16 @@ const App = () => {
 
       <h2>Puhelinluettelo</h2>
       <form onSubmit={addName}>
-        <div>
-          nimi: <input 
-              value={newName} 
-              onChange={(event)=>(setNewName(event.target.value))} />
-        </div>
-        <div>
-          numero: <input 
-              value={newNumber} 
-              onChange={(event)=>(setNewNumber(event.target.value))} />
-        </div>
+        <Input 
+            text={"Nimi"} 
+            value={newName} 
+            onChange={changeHandler(setNewName)} 
+        />
+        <Input 
+            text={"Numero"} 
+            value={newNumber} 
+            onChange={changeHandler(setNewNumber)} 
+        />  
 
         <div>
           <button type="submit">add</button>
