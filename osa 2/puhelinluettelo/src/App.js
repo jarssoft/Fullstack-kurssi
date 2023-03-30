@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Person = ({person}) => {  
   return (<li>{person.name} {person.number}</li>)
@@ -19,13 +20,23 @@ const Input = ({value, onChange, text}) => {
 
 const App = () => {
 
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '+31-231-12314' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [findText, setFindText] = useState('')
-
+  
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')      
+      .then(response => {        
+        console.log('promise fulfilled')        
+        setPersons(response.data)
+      })
+  }, [])
+    
+  console.log('render', persons, 'persons')
+  
   const addName = (event) => {
     event.preventDefault()
     if(persons.find((p)=>(p.name===newName))===undefined){
