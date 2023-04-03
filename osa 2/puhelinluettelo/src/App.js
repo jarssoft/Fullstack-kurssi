@@ -39,12 +39,15 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    if(persons.find((p)=>(p.name===newName))===undefined){
-      let newPerson = {
-          name: newName, 
-          number: newNumber 
-      }
 
+    let newPerson = {
+      name: newName, 
+      number: newNumber 
+    }
+
+    let sama = persons.find((p)=>(p.name===newName));
+
+    if(sama===undefined){      
       personService
         .create(newPerson)
         .then(returnedNote => {        
@@ -55,9 +58,17 @@ const App = () => {
           setNewName('')
           setNewNumber('')    
       })
-
     }else{
-      alert(`${newName} on jo listassa`)
+      if(window.confirm(`Korvataanko ${newName}?`)){
+        personService
+          .update(sama.id, newPerson)
+          .then(response => {
+              newPerson.id=sama.id            
+              setPersons(persons.map(p => (p.id != sama.id) ? p : newPerson));
+              setNewName('')
+              setNewNumber('')   
+        })
+      }
     }
   }
 
