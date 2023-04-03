@@ -1,6 +1,25 @@
 import personService from './services/persons'
 import { useState, useEffect } from 'react'
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16,
+    margin: '10px'    
+  }
+
+  return (
+    <div style={footerStyle}>
+      {message}
+    </div>
+  )
+}
+
 const Person = (props) => {  
   return (
     <li>
@@ -28,6 +47,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [findText, setFindText] = useState('')
+  const [message, setMessage] = useState('')
   
   useEffect(() => {
     personService
@@ -36,6 +56,13 @@ const App = () => {
         setPersons(response.data)
       })
   }, [])
+
+  const showMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)        
+    }, 5000)
+  }
 
   const addName = (event) => {
     event.preventDefault()
@@ -51,12 +78,11 @@ const App = () => {
       personService
         .create(newPerson)
         .then(returnedNote => {        
-          //setNotes(notes.concat(returnedNote))
-          //setNewNote('')
           console.log(returnedNote);
           setPersons(persons.concat(returnedNote))
           setNewName('')
-          setNewNumber('')    
+          setNewNumber('')
+          showMessage(`Lisättiin ${newPerson.name}`)
       })
     }else{
       if(window.confirm(`Korvataanko ${newName}?`)){
@@ -67,6 +93,7 @@ const App = () => {
               setPersons(persons.map(p => (p.id != sama.id) ? p : newPerson));
               setNewName('')
               setNewNumber('')   
+              showMessage(`Korvattiin ${newPerson.name}`)
         })
       }
     }
@@ -79,6 +106,7 @@ const App = () => {
         .then(response => {        
           console.log(`${person} removed`);
           setPersons(persons.filter(p => (p.id !=  person.id)))
+          showMessage(`Poistettiin ${person.name}`)
           })
     }
   }
@@ -100,6 +128,8 @@ const App = () => {
       </form>
 
       <h2>Lisäys</h2>
+
+      <Notification message={message} />
 
       <form onSubmit={addName}>
         <Input 
