@@ -1,6 +1,5 @@
 import personService from './services/persons'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 const Person = ({person}) => {  
   return (<li>{person.name} {person.number}</li>)
@@ -27,16 +26,12 @@ const App = () => {
   const [findText, setFindText] = useState('')
   
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')      
+    personService
+      .getAll()      
       .then(response => {        
-        console.log('promise fulfilled')        
         setPersons(response.data)
       })
-  }, [])
-    
-  console.log('render', persons, 'persons')
+  }, [])    
   
   const addName = (event) => {
     event.preventDefault()
@@ -98,11 +93,11 @@ const App = () => {
       
       <ul>
       {
-        findText == '' ? 
-          persons
+        findText == ''
+          ? persons
               .map(person => 
-              <Person person={person} key={person.name} />) :
-          persons
+              <Person person={person} key={person.name} />) 
+          : persons
               .filter(person => (person.name.indexOf(findText) >= 0))
               .map(person => 
               <Person person={person} key={person.name} />) 
