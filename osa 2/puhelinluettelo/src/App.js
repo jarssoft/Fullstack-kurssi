@@ -1,3 +1,4 @@
+import personService from './services/persons'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -44,9 +45,17 @@ const App = () => {
           name: newName, 
           number: newNumber 
       }
-      setPersons(persons.concat(newPerson))
-      setNewName('')
-      setNewNumber('')
+
+      personService
+        .create(newPerson)
+        .then(returnedNote => {        
+          //setNotes(notes.concat(returnedNote))        
+          //setNewNote('')
+          setPersons(persons.concat(newPerson))
+          setNewName('')
+          setNewNumber('')    
+      })
+
     }else{
       alert(`${newName} on jo listassa`)
     }
