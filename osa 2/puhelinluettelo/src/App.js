@@ -1,8 +1,12 @@
 import personService from './services/persons'
 import { useState, useEffect } from 'react'
 
-const Person = ({person}) => {  
-  return (<li>{person.name} {person.number}</li>)
+const Person = (props) => {  
+  return (
+    <li>
+      <button onClick={props.onRemove}>poista</button>
+      {props.person.name} {props.person.number} 
+    </li>)
 }
 
 const Input = ({value, onChange, text}) => { 
@@ -31,8 +35,8 @@ const App = () => {
       .then(response => {        
         setPersons(response.data)
       })
-  }, [])    
-  
+  }, [])
+
   const addName = (event) => {
     event.preventDefault()
     if(persons.find((p)=>(p.name===newName))===undefined){
@@ -44,9 +48,10 @@ const App = () => {
       personService
         .create(newPerson)
         .then(returnedNote => {        
-          //setNotes(notes.concat(returnedNote))        
+          //setNotes(notes.concat(returnedNote))
           //setNewNote('')
-          setPersons(persons.concat(newPerson))
+          console.log(returnedNote);
+          setPersons(persons.concat(returnedNote))
           setNewName('')
           setNewNumber('')    
       })
@@ -56,7 +61,19 @@ const App = () => {
     }
   }
 
+  const removeName = (person) => {
+    if( window.confirm(`Poistetaanko ${person.name}?`)){
+      personService
+        .remove(person.id)
+        .then(response => {        
+          console.log(`${person} removed`);
+          setPersons(persons.filter(p => (p.id !=  person.id)))
+          })
+    }
+  }
+
   const changeHandler = (hander) => ((event) => hander(event.target.value))
+  const removeHandler = (person) => (() => removeName(person))
 
   return (
     <div>
@@ -96,11 +113,11 @@ const App = () => {
         findText == ''
           ? persons
               .map(person => 
-              <Person person={person} key={person.name} />) 
+              <Person person={person} key={person.name} onRemove={removeHandler(person)} />) 
           : persons
               .filter(person => (person.name.indexOf(findText) >= 0))
               .map(person => 
-              <Person person={person} key={person.name} />) 
+              <Person person={person} key={person.name} onRemove={removeHandler(person)} />) 
       }
       </ul>
 
