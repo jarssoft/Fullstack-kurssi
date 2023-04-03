@@ -7,7 +7,7 @@ const Notification = ({ message }) => {
   }
 
   const footerStyle = {
-    color: 'green',
+    color: message.color,
     fontStyle: 'italic',
     fontSize: 16,
     margin: '10px'    
@@ -15,7 +15,7 @@ const Notification = ({ message }) => {
 
   return (
     <div style={footerStyle}>
-      {message}
+      {message.text}
     </div>
   )
 }
@@ -47,7 +47,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [findText, setFindText] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(null)
   
   useEffect(() => {
     personService
@@ -57,7 +57,11 @@ const App = () => {
       })
   }, [])
 
-  const showMessage = (message) => {
+  const showMessage = (text, color) => {
+    const message = {
+      text,
+      color      
+    }
     setMessage(message)
     setTimeout(() => {
       setMessage(null)        
@@ -82,7 +86,7 @@ const App = () => {
           setPersons(persons.concat(returnedNote))
           setNewName('')
           setNewNumber('')
-          showMessage(`Lisättiin ${newPerson.name}`)
+          showMessage(`Lisättiin ${newPerson.name}`, 'green')
       })
     }else{
       if(window.confirm(`Korvataanko ${newName}?`)){
@@ -93,7 +97,7 @@ const App = () => {
               setPersons(persons.map(p => (p.id != sama.id) ? p : newPerson));
               setNewName('')
               setNewNumber('')   
-              showMessage(`Korvattiin ${newPerson.name}`)
+              showMessage(`Korvattiin ${newPerson.name}`, 'green')
         })
       }
     }
@@ -106,8 +110,11 @@ const App = () => {
         .then(response => {        
           console.log(`${person} removed`);
           setPersons(persons.filter(p => (p.id !=  person.id)))
-          showMessage(`Poistettiin ${person.name}`)
+          showMessage(`Poistettiin ${person.name}`, 'green')
           })
+        .catch(reason => {
+          showMessage(`Poisto ei onnistunut`, 'red')
+        })
     }
   }
 
