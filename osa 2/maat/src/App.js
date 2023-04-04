@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react'
 import restcountries from './services/restcountries'
 
-const Maa = ({maa}) => {
+const Maa = ({maa, onSelect}) => {
   return(
-    <li>{maa.name.common}</li>
+    <li>
+      <button onClick={() => onSelect(maa.name.common)}>
+        Näytä
+      </button>
+      {maa.name.common}
+    </li>
   )
 }
 
@@ -32,13 +37,12 @@ const MaaLisatieto = ({maa}) => {
 const Ilmoitus = ({text}) => {
   return(
     text!=='' 
-      ? <div>{text}</div>
+      ? <div><i>{text}</i></div>
       : <div />
   )
 }
 
-const MaaLista = ({maat}) => {
-
+const MaaLista = ({maat, onSelect}) => {
   console.log(maat.length)
   return (
     maat.length > 1
@@ -49,12 +53,25 @@ const MaaLista = ({maat}) => {
         <ul>
           {maat.map(maa => 
             <Maa 
-              maa={maa} 
+              maa={maa}
+              onSelect={onSelect}
               key={maa.name.common}/>)}
         </ul>
       </>
     : <Ilmoitus text='Haulla ei löydy yhtään maata.'/>
     )
+}
+
+const MaaHaku = ({value, onSelect}) => {
+  return(
+    <form>
+      Maa: 
+      <input 
+        value={value} 
+        onChange={(event) => onSelect(event.target.value)} 
+      />        
+    </form>      
+  )
 }
 
 const MaaTiedot = (props) => {
@@ -69,31 +86,16 @@ const MaaTiedot = (props) => {
         ? <MaaLisatieto 
           maa={valitut[0]} 
           key={valitut[0].name.common} />
-        : <MaaLista maat={valitut} />      
+        : <MaaLista 
+          maat={valitut} 
+          onSelect={props.onSelect} />      
     )
-}
-
-const MaaHaku = ({value, onChange}) => {
-  return(
-    <form>
-      Maa: 
-      <input 
-        value={value} 
-        onChange={onChange} 
-      />        
-    </form>      
-  )
 }
 
 const App = () => {
 
   const [haku, setHaku] = useState('')
   const [countries, setCountries] = useState([])
-
-  const hae = (event) => {
-    console.log(event.target.value);
-    setHaku(event.target.value)
-  }
 
   useEffect(() => {
     restcountries
@@ -104,11 +106,12 @@ const App = () => {
   }, [])
 
   return (
-    <div className="App">
-      <MaaHaku value={haku} onChange={hae} />
-      <MaaTiedot countries={countries} filter={haku} />
+    <div>
+      <MaaHaku value={haku} onSelect={setHaku} />
+      <MaaTiedot countries={countries} filter={haku} onSelect={setHaku} />
     </div>
   );
+
 }
 
 export default App;
