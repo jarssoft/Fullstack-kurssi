@@ -46,18 +46,18 @@ const MaaLista = ({maat, onSelect}) => {
   console.log(maat.length)
   return (
     maat.length > 1
-    ? <>
-      <Ilmoitus text='
+    ? (maat.length > 10
+      ? <Ilmoitus text='
         Haku tuotti liikaa tuloksia.
         Rajoita hakua.'/>
-        <ul>
+      : <ul>
           {maat.map(maa => 
             <Maa 
               maa={maa}
               onSelect={onSelect}
               key={maa.name.common}/>)}
         </ul>
-      </>
+      )
     : <Ilmoitus text='Haulla ei löydy yhtään maata.'/>
     )
 }
