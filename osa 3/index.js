@@ -45,35 +45,33 @@ app.delete('/api/persons/:id', (request, response) => {
 app.use(express.json())
 
 const generateId = () => {
-    const maxId = notes.length > 0
-        ? Math.max(...notes.map(n => n.id))
-        : 0
-    return maxId + 1
+    return Math.floor(Math.random() * 100000) + 1;
 }
 
 app.post('/api/persons', (request, response) => {
 
     const body = request.body
-    console.log(body)  
-    response.json(body)
-
-    /*
-    if (!body.content) {
+    //console.log(body)  
+    //response.json(body)
+    
+    if (!body.name) {
         return response.status(400).json({ 
-        error: 'content missing' 
+            error: 'content missing' 
         })
-    }
+    } 
 
-    const note = {
-        content: body.content,
-        important: body.important || false,
+    const person = {
+        name: body.name,
+        number: body.number,
         id: generateId(),
     }
 
-    notes = notes.concat(note)
+    //console.log(person)  
+    //response.json(person)
 
-    response.json(note)
-    */
+    persons = persons.concat(person)
+    response.json(persons)
+    
 })
 
 app.get('/info', (req, res) => {
