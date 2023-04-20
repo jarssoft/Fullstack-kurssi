@@ -51,27 +51,34 @@ const generateId = () => {
 app.post('/api/persons', (request, response) => {
 
     const body = request.body
-    //console.log(body)  
-    //response.json(body)
     
     if (!body.name) {
         return response.status(400).json({ 
-            error: 'content missing' 
+            error: 'Nimi puuttuu!' 
         })
-    } 
+    }
 
+    if (!body.number) {
+        return response.status(400).json({ 
+            error: 'Numero puuttuu!' 
+        })
+    }
+    
+    if(persons.find(person => person.name === body.name)){
+        return response.status(400).json({ 
+            error: 'Nimi on jo luettelossa!' 
+        })
+    }
+ 
     const person = {
         name: body.name,
         number: body.number,
         id: generateId(),
     }
 
-    //console.log(person)  
-    //response.json(person)
-
     persons = persons.concat(person)
     response.json(persons)
-    
+   
 })
 
 app.get('/info', (req, res) => {
