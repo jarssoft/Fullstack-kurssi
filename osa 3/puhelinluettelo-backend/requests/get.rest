@@ -1,3 +1,10 @@
 GET http://localhost:3001/api/persons
 ###
 GET http://localhost:3001/api/persons/1
+
+###RENDER
+
+GET https://puhelinluettelo-backend-w1ls.onrender.com/api/persons
+
+###
+GET https://puhelinluettelo-backend-w1ls.onrender.com/api/persons/1
