@@ -43,10 +43,12 @@ let persons = [
     }
 ]
 
-app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id).then(note => {
-    response.json(note)
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+  .then(person => {
+    response.json(person)
   })
+  .catch(error => next(error))
 })
 
 /*
@@ -176,6 +178,20 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
 */
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  console.error(`Oma virhe : ${error.name}`)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+// tämä tulee kaikkien muiden middlewarejen rekisteröinnin jälkeen!
+app.use(errorHandler)
 
 //const PORT = process.env.PORT || 3001
 const PORT = process.env.PORT
