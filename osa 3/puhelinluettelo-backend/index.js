@@ -1,6 +1,9 @@
+
+require('dotenv').config()
 const express = require('express')
 var morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
 const app = express()
 
@@ -40,6 +43,13 @@ let persons = [
     }
 ]
 
+app.get('/api/notes/:id', (request, response) => {
+  Note.findById(request.params.id).then(note => {
+    response.json(note)
+  })
+})
+
+/*
 app.get('/api/persons/:id', (request, response) => {    
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
@@ -50,7 +60,7 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()  
     }
 })
-
+*/
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)  
@@ -63,6 +73,7 @@ const generateId = () => {
     return Math.floor(Math.random() * 100000) + 1;
 }
 
+/*
 app.post('/api/persons', (request, response) => {
 
     const body = request.body
@@ -95,6 +106,24 @@ app.post('/api/persons', (request, response) => {
     response.json(person)
    
 })
+*/
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  if (body.name === undefined || body.number === undefined) {
+    return response.status(400).json({ error: 'content missing' })
+  }
+
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  })
+
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+})
 
 app.get('/info', (req, res) => {
 
@@ -108,8 +137,30 @@ app.get('/info', (req, res) => {
     `)
 })
 
-app.get('/api/persons', (req, res) => {
+/*app.get('/api/persons', (req, res) => {
   res.json(persons)
+})
+*/
+
+/*
+app.get('/api/persons', (req, res) => {
+  
+  console.log('phonebook:')
+
+  Person.find({}).then(result => {
+    result.forEach(person => {
+      console.log(`${person.name} ${person.number}`)
+    })
+    //mongoose.connection.close()
+  })
+
+})
+*/
+
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 /*
@@ -119,7 +170,8 @@ app.listen(PORT, () => {
 })
 */
 
-const PORT = process.env.PORT || 3001
+//const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
