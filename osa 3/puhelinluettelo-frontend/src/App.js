@@ -78,6 +78,8 @@ const App = () => {
 
     let sama = persons.find((p)=>(p.name===newName));
 
+    console.log("Yritetään tallentaa");
+
     if(sama===undefined){      
       personService
         .create(newPerson)
@@ -87,7 +89,13 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           showMessage(`Lisättiin ${newPerson.name}`, 'green')
-      })
+        })
+        .catch(error => {
+          // pääset käsiksi palvelimen palauttamaan virheilmoitusolioon näin
+          console.log("Napattiin virhe.")
+          console.log(error.response.data)
+          showMessage(`Virhe tallennuksessa: ${error.response.data.error}`, 'red')
+        })
     }else{
       if(window.confirm(`Korvataanko ${newName}?`)){
         personService
@@ -157,8 +165,8 @@ const App = () => {
       <h2>Numerot</h2>
       
       <ul>
-      {
-        findText == ''
+        {
+          findText == ''
           ? persons
               .map(person => 
               <Person person={person} key={person.name} onRemove={removeHandler(person)} />) 
@@ -166,7 +174,7 @@ const App = () => {
               .filter(person => (person.name.indexOf(findText) >= 0))
               .map(person => 
               <Person person={person} key={person.name} onRemove={removeHandler(person)} />) 
-      }
+        }
       </ul>
 
     </div>
