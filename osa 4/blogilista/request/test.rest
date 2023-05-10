@@ -1,0 +1,12 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+      "title": "Pallopanoraamablogi",
+      "author": "Janne",
+      "url": "pallopanoramablogi.blogpost.com",      
+      "likes": 3
+}
+
+###
+GET http://localhost:3003/api/blogs
