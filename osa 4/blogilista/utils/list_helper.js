@@ -27,8 +27,7 @@ const reducer = (sum, item) => {
     return blogs.reduce(reducer, undefined);
 }
 
-const mostBlogs = (blogs) => {
-
+const makeauthorlist = (blogs) => {
     const counts = {};
     for (const blog of blogs) {
         const author = blog.author
@@ -47,6 +46,11 @@ const mostBlogs = (blogs) => {
 
     console.log(authors);
 
+    return authors;
+}
+
+const mostBlogs = (blogs) => {
+
     const reducer2 = (sum, item) => {
         
         console.log(item);
@@ -58,9 +62,7 @@ const mostBlogs = (blogs) => {
         return sum.blogs > item.blogs ? sum : item
         }
     
-        console.log(authors.reduce(reducer2, undefined));
-
-    return authors.reduce(reducer2, undefined);
+    return makeauthorlist(blogs).reduce(reducer2, undefined);
     
 }
     
