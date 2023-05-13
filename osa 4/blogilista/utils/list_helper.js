@@ -27,7 +27,7 @@ const reducer = (sum, item) => {
     return blogs.reduce(reducer, undefined);
 }
 
-const makeauthorlist = (blogs) => {
+const authorList = (blogs) => {
     const counts = {};
     for (const blog of blogs) {
         const author = blog.author
@@ -36,13 +36,9 @@ const makeauthorlist = (blogs) => {
 
     console.log(counts);
     
-    authors=[];
-    for (const [key, value] of Object.entries(counts)) {
-        authors=authors.concat([{
-            author: key,
-            blogs: value
-          }])
-    }
+    const authors = Object.entries(counts).map(([k,v]) => 
+      ({"author": k,  "blogs": v })
+    )
 
     console.log(authors);
 
@@ -51,18 +47,17 @@ const makeauthorlist = (blogs) => {
 
 const mostBlogs = (blogs) => {
 
-    const reducer2 = (sum, item) => {
+    const reducer = (most, author) => {
         
-        console.log(item);
-        console.log(item.blogs);
+        console.log(author);
 
-        if(sum==undefined){
-            return item
+        if(most==undefined){
+            return author
         }
-        return sum.blogs > item.blogs ? sum : item
+        return most.blogs > author.blogs ? most : author
         }
     
-    return makeauthorlist(blogs).reduce(reducer2, undefined);
+    return authorList(blogs).reduce(reducer, undefined);
     
 }
     
