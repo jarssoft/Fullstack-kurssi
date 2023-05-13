@@ -24,9 +24,46 @@ const reducer = (sum, item) => {
     return sum.likes > item.likes ? sum : item
     }
 
-return blogs.reduce(reducer, undefined);
+    return blogs.reduce(reducer, undefined);
 }
 
+const mostBlogs = (blogs) => {
+
+    const counts = {};
+    for (const blog of blogs) {
+        const author = blog.author
+        counts[author] = counts[author] ? counts[author] + 1 : 1;
+    }
+
+    console.log(counts);
+    
+    authors=[];
+    for (const [key, value] of Object.entries(counts)) {
+        authors=authors.concat([{
+            author: key,
+            blogs: value
+          }])
+    }
+
+    console.log(authors);
+
+    const reducer2 = (sum, item) => {
+        
+        console.log(item);
+        console.log(item.blogs);
+
+        if(sum==undefined){
+            return item
+        }
+        return sum.blogs > item.blogs ? sum : item
+        }
+    
+        console.log(authors.reduce(reducer2, undefined));
+
+    return authors.reduce(reducer2, undefined);
+    
+}
+    
 module.exports = {
-dummy, totalLikes, favoriteBlog
+dummy, totalLikes, favoriteBlog, mostBlogs
 }

@@ -88,3 +88,12 @@ describe('favoriteBlog', () => {
   })
 
 })
+
+describe('mostBlogs', () => {
+
+  test('vakio 1', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual({"author": "Robert C. Martin", "blogs": 3})
+  })
+
+})
