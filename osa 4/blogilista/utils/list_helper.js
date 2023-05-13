@@ -14,3 +14,19 @@ const totalLikes = (blogs) => {
   module.exports = {
     dummy, totalLikes
   }
+
+const favoriteBlog = (blogs) => {
+
+const reducer = (sum, item) => {
+    if(sum==undefined){
+        return item
+    }
+    return sum.likes > item.likes ? sum : item
+    }
+
+return blogs.reduce(reducer, undefined);
+}
+
+module.exports = {
+dummy, totalLikes, favoriteBlog
+}
