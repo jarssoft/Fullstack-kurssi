@@ -28,14 +28,13 @@ const favoriteBlog = (blogs) => {
 }
 
 const authorsList = (blogs) => {
-
-    let uniqueAuthors = [];
-    blogs.forEach((element) => {
-        if (!uniqueAuthors.includes(element.author)) {
-            uniqueAuthors.push(element.author);
-        }
-    });
     
+    function onlyUnique(value, index, array) {
+        return array.indexOf(value) === index;
+    }
+
+    let uniqueAuthors = blogs.map(b => b.author).filter(onlyUnique)
+
     console.log(uniqueAuthors);
 
     return uniqueAuthors;
@@ -44,7 +43,7 @@ const authorsList = (blogs) => {
 const authorsBlogs = (blogs) => {
     
     const totalLikes = (total, blog) => (
-        total + blog.likes
+      total + blog.likes
     )
 
     const authors = authorsList(blogs).map( author =>
@@ -78,7 +77,8 @@ const mostBlogs = (blogs) => {
             : author
         }
     
-    const mostBlogsBlogs = authorsBlogs(blogs).reduce(reducer, undefined);
+    const mostBlogsBlogs = authorsBlogs(blogs)
+        .reduce(reducer, undefined);
 
     return ({
         "author": mostBlogsBlogs.author,
@@ -89,7 +89,7 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
 
-    const mostLiked = (most, author) => {
+    const reducer = (most, author) => {
         
         console.log(author.blogs);
 
@@ -102,7 +102,8 @@ const mostLikes = (blogs) => {
             : author
     }
     
-    const mostLikesBlogs = authorsBlogs(blogs).reduce(mostLiked, undefined);
+    const mostLikesBlogs = authorsBlogs(blogs)
+        .reduce(reducer, undefined);
 
     return ({
         "author": mostLikesBlogs.author,

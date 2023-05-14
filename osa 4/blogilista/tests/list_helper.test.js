@@ -93,7 +93,9 @@ describe('mostBlogs', () => {
 
   test('Robert C. Martinilla eniten blogeja', () => {
     const result = listHelper.mostBlogs(listWithOneBlog)
-    expect(result).toEqual({"author": "Robert C. Martin", "blogs": 3})
+    expect(result).toEqual(
+      {"author": "Robert C. Martin", "blogs": 3}
+    )
   })
 
 })
@@ -102,7 +104,9 @@ describe('mostLikes', () => {
 
   test('Dijkstra on pidetyin', () => {
     const result = listHelper.mostLikes(listWithOneBlog)
-    expect(result).toEqual({"author": "Edsger W. Dijkstra", "likes": 17})
+    expect(result).toEqual(
+      {"author": "Edsger W. Dijkstra", "likes": 17}
+    )
   })
 
 })
