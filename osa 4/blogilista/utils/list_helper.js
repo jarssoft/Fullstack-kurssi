@@ -17,30 +17,49 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
 
-const reducer = (sum, item) => {
-    if(sum==undefined){
-        return item
-    }
-    return sum.likes > item.likes ? sum : item
-    }
+    const reducer = (sum, item) => {
+        if(sum==undefined){
+            return item
+        }
+        return sum.likes > item.likes ? sum : item
+        }
 
     return blogs.reduce(reducer, undefined);
 }
 
-const authorList = (blogs) => {
-    const counts = {};
-    for (const blog of blogs) {
-        const author = blog.author
-        counts[author] = counts[author] ? counts[author] + 1 : 1;
-    }
+const authorsList = (blogs) => {
 
-    console.log(counts);
+    let uniqueAuthors = [];
+    blogs.forEach((element) => {
+        if (!uniqueAuthors.includes(element.author)) {
+            uniqueAuthors.push(element.author);
+        }
+    });
     
-    const authors = Object.entries(counts).map(([k,v]) => 
-      ({"author": k,  "blogs": v })
+    console.log(uniqueAuthors);
+
+    return uniqueAuthors;
+}
+
+const authorsBlogs = (blogs) => {
+    
+    const totalLikes = (total, blog) => (
+        total + blog.likes
+    )
+
+    const authors = authorsList(blogs).map( author =>
+      {
+      const authorsBlogs = blogs.filter(b => b.author == author)
+      return {
+        "author": author,
+        "blogs": authorsBlogs,
+        "totalLikes": authorsBlogs.reduce(totalLikes, 0)
+      }
+      }
     )
 
     console.log(authors);
+    console.log(authors.length);
 
     return authors;
 }
@@ -54,13 +73,44 @@ const mostBlogs = (blogs) => {
         if(most==undefined){
             return author
         }
-        return most.blogs > author.blogs ? most : author
+        return most.blogs.length > author.blogs.length 
+            ? most 
+            : author
         }
     
-    return authorList(blogs).reduce(reducer, undefined);
+    const mostBlogsBlogs = authorsBlogs(blogs).reduce(reducer, undefined);
+
+    return ({
+        "author": mostBlogsBlogs.author,
+        "blogs": mostBlogsBlogs.blogs.length
+      });
+
+}
+
+const mostLikes = (blogs) => {
+
+    const mostLiked = (most, author) => {
+        
+        console.log(author.blogs);
+
+        if(most==undefined){
+            return author
+        }
+
+        return most.totalLikes > author.totalLikes 
+            ? most 
+            : author
+    }
     
+    const mostLikesBlogs = authorsBlogs(blogs).reduce(mostLiked, undefined);
+
+    return ({
+        "author": mostLikesBlogs.author,
+        "likes": mostLikesBlogs.totalLikes
+    });
+
 }
     
 module.exports = {
-dummy, totalLikes, favoriteBlog, mostBlogs
+dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
