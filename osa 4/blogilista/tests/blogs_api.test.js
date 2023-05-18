@@ -63,6 +63,31 @@ test('likes is sets 0 as default', async () => {
   expect(response.likes).toEqual(0);
 });
 
+test('blogs with empty title gives 400 Bad Request', async () => {
+
+  const undefinedtitle = {
+    //title: 'Pallopanoraamablogi',
+    author: "Janne",
+    url: 'pallopanoraamablogi.blogspot.com',
+    likes: 3,
+  }
+
+  
+  let noteObject = new Blog(undefinedtitle)
+
+  await api
+    .post('/api/blogs')
+    .send(noteObject)
+    .expect(400)
+  
+  /*
+  await api
+  .post('/api/blogs')
+  .send(undefinedtitle)
+  .expect(400)
+*/
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
