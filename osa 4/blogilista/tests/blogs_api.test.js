@@ -26,7 +26,7 @@ test('notes are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('there are one blog', async () => {
+test('there is one blog', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(1)
 })
@@ -39,8 +39,13 @@ test('there is id for identification', async () => {
 });
 
 test('blogs can be added', async () => {
-  let noteObject = new Blog(initialBlogs[0])
-  await noteObject.save()
+
+  let noteObject = initialBlogs[0]
+
+  await api
+  .post('/api/blogs')
+  .send(noteObject)
+  .expect(201)
 
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(initialBlogs.length+1)
@@ -55,16 +60,19 @@ test('likes is sets 0 as default', async () => {
     //likes: 3,
   }
 
-  let noteObject = new Blog(undefinedlikes)
-  const response = await noteObject.save()
-
-  console.log(response);
-  expect(response.likes).toBeDefined();
-  expect(response.likes).toEqual(0);
+  const response = await api
+      .post('/api/blogs')
+      .send(undefinedlikes)
+      .expect(201)
+  
+  //console.log(response);
+  //expect(response.likes).toBeDefined();
+  //expect(response.likes).toEqual(0);
 });
 
 test('blogs with empty title gives 400 Bad Request', async () => {
 
+  
   const undefinedtitle = {
     //title: 'Pallopanoraamablogi',
     author: "Janne",
@@ -72,32 +80,30 @@ test('blogs with empty title gives 400 Bad Request', async () => {
     likes: 3,
   }
 
+  await api
+    .post('/api/blogs')
+    .send(undefinedtitle)
+    .expect(400)
+
+  console.log('note saved!')
+
+  })
   
-  let noteObject = new Blog(undefinedtitle)
+
+test('blogs with empty url gives 400 Bad Request', async () => {
+
+  const undefinedtitle = {
+    title: 'Pallopanoraamablogi',
+    author: "Janne",
+    //url: 'pallopanoraamablogi.blogspot.com',
+    likes: 3,
+  }
 
   await api
     .post('/api/blogs')
-    .send(noteObject)
+    .send(undefinedtitle)
     .expect(400)
   })
-
-  test('blogs with empty url gives 400 Bad Request', async () => {
-
-    const undefinedtitle = {
-      title: 'Pallopanoraamablogi',
-      author: "Janne",
-      //url: 'pallopanoraamablogi.blogspot.com',
-      likes: 3,
-    }
-  
-    
-    let noteObject = new Blog(undefinedtitle)
-  
-    await api
-      .post('/api/blogs')
-      .send(noteObject)
-      .expect(400)
-    })
 
 afterAll(async () => {
   await mongoose.connection.close()

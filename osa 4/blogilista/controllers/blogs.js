@@ -15,8 +15,8 @@ blogsRouter.post('/', async (request, response, next) => {
     console.log("oma post-metodi");
 
     try{
-      await blog.save()
-      response.status(201).json(result)
+      const savedNote = await blog.save()
+      response.status(201).json(savedNote)
     } catch(exception) {
       next(exception)
     }
