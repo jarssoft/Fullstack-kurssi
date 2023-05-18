@@ -105,6 +105,25 @@ test('blogs with empty url gives 400 Bad Request', async () => {
     .expect(400)
   })
 
+  test('blogs can be deleted', async () => {
+
+    const response = await api.get('/api/blogs')
+      
+    const id = response.body[0].id
+    console.log(id);
+
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(204)
+
+    {
+      const response = await api.get('/api/blogs')
+      expect(response.body).toHaveLength(initialBlogs.length-1)
+    }
+
+    })
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
+
