@@ -65,9 +65,9 @@ test('likes is sets 0 as default', async () => {
       .send(undefinedlikes)
       .expect(201)
   
-  //console.log(response);
-  //expect(response.likes).toBeDefined();
-  //expect(response.likes).toEqual(0);
+  console.log(response);
+  expect(response.body.likes).toBeDefined();
+  expect(response.body.likes).toEqual(0);
 });
 
 test('blogs with empty title gives 400 Bad Request', async () => {
