@@ -79,14 +79,25 @@ test('blogs with empty title gives 400 Bad Request', async () => {
     .post('/api/blogs')
     .send(noteObject)
     .expect(400)
+  })
+
+  test('blogs with empty url gives 400 Bad Request', async () => {
+
+    const undefinedtitle = {
+      title: 'Pallopanoraamablogi',
+      author: "Janne",
+      //url: 'pallopanoraamablogi.blogspot.com',
+      likes: 3,
+    }
   
-  /*
-  await api
-  .post('/api/blogs')
-  .send(undefinedtitle)
-  .expect(400)
-*/
-})
+    
+    let noteObject = new Blog(undefinedtitle)
+  
+    await api
+      .post('/api/blogs')
+      .send(noteObject)
+      .expect(400)
+    })
 
 afterAll(async () => {
   await mongoose.connection.close()
