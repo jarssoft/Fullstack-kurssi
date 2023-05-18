@@ -89,7 +89,6 @@ test('blogs with empty title gives 400 Bad Request', async () => {
 
   })
   
-
 test('blogs with empty url gives 400 Bad Request', async () => {
 
   const undefinedtitle = {
@@ -107,15 +106,17 @@ test('blogs with empty url gives 400 Bad Request', async () => {
 
   test('blogs can be deleted', async () => {
 
-    const response = await api.get('/api/blogs')
-      
+    //haetaan ensimmäisen id
+    const response = await api.get('/api/blogs')      
     const id = response.body[0].id
     console.log(id);
 
+    //poistetaan
     await api
       .delete(`/api/blogs/${id}`)
       .expect(204)
 
+    //tarkistetaan, jotta blogit ovat vähentyneet
     {
       const response = await api.get('/api/blogs')
       expect(response.body).toHaveLength(initialBlogs.length-1)
@@ -125,23 +126,25 @@ test('blogs with empty url gives 400 Bad Request', async () => {
 
   test('blogs can be modified', async () => {
 
+    //haetaan ensimmäinen blogi ja otetan id sekä likes
     const response1 = await api.get('/api/blogs')      
     const id = response1.body[0].id
     const likes = response1.body[0].likes
     console.log(id);
 
+    //putataan id:lle uusi, mutta nostetaan likejen määrää yhdellä
     const undefinedtitle = {
       title: 'Pallopanoraamablogi',
       author: "Janne",
       url: 'pallopanoraamablogi.blogspot.com',
-      likes: likes+1,
-    }
-        
+      likes: likes + 1,
+    }        
     const response = await api
       .put(`/api/blogs/${id}`)
       .send(undefinedtitle)
       .expect(204)        
 
+    //tarkistetaan että likes on muuttunut
     const response2 = await api.get('/api/blogs')
     expect(response2.body).toHaveLength(initialBlogs.length)
     expect(likes === response2.body[0].likes)
