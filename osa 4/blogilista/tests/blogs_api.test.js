@@ -121,7 +121,33 @@ test('blogs with empty url gives 400 Bad Request', async () => {
       expect(response.body).toHaveLength(initialBlogs.length-1)
     }
 
-    })
+  })
+
+  test('blogs can be modified', async () => {
+
+    const response1 = await api.get('/api/blogs')      
+    const id = response1.body[0].id
+    const likes = response1.body[0].likes
+    console.log(id);
+
+    const undefinedtitle = {
+      title: 'Pallopanoraamablogi',
+      author: "Janne",
+      url: 'pallopanoraamablogi.blogspot.com',
+      likes: likes+1,
+    }
+        
+    const response = await api
+      .put(`/api/blogs/${id}`)
+      .send(undefinedtitle)
+      .expect(204)        
+
+    const response2 = await api.get('/api/blogs')
+    expect(response2.body).toHaveLength(initialBlogs.length)
+    expect(likes === response2.body[0].likes)
+    console.log(response2.body[0].likes);
+
+  })
 
 afterAll(async () => {
   await mongoose.connection.close()
