@@ -21,6 +21,12 @@ usersRouter.post('/', async (request, response, next) => {
   
     const { username, name, password } = request.body
 
+    if (username === undefined
+        || password === undefined
+        || password.length < 3) {
+      return response.status(400).json({ error: 'content missing' })  
+    }
+
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
   

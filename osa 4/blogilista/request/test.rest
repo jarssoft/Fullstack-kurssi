@@ -34,3 +34,31 @@ Content-Type: application/json
       "username": "jzray",
       "password": "salasana"
 }
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+      "name": "Jari",
+      "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+      "name": "Jari",
+      "username": "jzray"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+      "name": "Jari",
+      "username": "jzray",
+      "password": "sa"
+}
