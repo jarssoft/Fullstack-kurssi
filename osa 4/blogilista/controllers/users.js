@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
@@ -16,8 +17,19 @@ usersRouter.get('/', async (request, response, next) => {
   })
   
 usersRouter.post('/', async (request, response, next) => { 
-    const user = new User(request.body)
+    //const user = new User(request.body)
   
+    const { username, name, password } = request.body
+
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+  
+    const user = new User({
+      username,
+      name,
+      passwordHash,
+    })
+
     console.log("oma post-metodi");
 
     try{
