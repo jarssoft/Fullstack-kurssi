@@ -24,3 +24,13 @@ Content-Type: application/json
       "url": "pallopanoramablogi.blogpost.com",      
       "likes": 5
 }
+
+### Users
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+      "name": "Jari",
+      "username": "jzray",
+      "password": "salasana"
+}
