@@ -21,12 +21,14 @@ usersRouter.post('/', async (request, response, next) => {
   
     const { username, name, password } = request.body
 
-    if (username === undefined
-        || password === undefined
-        || password.length < 3) {
+    if (username === undefined || password === undefined) {
       return response.status(400).json({ error: 'content missing' })  
     }
 
+    if (password.length < 3) {
+      return response.status(400).json({ error: 'too short password' })  
+    }
+    
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
   

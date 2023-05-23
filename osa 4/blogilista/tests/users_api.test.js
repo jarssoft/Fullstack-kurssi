@@ -42,10 +42,12 @@ test('users without password cannot be added', async () => {
     //password: 'asd'
   }
 
-  await api
+  const result = await api
     .post('/api/users')
     .send(newUser)
     .expect(400)
+
+  expect(result.body.error).toContain('content missing')
 
   const response = await api.get('/api/users')
   expect(response.body).toHaveLength(1)
@@ -59,10 +61,12 @@ test('users without username cannot be added', async () => {
     password: 'asd'
   }
 
-  await api
+  const result = await api
     .post('/api/users')
     .send(newUser)
     .expect(400)
+
+  expect(result.body.error).toContain('content missing')
 
   const response = await api.get('/api/users')
   expect(response.body).toHaveLength(1)
@@ -76,12 +80,12 @@ test('users with too short password cannot be added', async () => {
     password: 'as'
   }
 
-  const result =await api
+  const result = await api
     .post('/api/users')
     .send(newUser)
     .expect(400)
 
-  expect(result.body.error).toContain('content missing')
+  expect(result.body.error).toContain('too short password')
 
   const response = await api.get('/api/users')
   expect(response.body).toHaveLength(1)
