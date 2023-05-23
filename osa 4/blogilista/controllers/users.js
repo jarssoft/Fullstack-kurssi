@@ -7,7 +7,7 @@ usersRouter.get('/', async (request, response, next) => {
   console.log("oma get-metodi");
 
   try{
-    let users = await User.find({}).populate('blogs')
+    let users = await User.find({}).populate('blogs', { title: 1, author: 1, url: 1 })
     response.json(users)
   } catch(exception) {
     next(exception)
