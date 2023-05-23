@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-
 const User = require('../models/user')
+
 const initialUser =
   {
     name: 'Jari',
@@ -21,7 +21,7 @@ test('users can be added', async () => {
 
   const newUser = {
     name: 'Jari',
-    username: "jzray",
+    username: "jzray2",
     password: 'asd'
   }
 
@@ -32,6 +32,25 @@ test('users can be added', async () => {
 
   const response = await api.get('/api/users')
   expect(response.body).toHaveLength(1+1)
+});
+
+test('username must be unique', async () => {
+
+  const newUser = {
+    name: 'Jari',
+    username: "jzray",
+    password: 'asd'
+  }
+
+  const result = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+
+  expect(result.body.error).toContain('username exists already')
+
+  const response = await api.get('/api/users')
+  expect(response.body).toHaveLength(1)
 });
 
 test('users without password cannot be added', async () => {
