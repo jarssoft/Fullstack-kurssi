@@ -6,10 +6,9 @@ usersRouter.get('/', async (request, response, next) => {
     
   console.log("oma get-metodi");
 
-
   try{
-      let users = await User.find({})
-      response.json(users)
+    let users = await User.find({}).populate('blogs')
+    response.json(users)
   } catch(exception) {
     next(exception)
   }
@@ -17,36 +16,36 @@ usersRouter.get('/', async (request, response, next) => {
   })
   
 usersRouter.post('/', async (request, response, next) => { 
-    //const user = new User(request.body)
+  //const user = new User(request.body)
+
+  const { username, name, password } = request.body
+
+  if (username === undefined || password === undefined) {
+    return response.status(400).json({ error: 'content missing' })  
+  }
+
+  if (password.length < 3) {
+    return response.status(400).json({ error: 'too short password' })  
+  }
   
-    const { username, name, password } = request.body
-
-    if (username === undefined || password === undefined) {
-      return response.status(400).json({ error: 'content missing' })  
+  try{
+    let users = await User.find({})
+    const usernames = users.filter(r => r.username == username)
+    console.log(usernames)
+    if (usernames.length > 0) {
+      return response.status(400).json({ error: 'username already exists' })  
     }
-
-    if (password.length < 3) {
-      return response.status(400).json({ error: 'too short password' })  
-    }
-    
-    try{
-      let users = await User.find({})
-      const usernames = users.filter(r => r.username == username)
-      console.log(usernames)
-      if (usernames.length > 0) {
-        return response.status(400).json({ error: 'username exists already' })  
-      }
-    } catch(exception) {
-      next(exception)
-    }
-/*
+  } catch(exception) {
+    next(exception)
+  }
+    /*
     //testaa, että username on 
     {
       const response = await api.get('/api/users')
       const usernames = response.body.map(r => r.name)
       console.log(usernames);
     }
-  */  
+    */
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
   

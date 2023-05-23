@@ -19,12 +19,18 @@ blogsRouter.post('/', async (request, response, next) => {
   //blog.user="646a81cdca9e9b3949a50474"
 
   console.log("oma post-metodi");
-  const id = (await User.find({}))[0].toJSON().id
-  blog.user = id
+  let user = (await User.find({}))[0]
+  blog.user = user.toJSON().id
 
   try{
-    const savedNote = await blog.save()
-    response.status(201).json(savedNote)
+    const saved = await blog.save()      
+    console.log(saved);
+    
+    user.blogs = user.blogs.concat(blog.id)
+    console.log(user);
+    
+    await user.save()
+    response.status(201).json(saved)
   } catch(exception) {
     next(exception)
   }
