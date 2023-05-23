@@ -5,7 +5,8 @@ Content-Type: application/json
       "title": "Pallopanoraamablogi",
       "author": "Janne",
       "url": "pallopanoramablogi.blogpost.com",      
-      "likes": 3
+      "likes": 3,      
+      "user": "646a81cdca9e9b3949a50474"
 }
 
 ###
