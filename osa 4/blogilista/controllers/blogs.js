@@ -1,8 +1,9 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response, next) => {
-    
+   
   try{
       let blogs = await Blog.find({})
       response.json(blogs)
@@ -13,18 +14,22 @@ blogsRouter.get('/', async (request, response, next) => {
   })
   
 blogsRouter.post('/', async (request, response, next) => {
-    const blog = new Blog(request.body)
-  
-    console.log("oma post-metodi");
+  const blog = new Blog(request.body)
 
-    try{
-      const savedNote = await blog.save()
-      response.status(201).json(savedNote)
-    } catch(exception) {
-      next(exception)
-    }
+  //blog.user="646a81cdca9e9b3949a50474"
 
-  })
+  console.log("oma post-metodi");
+  const id = (await User.find({}))[0].toJSON().id
+  blog.user = id
+
+  try{
+    const savedNote = await blog.save()
+    response.status(201).json(savedNote)
+  } catch(exception) {
+    next(exception)
+  }
+
+})
 
   blogsRouter.delete('/:id', async (request, response, next) => {
 
