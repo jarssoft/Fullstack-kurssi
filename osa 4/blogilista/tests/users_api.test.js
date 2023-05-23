@@ -76,10 +76,12 @@ test('users with too short password cannot be added', async () => {
     password: 'as'
   }
 
-  await api
+  const result =await api
     .post('/api/users')
     .send(newUser)
     .expect(400)
+
+  expect(result.body.error).toContain('content missing')
 
   const response = await api.get('/api/users')
   expect(response.body).toHaveLength(1)
