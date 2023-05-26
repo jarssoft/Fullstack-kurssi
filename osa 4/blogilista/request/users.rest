@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
       "name": "Jari",
-      "username": "jzray",
+      "username": "jzray6",
       "password": "salasana"
 }
 
@@ -33,4 +33,30 @@ Content-Type: application/json
       "name": "Jari",
       "username": "jzray",
       "password": "sa"
+}
+
+###LOGIN
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+      "username": "jzray6",
+      "password": "salasana"
+}
+
+###virheellinen
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+      "username": "jzray6",
+      "password": "vaara_salasana"
+}
+###virheellinen
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+      "username": "vaara_jzray",
+      "password": "salasana"
 }
