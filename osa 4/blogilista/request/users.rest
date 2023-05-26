@@ -13,6 +13,16 @@ Content-Type: application/json
 
 {
       "name": "Jari",
+      "username": "jzray7",
+      "password": "salasana"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+      "name": "Jari",
       "password": "salasana"
 }
 
@@ -40,7 +50,7 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-      "username": "jzray6",
+      "username": "jzray7",
       "password": "salasana"
 }
 
