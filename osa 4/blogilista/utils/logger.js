@@ -3,7 +3,6 @@ const info = (...params) => {
   }
   
   const error = (...params) => {
-    console.error("VIRHE")
     console.error(...params)
   }
   

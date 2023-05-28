@@ -21,7 +21,7 @@ const getTokenFrom = request => {
     }  return null
   }
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
   //blog.user="646a81cdca9e9b3949a50474"
