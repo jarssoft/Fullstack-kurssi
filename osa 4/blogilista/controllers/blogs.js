@@ -21,7 +21,7 @@ const getTokenFrom = request => {
     }  return null
   }
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
   //blog.user="646a81cdca9e9b3949a50474"
@@ -29,16 +29,17 @@ blogsRouter.post('/', async (request, response) => {
   //console.log("oma post-metodi");
   //let user = (await User.find({}))[0]
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })  
-  }  
-  const user = await User.findById(decodedToken.id)
-
-  blog.user = user.toJSON().id
-
   try{
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+ 
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })  
+    }  
+    const user = await User.findById(decodedToken.id)
+
+    blog.user = user.toJSON().id
+    
+
     const saved = await blog.save()      
     console.log(saved);
     

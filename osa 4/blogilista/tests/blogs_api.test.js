@@ -151,6 +151,7 @@ test('blogs with empty url gives 400 Bad Request', async () => {
     console.log(response2.body[0].likes);
 
   })
+  
 
 afterAll(async () => {
   await mongoose.connection.close()
