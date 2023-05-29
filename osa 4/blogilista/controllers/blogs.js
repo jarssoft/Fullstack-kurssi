@@ -14,20 +14,12 @@ blogsRouter.get('/', async (request, response, next) => {
 
   })
   
-
-
 blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
-  //blog.user="646a81cdca9e9b3949a50474"
-
-  //console.log("oma post-metodi");
-  //let user = (await User.find({}))[0]
-
   try{
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    console.log(request.token);
- 
+     
     if (!decodedToken.id) {
       return response.status(401).json({ error: 'token invalid' })  
     }  
@@ -35,7 +27,6 @@ blogsRouter.post('/', async (request, response, next) => {
 
     blog.user = user.toJSON().id
     
-
     const saved = await blog.save()      
     console.log(saved);
     
@@ -50,37 +41,36 @@ blogsRouter.post('/', async (request, response, next) => {
 
 })
 
-  blogsRouter.delete('/:id', async (request, response, next) => {
+blogsRouter.delete('/:id', async (request, response, next) => {
 
-    console.log("oma delete-metodi");
+  console.log("oma delete-metodi");
 
-    try{
-      await Blog.findByIdAndRemove(request.params.id)
-      response.status(204).end()
-    } catch(exception) {
-      next(exception)
-    }
+  try{
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } catch(exception) {
+    next(exception)
+  }
 
-  })
+})
 
-  blogsRouter.put('/:id', async (request, response, next) => {
-    const body = request.body;
+blogsRouter.put('/:id', async (request, response, next) => {
+  const body = request.body;
+
+  const person = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+  }
   
-    const person = {
-      title: body.title,
-      author: body.author,
-      url: body.url,
-      likes: body.likes,
-    }
-    
-    try{
-      await Blog.findByIdAndUpdate(request.params.id, person, {new: true})
-      response.status(204).end()
-    } catch(exception) {
-      next(exception)
-    }
+  try{
+    await Blog.findByIdAndUpdate(request.params.id, person, {new: true})
+    response.status(204).end()
+  } catch(exception) {
+    next(exception)
+  }
 
-
-  });
+});
   
-  module.exports = blogsRouter
+module.exports = blogsRouter
