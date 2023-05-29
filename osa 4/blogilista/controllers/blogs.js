@@ -17,6 +17,8 @@ blogsRouter.get('/', async (request, response, next) => {
 blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
+  console.log(`pyytäjä ${request.user}`);
+
   try{
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
      
