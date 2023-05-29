@@ -14,12 +14,7 @@ blogsRouter.get('/', async (request, response, next) => {
 
   })
   
-const getTokenFrom = request => {
-    const authorization = request.get('authorization') 
-    if (authorization && authorization.startsWith('Bearer ')) {
-          return authorization.replace('Bearer ', '')  
-    }  return null
-  }
+
 
 blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
@@ -30,7 +25,7 @@ blogsRouter.post('/', async (request, response, next) => {
   //let user = (await User.find({}))[0]
 
   try{
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     console.log(request.token);
  
     if (!decodedToken.id) {
