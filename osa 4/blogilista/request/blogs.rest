@@ -48,3 +48,13 @@ Authorization: Bearer UNVALIDTOKEN23090935
       "url": "ploki.blogpost.com",      
       "likes": 3
 }
+
+###
+DELETE http://localhost:3003/api/blogs/6474f9eab1e4ce9219a245c3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NiIsImlkIjoiNjQ2ZDE1ZmE5MzBlYWJjYzcwMzg0MWM3IiwiaWF0IjoxNjg1MzkwNTQ5fQ.359bBLN97U7laRGHH_jKiWjKWtrmsvY6d3y_j9IKyuE
+
+###
+DELETE http://localhost:3003/api/blogs/646d160b930eabcc703841c9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NiIsImlkIjoiNjQ2ZDE1ZmE5MzBlYWJjYzcwMzg0MWM3IiwiaWF0IjoxNjg1MzkwNTQ5fQ.359bBLN97U7laRGHH_jKiWjKWtrmsvY6d3y_j9IKyuE
