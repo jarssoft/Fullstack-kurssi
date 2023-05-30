@@ -17,19 +17,18 @@ blogsRouter.get('/', async (request, response, next) => {
 blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
-  console.log(`pyytäjä ${request.user}`);
+  //console.log(`pyytäjä ${request.user}`);
 
   try{
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
      
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })  
-    }  
-    const user = await User.findById(decodedToken.id)
+    if (!request.user) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(request.user)
 
     blog.user = user.toJSON().id
     
-    const saved = await blog.save()      
+    const saved = await blog.save()
     console.log(saved);
     
     user.blogs = user.blogs.concat(saved.id)
@@ -48,23 +47,22 @@ blogsRouter.delete('/:id', async (request, response, next) => {
   console.log("oma delete-metodi");
 
   try{
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-     
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })  
+
+    if (!request.user) {
+      return response.status(401).json({ error: 'token invalid' })
     }
 
     const blog = await Blog.findById(request.params.id)
     console.log(`Poistetaan ${blog}:n blogi`);
 
-    const user = await User.findById(decodedToken.id)
+    const user = await User.findById(request.user)
     console.log(`Pyytäjä: ${user}`);
 
-    if ( blog.user.toString() !== decodedToken.id.toString() ){
+    if ( blog.user.toString() !== request.user.toString() ){
       return response.status(403).json({ error: 'user is not owner this data' })  
     }
 
-    await Blog.findByIdAndRemove(request.params.id)
+    //await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   } catch(exception) {
     next(exception)

@@ -25,15 +25,27 @@ Content-Type: application/json
       "likes": 5
 }
 
-### Authorization
+### Authorization jzray6
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NyIsImlkIjoiNjQ3MGI3OWJiNDM2NDc3NGJlZTI0MWRmIiwiaWF0IjoxNjg1MTA4NzA1fQ.zo59WrIWkbjXqyUa6fa4pB0Re_3rlm6F55nZDwwx_PU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NiIsImlkIjoiNjQ2ZDE1ZmE5MzBlYWJjYzcwMzg0MWM3IiwiaWF0IjoxNjg1MzkwNTQ5fQ.359bBLN97U7laRGHH_jKiWjKWtrmsvY6d3y_j9IKyuE
 
 {
       "title": "Timon Ploki",
       "author": "T. Soini",
       "url": "ploki.blogpost.com",      
+      "likes": 3
+}
+
+### Authorization jzray7
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NyIsImlkIjoiNjQ3MGI3OWJiNDM2NDc3NGJlZTI0MWRmIiwiaWF0IjoxNjg1NDI2ODczfQ.m3oQbCk1NQodoaCOkYUEQd8uqF21COw4pO3MH6vkdjI
+
+{
+      "title": "Villasukkablogi",
+      "author": "M. Riihonen",
+      "url": "villasukka.blogpost.com",      
       "likes": 3
 }
 
@@ -49,12 +61,17 @@ Authorization: Bearer UNVALIDTOKEN23090935
       "likes": 3
 }
 
-###
-DELETE http://localhost:3003/api/blogs/6474f9eab1e4ce9219a245c3
+### user jzray6
+DELETE http://localhost:3003/api/blogs/647523fe717f2b60dc1a9bc1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NiIsImlkIjoiNjQ2ZDE1ZmE5MzBlYWJjYzcwMzg0MWM3IiwiaWF0IjoxNjg1MzkwNTQ5fQ.359bBLN97U7laRGHH_jKiWjKWtrmsvY6d3y_j9IKyuE
 
-###
-DELETE http://localhost:3003/api/blogs/646d160b930eabcc703841c9
+### user jzray7
+DELETE http://localhost:3003/api/blogs/647523fe717f2b60dc1a9bc1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NiIsImlkIjoiNjQ2ZDE1ZmE5MzBlYWJjYzcwMzg0MWM3IiwiaWF0IjoxNjg1MzkwNTQ5fQ.359bBLN97U7laRGHH_jKiWjKWtrmsvY6d3y_j9IKyuE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NyIsImlkIjoiNjQ3MGI3OWJiNDM2NDc3NGJlZTI0MWRmIiwiaWF0IjoxNjg1NDI2ODczfQ.m3oQbCk1NQodoaCOkYUEQd8uqF21COw4pO3MH6vkdjI
+
+### Unvalid token
+DELETE http://localhost:3003/api/blogs/647523fe717f2b60dc1a9bc1
+Content-Type: application/json
+Authorization: Bearer UNVALIDTOKEN23090935
