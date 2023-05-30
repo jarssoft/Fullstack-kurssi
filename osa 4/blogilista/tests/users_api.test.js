@@ -8,7 +8,7 @@ const initialUser =
   {
     name: 'Jari',
     username: "jzray",
-    passwordHash: 'asd'
+    passwordHash: '$2b$10$oK523bNpfk.akn2QQapyPeeZ4peziExug8.I7qDVuR4wUFnPu6ooC'
   }
 
 beforeEach(async () => {
@@ -47,7 +47,7 @@ test('username must be unique', async () => {
     .send(newUser)
     .expect(400)
 
-  expect(result.body.error).toContain('username exists already')
+  expect(result.body.error).toContain('username already exists')
 
   const response = await api.get('/api/users')
   expect(response.body).toHaveLength(1)
@@ -114,4 +114,3 @@ test('users with too short password cannot be added', async () => {
 afterAll(async () => {
   await mongoose.connection.close()
 })
-

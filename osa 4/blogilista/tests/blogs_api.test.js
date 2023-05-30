@@ -4,6 +4,42 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+let token = "";
+let user = "";
+
+beforeAll(async () => {
+  await User.deleteMany({})
+
+  const newUser = {
+    name: 'Jari',
+    username: "jzray",
+    password: 'asd'
+  }
+
+  //luodaan käyttäjä
+  const userresponse = await api
+    .post('/api/users')
+    .send(newUser)
+
+  let creater = await User.find({})
+  user = creater[0]._id
+  console.log(user);
+
+  const username = {
+    username: "jzray",
+    password: "asd"
+  }
+
+  //ladataan token
+  const response = await api
+    .post('/api/login')
+    .send(username)
+
+  token=response.body.token
+});
+
 const initialBlogs = [
   {
     title: 'Pallopanoraamablogi',
@@ -14,8 +50,24 @@ const initialBlogs = [
 ]
 
 beforeEach(async () => {
+
   await Blog.deleteMany({})
-  let noteObject = new Blog(initialBlogs[0])
+
+  //const creater = await User.findById({})
+  
+  const initialBlog = 
+  {
+    title: 'Testiblogi',
+    author: "Testaaja",
+    url: 'testaus.blogspot.com',
+    likes: 10,
+    user: user
+  }
+  
+  let noteObject = new Blog(initialBlog)
+  //console.log(creater);
+  console.log(noteObject);
+  //noteObject.user=creater
   await noteObject.save()
 })
 
@@ -44,6 +96,7 @@ test('blogs can be added', async () => {
 
   await api
   .post('/api/blogs')
+  .set('Authorization', `Bearer ${token}`)
   .send(noteObject)
   .expect(201)
 
@@ -62,10 +115,10 @@ test('likes is sets 0 as default', async () => {
 
   const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(undefinedlikes)
       .expect(201)
   
-  console.log(response);
   expect(response.body.likes).toBeDefined();
   expect(response.body.likes).toEqual(0);
 });
@@ -82,6 +135,7 @@ test('blogs with empty title gives 400 Bad Request', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(undefinedtitle)
     .expect(400)
 
@@ -100,6 +154,7 @@ test('blogs with empty url gives 400 Bad Request', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(undefinedtitle)
     .expect(400)
   })
@@ -114,6 +169,7 @@ test('blogs with empty url gives 400 Bad Request', async () => {
     //poistetaan
     await api
       .delete(`/api/blogs/${id}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204)
 
     //tarkistetaan, jotta blogit ovat vähentyneet
@@ -141,6 +197,7 @@ test('blogs with empty url gives 400 Bad Request', async () => {
     }        
     const response = await api
       .put(`/api/blogs/${id}`)
+      .set('Authorization', `Bearer ${token}`)
       .send(undefinedtitle)
       .expect(204)        
 

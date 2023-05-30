@@ -29,13 +29,14 @@ blogsRouter.post('/', async (request, response, next) => {
     blog.user = user.toJSON().id
     
     const saved = await blog.save()
-    console.log(saved);
+    console.log(saved)
     
     user.blogs = user.blogs.concat(saved.id)
-    console.log(user);
+    console.log(user)
     
     await user.save()
     response.status(201).json(saved)
+
   } catch(exception) {
     next(exception)
   }
@@ -62,7 +63,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
       return response.status(403).json({ error: 'user is not owner this data' })  
     }
 
-    //await Blog.findByIdAndRemove(request.params.id)
+    await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   } catch(exception) {
     next(exception)
