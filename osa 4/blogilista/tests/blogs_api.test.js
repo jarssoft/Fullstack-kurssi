@@ -104,6 +104,19 @@ test('blogs can be added', async () => {
   expect(response.body).toHaveLength(initialBlogs.length+1)
 });
 
+test('blogs cannot be added without token', async () => {
+
+  let noteObject = initialBlogs[0]
+
+  await api
+  .post('/api/blogs')
+  .send(noteObject)
+  .expect(401)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length)
+});
+
 test('likes is sets 0 as default', async () => {
 
   const undefinedlikes = {
