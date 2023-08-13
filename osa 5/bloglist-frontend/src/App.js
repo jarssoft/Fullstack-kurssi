@@ -14,11 +14,16 @@ const App = () => {
     )  
   }, [])
 
+  const handleLogin = (event) => {
+    event.preventDefault()
+    console.log('logging in with', username, password)
+  }
+  
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <div>
             username
               <input
