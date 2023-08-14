@@ -20,6 +20,15 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     //console.log('logging in with', username, password)
@@ -27,6 +36,8 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+
+      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user)) 
 
       blogService.setToken(user.token)
       setUser(user)
@@ -57,6 +68,7 @@ const App = () => {
 
   const logOut = (event) => {
     setUser(null)
+    window.localStorage.removeItem('loggedNoteappUser')
   }
   
   if (user === null) {
