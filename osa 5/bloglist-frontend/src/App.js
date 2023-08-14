@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Messages from './components/Messages'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])

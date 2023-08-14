@@ -1,16 +1,15 @@
 const Messages = ({error, notice}) => (
     
     (error &&
-    (<div>
-        {error}
-    </div>  )
+        (<div className='error'>
+            {error}
+        </div>  )
     )||(notice &&
-        (<div>
+        (<div className='note'>
             {notice}
         </div>  )
         )
 
-    
 )
 
 export default Messages
