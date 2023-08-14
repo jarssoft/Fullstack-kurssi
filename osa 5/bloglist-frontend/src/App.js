@@ -54,6 +54,10 @@ const App = () => {
     blogService.create(blogObject)
     setBlogs(blogs.concat(blogObject))    
   }
+
+  const logOut = (event) => {
+    setUser(null)
+  }
   
   if (user === null) {
     return (
@@ -88,7 +92,9 @@ const App = () => {
     <div>
 
       <p>{user.name} logged in</p>
-
+      <button onClick={logOut}>
+        Log out
+      </button>
 
       <h2>create new</h2>
       
