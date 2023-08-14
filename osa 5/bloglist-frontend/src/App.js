@@ -87,6 +87,9 @@ const App = () => {
   return (
     <div>
 
+      <p>{user.name} logged in</p>
+
+
       <h2>create new</h2>
       
       <form onSubmit={addBlog}>
