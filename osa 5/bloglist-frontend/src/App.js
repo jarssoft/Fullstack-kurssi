@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Messages from './components/Messages'
+import AddBlog from './components/AddBlog'
+import Togglable from './components/Toggable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
@@ -120,30 +122,16 @@ const App = () => {
 
       <h2>create new</h2>
       
-      <form onSubmit={addBlog}>
-        <div>
-        title:
-        <input
-          value={BlogName}
-          onChange={({ target }) => setBlogName(target.value)}
-        />
-        </div>
-        <div>
-        author:
-        <input
-          value={BlogAuthor}
-          onChange={({ target }) => setBlogAuthor(target.value)}
-        />
-        </div>
-        <div>
-        url:
-        <input
-          value={BlogURL}
-          onChange={({ target }) => setBlogURL(target.value)}
-        />
-        </div>
-        <button type="submit">save</button>
-      </form>  
+      <Togglable buttonLabel='Add a blog...'>
+        <AddBlog 
+          addBlog={addBlog} 
+          BlogAuthor={BlogAuthor}
+          BlogName={BlogName}
+          BlogURL={BlogURL}
+          setBlogAuthor={setBlogAuthor}
+          setBlogName={setBlogName}
+          setBlogURL={setBlogURL}></AddBlog>
+      </Togglable>
 
       <h2>blogs</h2>
 
