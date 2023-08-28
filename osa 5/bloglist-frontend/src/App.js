@@ -16,9 +16,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [noticeMessage, setNoticeMessage] = useState(null)
   
-  const [BlogName, setBlogName] = useState('')
-  const [BlogURL, setBlogURL] = useState('')
-  const [BlogAuthor, setBlogAuthor] = useState('')
 
   const noteFormRef = useRef()
 
@@ -57,21 +54,10 @@ const App = () => {
     }
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    const blogObject = 
-    {
-      title: BlogName,
-      author: BlogAuthor,
-      url: BlogURL,
-      likes: 0,
-      user: user
-    }
+  const createBlog = (blogObject) => {
   
-    setBlogName('')
-    setBlogAuthor('')
-    setBlogURL('')    
-    setNoticeMessage(`A new blog ${BlogName} by ${BlogAuthor} added.`)
+    blogObject.user=user
+    setNoticeMessage(`A new blog ${blogObject.name} by ${blogObject.BlogAuthor} added.`)
     setTimeout(() => {setNoticeMessage(null)}, 5000)
     
     noteFormRef.current.toggleVisibility()
@@ -128,13 +114,7 @@ const App = () => {
       
       <Togglable buttonLabel='Add a blog...' ref={noteFormRef}>
         <AddBlog 
-          addBlog={addBlog} 
-          BlogAuthor={BlogAuthor}
-          BlogName={BlogName}
-          BlogURL={BlogURL}
-          setBlogAuthor={setBlogAuthor}
-          setBlogName={setBlogName}
-          setBlogURL={setBlogURL}></AddBlog>
+          createBlog={createBlog} ></AddBlog>
       </Togglable>
 
       <h2>blogs</h2>
