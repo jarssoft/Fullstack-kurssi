@@ -1,6 +1,6 @@
 //import { useState } from 'react'
 
-const Blog = ({blog, toggleview}) => {
+const Blog = ({blog, toggleview, like}) => {
 
   //const [view, setView] = useState(false)
 
@@ -17,7 +17,8 @@ const Blog = ({blog, toggleview}) => {
     ? <>
         <button onClick={() => toggleview(blog.id)}>Piilota</button>
         <div><a href={blog.url}>{blog.url}</a></div>
-        <div>{blog.user.name}</div>        
+        <div>likes {blog.likes} <button onClick={() => like(blog.id)}>Like</button></div>
+        <div>{blog.user.name}</div>
       </> 
     : <button onClick={() => toggleview(blog.id)}>Näytä</button>)
   )

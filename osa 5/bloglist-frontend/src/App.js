@@ -66,8 +66,20 @@ const App = () => {
   const toggleview = (id) => {
     let copyofblogs = blogs.map(blog => {
       if(blog.id === id){
-        console.log(blog.title)
+        console.log(`toggle view ${blog.title}`)
         blog.view ? blog.view=false : blog.view=true
+      }
+      return blog
+    })    
+    setBlogs(copyofblogs)
+  }
+
+  const like = (id) => {
+    let copyofblogs = blogs.map(blog => {
+      if(blog.id === id){
+        console.log(`like ${blog.title}`)
+        blog.likes += 1
+        blogService.put(blog)
       }
       return blog
     })
@@ -128,7 +140,7 @@ const App = () => {
       <h2>blogs</h2>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} toggleview={toggleview}/>
+        <Blog key={blog.id} blog={blog} toggleview={toggleview} like={like} />
       )}
 
     </div>
