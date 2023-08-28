@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Messages from './components/Messages'
 import AddBlog from './components/AddBlog'
@@ -19,6 +19,8 @@ const App = () => {
   const [BlogName, setBlogName] = useState('')
   const [BlogURL, setBlogURL] = useState('')
   const [BlogAuthor, setBlogAuthor] = useState('')
+
+  const noteFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -71,6 +73,8 @@ const App = () => {
     setBlogURL('')    
     setNoticeMessage(`A new blog ${BlogName} by ${BlogAuthor} added.`)
     setTimeout(() => {setNoticeMessage(null)}, 5000)
+    
+    noteFormRef.current.toggleVisibility()
     blogService.create(blogObject)
     setBlogs(blogs.concat(blogObject))    
   }
@@ -122,7 +126,7 @@ const App = () => {
 
       <h2>create new</h2>
       
-      <Togglable buttonLabel='Add a blog...'>
+      <Togglable buttonLabel='Add a blog...' ref={noteFormRef}>
         <AddBlog 
           addBlog={addBlog} 
           BlogAuthor={BlogAuthor}
