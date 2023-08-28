@@ -12,10 +12,8 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
-
   const [errorMessage, setErrorMessage] = useState(null)
   const [noticeMessage, setNoticeMessage] = useState(null)
-  
 
   const noteFormRef = useRef()
 
@@ -63,6 +61,17 @@ const App = () => {
     noteFormRef.current.toggleVisibility()
     blogService.create(blogObject)
     setBlogs(blogs.concat(blogObject))    
+  }
+
+  const toggleview = (id) => {
+    let copyofblogs = blogs.map(blog => {
+      if(blog.id === id){
+        console.log(blog.title)
+        blog.view ? blog.view=false : blog.view=true
+      }
+      return blog
+    })
+    setBlogs(copyofblogs)
   }
 
   const logOut = (event) => {
@@ -113,14 +122,13 @@ const App = () => {
       <h2>create new</h2>
       
       <Togglable buttonLabel='Add a blog...' ref={noteFormRef}>
-        <AddBlog 
-          createBlog={createBlog} ></AddBlog>
+        <AddBlog createBlog={createBlog} />
       </Togglable>
 
       <h2>blogs</h2>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} toggleview={toggleview}/>
       )}
 
     </div>

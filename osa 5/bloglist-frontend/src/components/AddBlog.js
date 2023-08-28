@@ -3,8 +3,8 @@ import { useState } from 'react'
 const AddBlog = ({
     createBlog
    }) => {
-
-    const [BlogName, setBlogName] = useState('')
+const [BlogName, setBlogName] = useState('')
+    
     const [BlogURL, setBlogURL] = useState('')
     const [BlogAuthor, setBlogAuthor] = useState('')
 
@@ -15,8 +15,7 @@ const AddBlog = ({
           title: BlogName,
           author: BlogAuthor,
           url: BlogURL,
-          likes: 0,
-          //user: user
+          likes: 0
         })
       
         setBlogName('')
