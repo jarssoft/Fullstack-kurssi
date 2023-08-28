@@ -1,6 +1,6 @@
 //import { useState } from 'react'
 
-const Blog = ({blog, toggleview, like}) => {
+const Blog = ({blog, toggleview, like, remove}) => {
 
   //const [view, setView] = useState(false)
 
@@ -12,6 +12,10 @@ const Blog = ({blog, toggleview, like}) => {
     marginBottom: 5
   }
 
+  const Poistonappi = () => (
+    remove ? <button onClick={() => remove(blog.id)}>Poista</button> : <></>
+  )
+
   const Lisatieto = () => (
     (blog.view 
     ? <>
@@ -19,8 +23,9 @@ const Blog = ({blog, toggleview, like}) => {
         <div><a href={blog.url}>{blog.url}</a></div>
         <div>likes {blog.likes} <button onClick={() => like(blog.id)}>Like</button></div>
         <div>{blog.user.name}</div>
+        <Poistonappi />
       </> 
-    : <button onClick={() => toggleview(blog.id)}>Näytä</button>)
+    : <button onClick={() => toggleview(blog.id)}>Näytä</button>)    
   )
 
   return(

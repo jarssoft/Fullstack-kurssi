@@ -86,6 +86,19 @@ const App = () => {
     setBlogs(copyofblogs)
   }
 
+  const remove = (id) => {
+    let copyofblogs = blogs.filter(blog => {
+      if(blog.id === id){
+        console.log(`remove ${blog.title}`)
+        blogService.remove(blog)
+        return false
+      }else{
+        return true
+      }
+    })
+    setBlogs(copyofblogs)
+  }
+
   const logOut = (event) => {
     setUser(null)
     window.localStorage.removeItem('loggedNoteappUser')
@@ -142,7 +155,13 @@ const App = () => {
       {blogs
       .sort((a, b) => b.likes - a.likes)
       .map(blog =>
-        <Blog key={blog.id} blog={blog} toggleview={toggleview} like={like} />
+        <Blog 
+          key = {blog.id}
+          blog = {blog}
+          toggleview = {toggleview}
+          like = {like}
+          remove = {user.username === blog.user.username ? remove : null}
+          />
       )}
 
     </div>
