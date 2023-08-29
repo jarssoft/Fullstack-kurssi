@@ -100,10 +100,10 @@ const App = () => {
   }
 
   const logOut = (event) => {
-    setUser(null)
-    window.localStorage.removeItem('loggedNoteappUser')
-  }
-  
+    setUser(null);
+    window.localStorage.removeItem('loggedNoteappUser');
+  };
+
   if (user === null) {
     return (
       <div>
@@ -113,20 +113,20 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
             username
-              <input
+            <input
               type="text"
               value={username}
               name="Username"
-              onChange={({ target }) => setUsername(target.value)}
+              onChange={({target}) => setUsername(target.value)}
             />
           </div>
           <div>
             password
-              <input
+            <input
               type="password"
               value={password}
               name="Password"
-              onChange={({ target }) => setPassword(target.value)}
+              onChange={({target}) => setPassword(target.value)}
             />
           </div>
           <button type="submit">login</button>
@@ -145,7 +145,7 @@ const App = () => {
       </button>
 
       <h2>create new</h2>
-      
+
       <Togglable buttonLabel='Add a blog...' ref={noteFormRef}>
         <AddBlog createBlog={createBlog} />
       </Togglable>
@@ -153,16 +153,16 @@ const App = () => {
       <h2>blogs</h2>
 
       {blogs
-      .sort((a, b) => b.likes - a.likes)
-      .map(blog =>
-        <Blog 
-          key = {blog.id}
-          blog = {blog}
-          toggleview = {toggleview}
-          like = {like}
-          remove = {user.username === blog.user.username ? remove : null}
-          />
-      )}
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) =>
+            <Blog
+              key = {blog.id}
+              blog = {blog}
+              toggleview = {toggleview}
+              like = {like}
+              remove = {user.username === blog.user.username ? remove : null}
+            />,
+          )}
 
     </div>
   )
