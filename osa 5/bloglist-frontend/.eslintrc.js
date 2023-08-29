@@ -1,25 +1,24 @@
 module.exports = {
   'env': {
     'browser': true,
-    'es2021': true,
-    'node': true,
+    'es2021': true
   },
   'extends': [
-    'google',
-    'plugin:react/recommended',
+    'eslint:recommended',
+    'plugin:react/recommended'
   ],
   'overrides': [
     {
       'env': {
-        'node': true,
+        'node': true
       },
       'files': [
-        '.eslintrc.{js,cjs}',
+        '.eslintrc.{js,cjs}'
       ],
       'parserOptions': {
-        'sourceType': 'script',
-      },
-    },
+        'sourceType': 'script'
+      }
+    }
   ],
   'parserOptions': {
     'ecmaVersion': 'latest',
@@ -29,10 +28,26 @@ module.exports = {
     },
   },
   'plugins': [
-    'react',
+    'react'
   ],
   'rules': {
-	"react/react-in-jsx-scope": "off",
-	"react/jsx-uses-react": "off",
-  },
-};
+    'indent': [
+      'error',
+      2
+    ],
+    'linebreak-style': [
+      'error',
+      'unix'
+    ],
+    'quotes': [
+      'error',
+      'single'
+    ],
+    'semi': [
+      'error',
+      'never'
+    ],
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-uses-react': 'off',
+  }
+}

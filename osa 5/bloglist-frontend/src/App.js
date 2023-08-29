@@ -99,10 +99,10 @@ const App = () => {
     setBlogs(copyofblogs)
   }
 
-  const logOut = (event) => {
-    setUser(null);
-    window.localStorage.removeItem('loggedNoteappUser');
-  };
+  const logOut = () => {
+    setUser(null)
+    window.localStorage.removeItem('loggedNoteappUser')
+  }
 
   if (user === null) {
     return (
@@ -153,16 +153,16 @@ const App = () => {
       <h2>blogs</h2>
 
       {blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map((blog) =>
-            <Blog
-              key = {blog.id}
-              blog = {blog}
-              toggleview = {toggleview}
-              like = {like}
-              remove = {user.username === blog.user.username ? remove : null}
-            />,
-          )}
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) =>
+          <Blog
+            key = {blog.id}
+            blog = {blog}
+            toggleview = {toggleview}
+            like = {like}
+            remove = {user.username === blog.user.username ? remove : null}
+          />,
+        )}
 
     </div>
   )

@@ -23,11 +23,17 @@ const Togglable = forwardRef((props, ref) => {
         <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
-        {props.children}        <button onClick={toggleVisibility}>cancel</button>
+        {
+        // eslint-disable-next-line react/prop-types
+          props.children
+        }
+        <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   )
 })
+
+Togglable.displayName = 'Togglable'
 
 Togglable.propTypes = {
   buttonLabel: PropTypes.string.isRequired

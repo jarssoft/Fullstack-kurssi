@@ -1,9 +1,12 @@
+import PropTypes from 'prop-types'
 //import { useState } from 'react'
 
+// eslint-disable-next-line react/prop-types
 const Blog = ({blog, toggleview, like, remove}) => {
 
   //const [view, setView] = useState(false)
 
+  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -18,14 +21,14 @@ const Blog = ({blog, toggleview, like, remove}) => {
 
   const Lisatieto = () => (
     (blog.view 
-    ? <>
+      ? <>
         <button onClick={() => toggleview(blog.id)}>Piilota</button>
         <div><a href={blog.url}>{blog.url}</a></div>
         <div>likes {blog.likes} <button onClick={() => like(blog.id)}>Like</button></div>
         <div>{blog.user.name}</div>
         <Poistonappi />
       </> 
-    : <button onClick={() => toggleview(blog.id)}>Näytä</button>)    
+      : <button onClick={() => toggleview(blog.id)}>Näytä</button>)    
   )
 
   return(
@@ -35,5 +38,10 @@ const Blog = ({blog, toggleview, like, remove}) => {
   )
 
 }
+
+Blog.propTypes = {
+  blog: PropTypes.func,
+}
+
 
 export default Blog
