@@ -7,6 +7,7 @@ import Blog from './Blog'
 const blog = {
   title: 'BlogTitle',
   author: 'BlogAuthor',
+  user: {name :'Username'},
   url: 'BlogURL',
   likes: 5
 }
@@ -21,15 +22,13 @@ test('renders content', () => {
 
 test('lisätiedot näytetään, kun nappia on painettu ', async () => {
 
-  const mockHandler = jest.fn()
-
   render(
-    <Blog blog={blog} toggleview={mockHandler} />
+    <Blog blog={blog} />
   )
 
   const user = userEvent.setup()
   const button = screen.getByText('Näytä')
   await user.click(button)
 
-  expect(mockHandler.mock.calls).toHaveLength(1)
+  const element = screen.getByText('Username')
 })
