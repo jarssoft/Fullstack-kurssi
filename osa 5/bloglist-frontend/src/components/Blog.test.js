@@ -32,3 +32,23 @@ test('lisätiedot näytetään, kun nappia on painettu ', async () => {
 
   const element = screen.getByText('Username')
 })
+
+test('jos like-nappia painetaan kahdesti, komponentin tapahtumankäsittelijäfunktiota kutsutaan kaksi kertaa', async () => {
+
+  const mockHandler = jest.fn()
+
+  render(
+    <Blog blog={blog} like={mockHandler} />
+  )
+
+  const user = userEvent.setup()
+  
+  const nbutton = screen.getByText('Näytä')
+  await user.click(nbutton)
+  
+  const button = screen.getByText('Like')
+  await user.click(button)
+  await user.click(button)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})
