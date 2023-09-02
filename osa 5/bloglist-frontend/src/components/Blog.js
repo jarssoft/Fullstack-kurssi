@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
-// eslint-disable-next-line react/prop-types
 const Blog = ({blog, like, remove}) => {
 
-  const [viewable, setViewable] = useState([])
+  const [viewable, setViewable] = useState(false)
     
   const blogStyle = {
     paddingTop: 10,
@@ -18,27 +17,20 @@ const Blog = ({blog, like, remove}) => {
     remove ? <button onClick={() => remove(blog.id)}>Poista</button> : <></>
   )
 
-  const toggleview = (id) => {
-    let newviewable=[]
-    if(viewable.includes(id)){
-      newviewable = viewable.filter(item => item !== id)
-    }else{
-      newviewable=viewable.concat([id])
-    }
-    console.log(newviewable)
-    setViewable(newviewable)
+  const toggleview = () => {
+    setViewable(!viewable)
   }
 
   const Lisatieto = () => (
-    (viewable.includes(blog.id)
+    (viewable
       ? <>
-        <button onClick={() => toggleview(blog.id)}>Piilota</button>
+        <button onClick={() => toggleview()}>Piilota</button>
         <div><a href={blog.url}>{blog.url}</a></div>
         <div>likes {blog.likes} <button onClick={() => like(blog.id)}>Like</button></div>
         <div>{blog.user.name}</div>
         <Poistonappi />
       </> 
-      : <button onClick={() => toggleview(blog.id)}>Näytä</button>)    
+      : <button onClick={() => toggleview()}>Näytä</button>)    
   )
 
   return(
@@ -50,8 +42,9 @@ const Blog = ({blog, like, remove}) => {
 }
 
 Blog.propTypes = {
-  blog: PropTypes.func,
+  blog: PropTypes.object,
+  like: PropTypes.func,
+  remove: PropTypes.func,
 }
-
 
 export default Blog
