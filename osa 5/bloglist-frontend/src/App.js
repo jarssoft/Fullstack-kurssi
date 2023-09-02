@@ -63,16 +63,6 @@ const App = () => {
     setBlogs(blogs.concat(blogObject))    
   }
 
-  const toggleview = (id) => {
-    let copyofblogs = blogs.map(blog => {
-      if(blog.id === id){
-        console.log(`toggle view ${blog.title}`)
-        blog.view ? blog.view=false : blog.view=true
-      }
-      return blog
-    })    
-    setBlogs(copyofblogs)
-  }
 
   const like = (id) => {
     let copyofblogs = blogs.map(blog => {
@@ -158,7 +148,6 @@ const App = () => {
           <Blog
             key = {blog.id}
             blog = {blog}
-            toggleview = {toggleview}
             like = {like}
             remove = {user.username === blog.user.username ? remove : null}
           />,
