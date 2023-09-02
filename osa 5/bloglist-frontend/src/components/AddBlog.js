@@ -27,7 +27,8 @@ const AddBlog = ({createBlog}) => {
       <div>
         title:
         <input value={BlogName}
-          onChange={({ target }) => setBlogName(target.value)} />
+          onChange={({ target }) => setBlogName(target.value)}
+          placeholder='a new title' />
       </div>
       <div>
         author:
