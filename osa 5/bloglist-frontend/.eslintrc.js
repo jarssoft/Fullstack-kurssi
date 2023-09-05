@@ -3,6 +3,7 @@ module.exports = {
     'browser': true,
     'es2021': true,
     //'jest/globals': true
+    'cypress/globals': true
   },
   'extends': [
     'eslint:recommended',
@@ -32,7 +33,10 @@ module.exports = {
   'plugins': [
     'react'
   ],
-  'ignorePatterns': ['**/*.test.js'],
+  'ignorePatterns': [
+    '**/*.test.js', 'cypress'
+    //'cypress/*'
+  ],
   'rules': {
     'indent': [
       'error',
