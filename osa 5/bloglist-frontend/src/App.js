@@ -63,7 +63,6 @@ const App = () => {
     setBlogs(blogs.concat(blogObject))    
   }
 
-
   const like = (id) => {
     let copyofblogs = blogs.map(blog => {
       if(blog.id === id){
@@ -129,6 +128,7 @@ const App = () => {
 
   return (
     <div>
+
       <Messages error={errorMessage} notice={noticeMessage} />
 
       <p>{user.name} logged in</p>

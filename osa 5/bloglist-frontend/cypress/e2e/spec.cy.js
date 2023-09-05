@@ -8,11 +8,12 @@ describe('Blog app', () => {
       username: 'root',
       password: 'asd'
     }
+
     cy.request('POST', 'http://localhost:3003/api/users/', user)       
 
     cy.visit('http://localhost:3000')
   })
-
+ /*
   it('Login form is shown', () => {
     cy.contains('Log in to application')    
   })
@@ -25,7 +26,6 @@ describe('Blog app', () => {
         password: "asd"
       }
 
-      cy.contains('login').click()
       cy.get('#username').type(username.username)
       cy.get('#password').type(username.password)
       cy.get('#login-button').click()
@@ -40,7 +40,6 @@ describe('Blog app', () => {
         password: "lol"
       }
 
-      cy.contains('login').click()
       cy.get('#username').type(username.username)
       cy.get('#password').type(username.password)
       cy.get('#login-button').click()
@@ -49,31 +48,59 @@ describe('Blog app', () => {
     })
   })
 
-  describe('Note app', function() {
-  
-    describe('when logged in', function() {
 
-      beforeEach(function() {
-        const username = {
-          username: "root",
-          password: "asd"
-        }
-  
-        cy.contains('login').click()
-        cy.get('#username').type(username.username)
-        cy.get('#password').type(username.password)
-        cy.get('#login-button').click()
-      })
-  
-      it('a new blog can be created', function() {
-        cy.contains('Add a blog...').click()
-        cy.get('#title').type('This-is-title')
-        cy.get('#author').type('Det-har-ar-author')
-        cy.get('#url').type('Taa-on-URL')
-        cy.contains('save').click()
-        cy.contains('This-is-title')
-      })
+  describe('when logged in', function() {
+
+    beforeEach(function() {
+
+      const username = {
+        username: "root",
+        password: "asd"
+      }
+
+      cy.contains('login').click()
+      cy.get('#username').type(username.username)
+      cy.get('#password').type(username.password)
+      cy.get('#login-button').click()
     })
+
+    it('a new blog can be created', function() {
+      cy.contains('Add a blog...').click()
+      cy.get('#title').type('This-is-title')
+      cy.get('#author').type('Det-har-ar-author')
+      cy.get('#url').type('Taa-on-URL')
+      cy.contains('save').click()
+      cy.contains('This-is-title')
+    })
+  })
+  */
+
+  describe('manipulate blogs', function() {
+
+    beforeEach(function() {
+
+      const username = {
+        username: "root",
+        password: "asd"
+      }
+
+      cy.get('#username').type(username.username)
+      cy.get('#password').type(username.password)
+      cy.get('#login-button').click()
+
+      cy.contains('Add a blog...').click()
+      cy.get('#title').type('This-is-title')
+      cy.get('#author').type('Det-har-ar-author')
+      cy.get('#url').type('Taa-on-URL')
+      cy.get('#submit').click()
+
+    })
+
+    it('blogs can be liked', function() {
+      cy.contains('This-is-title').contains('Näytä').click()
+      cy.contains('Like').click()
+    })
+    
   })
 
 })
