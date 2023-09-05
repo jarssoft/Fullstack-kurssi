@@ -28,17 +28,20 @@ const AddBlog = ({createBlog}) => {
         title:
         <input value={BlogName}
           onChange={({ target }) => setBlogName(target.value)}
-          placeholder='a new title' />
+          placeholder='a new title' 
+          id='title' />          
       </div>
       <div>
         author:
         <input value={BlogAuthor}
-          onChange={({ target }) => setBlogAuthor(target.value)} />
+          onChange={({ target }) => setBlogAuthor(target.value)}  
+          id='author' />
       </div>
       <div>
         url:
         <input value={BlogURL}
-          onChange={({ target }) => setBlogURL(target.value)} />
+          onChange={({ target }) => setBlogURL(target.value)}  
+          id='url' />
       </div>
       <button type="submit">save</button>
     </form>
