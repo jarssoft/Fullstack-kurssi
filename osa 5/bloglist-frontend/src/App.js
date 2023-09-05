@@ -52,15 +52,24 @@ const App = () => {
     }
   }
 
-  const createBlog = (blogObject) => {
+  const createBlog = async (blogObject) => {
   
     blogObject.user=user
-    setNoticeMessage(`A new blog ${blogObject.name} by ${blogObject.BlogAuthor} added.`)
-    setTimeout(() => {setNoticeMessage(null)}, 5000)
+    await blogService.create(blogObject)
+
+    console.log(blogObject)
+
+    //lataa uudestaan
+    blogService.getAll().then(blogs =>{
+      console.log(blogs)
+      setBlogs(blogs)
+    }
+    ) 
     
     noteFormRef.current.toggleVisibility()
-    blogService.create(blogObject)
-    setBlogs(blogs.concat(blogObject))    
+    setNoticeMessage(`A new blog ${blogObject.name} by ${blogObject.BlogAuthor} added.`)
+    setTimeout(() => {setNoticeMessage(null)}, 5000)
+
   }
 
   const like = (id) => {
