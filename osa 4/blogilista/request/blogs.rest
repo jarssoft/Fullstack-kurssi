@@ -62,7 +62,7 @@ Authorization: Bearer UNVALIDTOKEN23090935
 }
 
 ### user jzray6
-DELETE http://localhost:3003/api/blogs/647523fe717f2b60dc1a9bc1
+DELETE http://localhost:3003/api/blogs/64ecf7b894a54c0a054b86c9
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6cmF5NiIsImlkIjoiNjQ2ZDE1ZmE5MzBlYWJjYzcwMzg0MWM3IiwiaWF0IjoxNjg1MzkwNTQ5fQ.359bBLN97U7laRGHH_jKiWjKWtrmsvY6d3y_j9IKyuE
 
