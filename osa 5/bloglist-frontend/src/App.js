@@ -15,7 +15,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [noticeMessage, setNoticeMessage] = useState(null)
 
-  const noteFormRef = useRef()
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -53,21 +53,23 @@ const App = () => {
   }
 
   const createBlog = async (blogObject) => {
-  
+
+    blogFormRef.current.toggleVisibility()
+
     blogObject.user=user
     await blogService.create(blogObject)
 
     console.log(blogObject)
 
+    setNoticeMessage(`A new blog ${blogObject.title} by ${blogObject.author} added.`)
+    setTimeout(() => {setNoticeMessage(null)}, 5000)
+
+
     //lataa uudestaan
     const blogs = await blogService.getAll()
     console.log(blogs)
     setBlogs(blogs)
-    
-    noteFormRef.current.toggleVisibility()
-    setNoticeMessage(`A new blog ${blogObject.name} by ${blogObject.BlogAuthor} added.`)
-    setTimeout(() => {setNoticeMessage(null)}, 5000)
-
+  
   }
 
   const like = (id) => {
@@ -145,7 +147,7 @@ const App = () => {
 
       <h2>create new</h2>
 
-      <Togglable buttonLabel='Add a blog...' ref={noteFormRef}>
+      <Togglable buttonLabel='Add a blog...' ref={blogFormRef}>
         <AddBlog createBlog={createBlog} />
       </Togglable>
 

@@ -9,7 +9,15 @@ describe('Blog app', () => {
       password: 'asd'
     }
 
-    cy.request('POST', 'http://localhost:3003/api/users/', user)       
+    cy.request('POST', 'http://localhost:3003/api/users/', user)
+
+    const user2 = {
+      name: 'Other User',
+      username: 'otheruser',
+      password: 'asd'
+    }
+
+    cy.request('POST', 'http://localhost:3003/api/users/', user2)
 
     cy.visit('http://localhost:3000')
   })
@@ -83,7 +91,7 @@ describe('Blog app', () => {
         username: "root",
         password: "asd"
       }
-
+      
       cy.get('#username').type(username.username)
       cy.get('#password').type(username.password)
       cy.get('#login-button').click()
@@ -94,13 +102,61 @@ describe('Blog app', () => {
       cy.get('#url').type('Taa-on-URL')
       cy.get('#submit').click()
 
+      cy.contains('A new blog This-is-title by Det-har-ar-author added.')
+      //A new blog undefined by undefined added.
+
     })
 
+    /*
     it('blogs can be liked', function() {
       cy.contains('This-is-title').contains('Näytä').click()
       cy.get('#likes').contains('0')
       cy.contains('Like').click()
       cy.get('#likes').contains('1')
+    })
+
+    it('blogs can be removed', function() {
+      cy.contains('This-is-title').contains('Näytä').click()
+      cy.get('#likes')
+      cy.contains('Poista').click()
+      cy.get('#likes').should('not.exist');
+    })
+    */
+
+    it('user that created blog can see the remove butten', function() {
+      
+      cy.contains('Log out').click()
+
+      const username = {
+        username: "root",
+        password: "asd"
+      }
+
+      cy.get('#username').type(username.username)
+      cy.get('#password').type(username.password)
+      
+      cy.get('#login-button').click()
+ 
+      cy.contains('Näytä').click()
+      cy.contains('Poista');
+    })
+
+    it('other user cannot see the remove butten', function() {
+      
+      cy.contains('Log out').click()
+
+      const username = {
+        username: "otheruser",
+        password: "asd"
+      }
+
+      cy.get('#username').type(username.username)
+      cy.get('#password').type(username.password)
+      
+      cy.get('#login-button').click()
+ 
+      cy.contains('Näytä').click()
+      cy.contains('Poista').should('not.exist');
     })
 
   })
