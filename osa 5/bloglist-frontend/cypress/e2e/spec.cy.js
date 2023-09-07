@@ -21,7 +21,7 @@ describe('Blog app', () => {
 
     cy.visit('http://localhost:3000')
   })
- /*
+
   it('Login form is shown', () => {
     cy.contains('Log in to application')    
   })
@@ -81,7 +81,6 @@ describe('Blog app', () => {
       cy.contains('This-is-title')
     })
   })
-  */
 
   describe('manipulate blogs', function() {
 
@@ -103,25 +102,24 @@ describe('Blog app', () => {
       cy.get('#submit').click()
 
       cy.contains('A new blog This-is-title by Det-har-ar-author added.')
-      //A new blog undefined by undefined added.
 
     })
 
-    /*
+    
     it('blogs can be liked', function() {
-      cy.contains('This-is-title').contains('Näytä').click()
+      cy.contains('Näytä').click()
       cy.get('#likes').contains('0')
       cy.contains('Like').click()
       cy.get('#likes').contains('1')
     })
 
     it('blogs can be removed', function() {
-      cy.contains('This-is-title').contains('Näytä').click()
+      cy.contains('Näytä').click()
       cy.get('#likes')
       cy.contains('Poista').click()
       cy.get('#likes').should('not.exist');
     })
-    */
+    
 
     it('user that created blog can see the remove butten', function() {
       
