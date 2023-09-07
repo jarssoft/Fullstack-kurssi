@@ -98,9 +98,11 @@ describe('Blog app', () => {
 
     it('blogs can be liked', function() {
       cy.contains('This-is-title').contains('Näytä').click()
+      cy.get('#likes').contains('0')
       cy.contains('Like').click()
+      cy.get('#likes').contains('1')
     })
-    
+
   })
 
 })

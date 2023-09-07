@@ -60,11 +60,9 @@ const App = () => {
     console.log(blogObject)
 
     //lataa uudestaan
-    blogService.getAll().then(blogs =>{
-      console.log(blogs)
-      setBlogs(blogs)
-    }
-    ) 
+    const blogs = await blogService.getAll()
+    console.log(blogs)
+    setBlogs(blogs)
     
     noteFormRef.current.toggleVisibility()
     setNoticeMessage(`A new blog ${blogObject.name} by ${blogObject.BlogAuthor} added.`)

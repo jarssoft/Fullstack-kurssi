@@ -26,7 +26,7 @@ const Blog = ({blog, like, remove}) => {
       ? <>
         <button onClick={() => toggleview()}>Piilota</button>
         <div><a href={blog.url}>{blog.url}</a></div>
-        <div>likes {blog.likes} <button onClick={() => like(blog.id)}>Like</button></div>
+        <div>likes <b id="likes">{blog.likes}</b> <button onClick={() => like(blog.id)}>Like</button></div>
         <div>{blog.user.name}</div>
         <Poistonappi />
       </> 
