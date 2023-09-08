@@ -1,41 +1,36 @@
 describe('Blog app', () => {
 
+  const rootuser = {
+    name: 'Yllapitäjä',
+    username: 'root',
+    password: 'asd'
+  }
+
+  const otheruser = {
+    name: 'Other User',
+    username: 'otheruser',
+    password: 'asd'
+  }
+
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/tests/reset')
 
-    const user = {
-      name: 'Yllapitäjä',
-      username: 'root',
-      password: 'asd'
-    }
-
-    cy.request('POST', 'http://localhost:3003/api/users/', user)
-
-    const user2 = {
-      name: 'Other User',
-      username: 'otheruser',
-      password: 'asd'
-    }
-
-    cy.request('POST', 'http://localhost:3003/api/users/', user2)
-
+    cy.request('POST', 'http://localhost:3003/api/users/', rootuser)
+    cy.request('POST', 'http://localhost:3003/api/users/', otheruser)
+ 
     cy.visit('http://localhost:3000')
   })
 
-  it('Login form is shown', () => {
-    cy.contains('Log in to application')    
-  })
-
   describe('Login',function() {
+      
+    it('Login form is shown', () => {
+      cy.contains('Log in to application')    
+    })
+
     it('succeeds with correct credentials', function() {
 
-      const username = {
-        username: "root",
-        password: "asd"
-      }
-
-      cy.get('#username').type(username.username)
-      cy.get('#password').type(username.password)
+      cy.get('#username').type(rootuser.username)
+      cy.get('#password').type(rootuser.password)
       cy.get('#login-button').click()
 
       cy.contains('logged in')
@@ -43,36 +38,24 @@ describe('Blog app', () => {
 
     it('fails with wrong credentials', function() {
 
-      const username = {
+      const fakeuser = {
         username: "hakkeri",
         password: "lol"
       }
 
-      cy.get('#username').type(username.username)
-      cy.get('#password').type(username.password)
+      cy.get('#username').type(fakeuser.username)
+      cy.get('#password').type(fakeuser.password)
       cy.get('#login-button').click()
 
       cy.contains('wrong credentials')
     })
-  })
-
-
-  describe('when logged in', function() {
-
-    beforeEach(function() {
-
-      const username = {
-        username: "root",
-        password: "asd"
-      }
-
-      cy.contains('login').click()
-      cy.get('#username').type(username.username)
-      cy.get('#password').type(username.password)
-      cy.get('#login-button').click()
-    })
 
     it('a new blog can be created', function() {
+
+      cy.get('#username').type(rootuser.username)
+      cy.get('#password').type(rootuser.password)
+      cy.get('#login-button').click()
+
       cy.contains('Add a blog...').click()
       cy.get('#title').type('This-is-title')
       cy.get('#author').type('Det-har-ar-author')
@@ -80,19 +63,15 @@ describe('Blog app', () => {
       cy.contains('save').click()
       cy.contains('This-is-title')
     })
+
   })
 
   describe('manipulate blogs', function() {
 
     beforeEach(function() {
-
-      const username = {
-        username: "root",
-        password: "asd"
-      }
-      
-      cy.get('#username').type(username.username)
-      cy.get('#password').type(username.password)
+     
+      cy.get('#username').type(rootuser.username)
+      cy.get('#password').type(rootuser.password)
       cy.get('#login-button').click()
 
       cy.contains('Add a blog...').click()
@@ -104,7 +83,6 @@ describe('Blog app', () => {
       cy.contains('A new blog This-is-title by Det-har-ar-author added.')
 
     })
-
     
     it('blogs can be liked', function() {
       cy.contains('Näytä').click()
@@ -118,20 +96,14 @@ describe('Blog app', () => {
       cy.get('#likes')
       cy.contains('Poista').click()
       cy.get('#likes').should('not.exist');
-    })
-    
+    })   
 
-    it('user that created blog can see the remove butten', function() {
+    it('user that created blog can see the remove button', function() {
       
       cy.contains('Log out').click()
 
-      const username = {
-        username: "root",
-        password: "asd"
-      }
-
-      cy.get('#username').type(username.username)
-      cy.get('#password').type(username.password)
+      cy.get('#username').type(rootuser.username)
+      cy.get('#password').type(rootuser.password)
       
       cy.get('#login-button').click()
  
@@ -139,22 +111,29 @@ describe('Blog app', () => {
       cy.contains('Poista');
     })
 
-    it('other user cannot see the remove butten', function() {
+    it('other user cannot see the remove button', function() {
       
       cy.contains('Log out').click()
 
-      const username = {
-        username: "otheruser",
-        password: "asd"
-      }
-
-      cy.get('#username').type(username.username)
-      cy.get('#password').type(username.password)
+      cy.get('#username').type(otheruser.username)
+      cy.get('#password').type(otheruser.password)
       
       cy.get('#login-button').click()
  
       cy.contains('Näytä').click()
       cy.contains('Poista').should('not.exist');
+    })
+
+    it('blogs are in right order after like', function() {
+
+      cy.contains('Add a blog...').click()
+      cy.get('#title').type('This-is-an-other-blog')
+      cy.get('#author').type('Det-har-ar-olika-author')
+      cy.get('#url').type('Taa-on-uusi-URL')
+      cy.get('#submit').click()
+  
+      cy.contains('A new blog This-is-an-other-blog by Det-har-ar-olika-author added.')
+  
     })
 
   })
