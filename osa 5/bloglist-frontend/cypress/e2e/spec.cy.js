@@ -83,7 +83,7 @@ describe('Blog app', () => {
       cy.contains('A new blog This-is-title by Det-har-ar-author added.')
 
     })
-    
+
     it('blogs can be liked', function() {
       cy.contains('Näytä').click()
       cy.get('#likes').contains('0')
@@ -134,6 +134,20 @@ describe('Blog app', () => {
   
       cy.contains('A new blog This-is-an-other-blog by Det-har-ar-olika-author added.')
   
+      cy.contains('This-is-an-other-blog').contains('Näytä').click()
+      cy.contains('This-is-title').contains('Näytä').click()
+
+      cy.get('#likes').eq(0).contains('0')
+      
+      cy.contains('This-is-an-other-blog').contains('Like').click()
+      
+      cy.get('#likes').eq(0).contains('1')
+
+      cy.contains('This-is-title').contains('Like').click()
+      cy.contains('This-is-title').contains('Like').click()
+
+      cy.get('#likes').eq(0).contains('2')
+
     })
 
   })
