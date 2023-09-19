@@ -25,8 +25,20 @@ const reducer = (state = initialState, action) => {
   
   switch (action.type) {
     case 'VOTE':
-      console.log('voting ', action.payload.id)
-      return state
+      const id = action.payload.id
+
+      console.log('voting ', id)
+
+      const anecoteToChange = state.find(n => n.id === id)
+
+      const changedAnecote = { 
+        ...anecoteToChange, 
+        votes: anecoteToChange.votes += 1
+      }
+
+      return state.map(anecote =>
+        anecote.id !== id ? anecote : changedAnecote 
+      )
     default: // jos ei mikään ylläolevista tullaan tänne
     return state
   }
