@@ -39,6 +39,10 @@ const reducer = (state = initialState, action) => {
       return state.map(anecote =>
         anecote.id !== id ? anecote : changedAnecote 
       )
+    case 'NEW_ANECDOTE':
+      console.log('adding')
+      return state.concat(action.payload)      
+
     default: // jos ei mikään ylläolevista tullaan tänne
     return state
   }
