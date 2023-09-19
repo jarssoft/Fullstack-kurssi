@@ -45,4 +45,13 @@ const reducer = (state = initialState, action) => {
  
 }
 
+export const makeVote = (id) => { return {
+  type: 'VOTE',
+  payload: {
+    id: id
+  }
+}
+}
+
+
 export default reducer
