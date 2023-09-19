@@ -20,10 +20,17 @@ const asObject = (anecdote) => {
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
 
-  return state
+  console.log('state now: ', state)
+  
+  switch (action.type) {
+    case 'VOTE':
+      console.log('voting ', action.payload.id)
+      return state
+    default: // jos ei mikään ylläolevista tullaan tänne
+    return state
+  }
+ 
 }
 
 export default reducer
