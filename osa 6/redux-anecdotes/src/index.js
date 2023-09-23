@@ -5,13 +5,6 @@ import { Provider } from 'react-redux'
 import App from './App'
 import store from './store'
 
-/*const reducer = combineReducers({
-  notes: anecdoteReducer,
-  filter: filterReducer
-  })
-
-const store = createStore(reducer)
-*/
 console.log(store.getState())
 
 store.subscribe(() => console.log(store.getState()))
