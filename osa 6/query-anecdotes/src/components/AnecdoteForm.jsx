@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { useContext } from 'react'
+import NotificationContext from '../NotificationContext'
 
 const AnecdoteForm = () => {
+
+  const [notification, dispatch] = useContext(NotificationContext)
 
   const createNote = newNote => {
     console.log(`newNote ${newNote}`)
@@ -27,6 +31,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newNoteMutation.mutate({ content, votes: 0 })
+    dispatch({ type: "PUT", payload: `Anekdootti "${content}" lisättiin.` })
     //console.log(`new anecdote ${content}`)
   }
 
