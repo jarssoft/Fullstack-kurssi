@@ -1,24 +1,33 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
 const AnecdoteForm = () => {
 
   const createNote = newNote => {
     console.log(`newNote ${newNote}`)
-    axios
+    return axios
     .post('http://localhost:3001/anecdotes', newNote)
     .then(res => res.data)
   }
-  
-  const newNoteMutation = useMutation({ mutationFn: createNote })
 
+  const queryClient = useQueryClient()
+
+  const newNoteMutation = useMutation({
+    mutationFn: createNote, 
+    onSuccess: (newNote) => {      
+      console.log(`new anecdote: ${newNote}`)
+      console.log(`invalidoi`)
+      //queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+      queryClient.invalidateQueries('anecdotes')
+    },
+  })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newNoteMutation.mutate({ content, votes: 0 })
-    console.log(`new anecdote ${content}`)
+    //console.log(`new anecdote ${content}`)
   }
 
   return (
