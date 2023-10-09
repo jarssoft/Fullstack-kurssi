@@ -18,6 +18,10 @@ const Notification = () => {
     return null
   }
 
+  setTimeout(() => {
+    dispatch({type:"CLEAR"})
+  }, 5000)
+
   return (
     <div style={style}>
       {notification}
