@@ -21,18 +21,22 @@ const AnecdoteForm = () => {
     onSuccess: (newNote) => {      
       console.log(`new anecdote: ${newNote}`)
       console.log(`invalidoi`)
-      //queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
       queryClient.invalidateQueries('anecdotes')
+      dispatch({ type: "PUT", payload: `Anekdootti "${newNote.content}" lisättiin.` })
     },
+    onError: (error) => {
+      console.log("error");
+      console.log(error.response.data.error);
+      dispatch({ type: "PUT", payload: error.response.data.error })
+      console.log("/error");
+    }
   })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newNoteMutation.mutate({ content, votes: 0 })
-    dispatch({ type: "PUT", payload: `Anekdootti "${content}" lisättiin.` })
-    //console.log(`new anecdote ${content}`)
+    newNoteMutation.mutate({ content, votes: 0 })    
   }
 
   return (
