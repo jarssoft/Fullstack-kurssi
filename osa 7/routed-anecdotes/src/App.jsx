@@ -3,6 +3,9 @@ import {
   BrowserRouter as Router,
   Routes, Route, Link
 } from 'react-router-dom'
+import {useParams} from 'react-router-dom'
+
+
 const Menu = () => {
   const padding = {
     paddingRight: 5
@@ -10,7 +13,7 @@ const Menu = () => {
   return (
     <>
     <div>
-        <Link style={padding} to="/">home</Link>        
+        <Link style={padding} to="/">anecdotes</Link>                
         <Link style={padding} to="/create">create</Link>
         <Link style={padding} to="/about">about</Link>
     </div>
@@ -24,10 +27,27 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote =>
+         <li key={anecdote.id} >
+          <Link to={`/anecdote/${anecdote.id}`}>{anecdote.content}
+            {anecdote.content}
+          </Link>
+         </li>)}
     </ul>
   </div>
 )
+
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(n => n.id === Number(id))
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>{anecdote.author}</div>
+      <div>{anecdote.info}</div>
+    </div>
+  )
+}
 
 const About = () => (
   <div>
@@ -45,6 +65,7 @@ const About = () => (
 
 const Footer = () => (
   <div>
+    <hr/>
     Anecdote app for <a href='https://fullstackopen.com/'>Full Stack Open</a>.
 
     See <a href='https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js</a> for the source code.
@@ -135,13 +156,14 @@ const App = () => {
       <Menu />
 
       <Routes>
-          <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+          <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />          
+          <Route path="/anecdote/:id" element={<Anecdote anecdotes={anecdotes} />} />
           <Route path="/about" element={<About />} />
           <Route path="/create" element={<CreateNew  addNew={addNew} />} />
       </Routes>
 
       <Footer />
-      
+
     </Router>
   )
 }
