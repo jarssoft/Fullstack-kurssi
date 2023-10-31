@@ -78,9 +78,6 @@ const Message = (props) => (
 )
 
 const CreateNew = (props) => {
-  //const [content, setContent] = useState('')
-  //const [author, setAuthor] = useState('')
-  //const [info, setInfo] = useState('')
 
   const content = useField('text')
   const author = useField('text')
@@ -88,6 +85,11 @@ const CreateNew = (props) => {
 
   const navigate = useNavigate()
 
+  const zeroValue={
+      target : {
+        value : ""
+      }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -99,6 +101,12 @@ const CreateNew = (props) => {
     })
     navigate('/')
     props.message("Anecdote added succesfully!")
+  }
+
+  const clearForm = () => {
+    content.onChange(zeroValue)
+    author.onChange(zeroValue)
+    info.onChange(zeroValue)
   }
 
   return (
@@ -118,6 +126,7 @@ const CreateNew = (props) => {
           <input  {...info} /> 
         </div>
         <button>create</button>
+        <button type="button" onClick={clearForm}>reset</button>
       </form>
     </div>
   )
