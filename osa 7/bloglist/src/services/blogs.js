@@ -45,4 +45,5 @@ const remove = async (newObject) => {
    return response.data
 }
 
-export default { getAll, create, setToken, put, remove }
+const exportedObject = { getAll, create, setToken, put, remove }
+export default exportedObject
