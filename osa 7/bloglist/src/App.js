@@ -5,10 +5,11 @@ import AddBlog from "./components/AddBlog"
 import Togglable from "./components/Toggable"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
 import "./index.css"
 
 const App = () => {
-   const [blogs, setBlogs] = useState([])
    const [user, setUser] = useState(null)
    const [username, setUsername] = useState("")
    const [password, setPassword] = useState("")
@@ -18,10 +19,6 @@ const App = () => {
    const blogFormRef = useRef()
 
    useEffect(() => {
-      blogService.getAll().then((blogs) => setBlogs(blogs))
-   }, [])
-
-   useEffect(() => {
       const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
       if (loggedUserJSON) {
          const user = JSON.parse(loggedUserJSON)
@@ -29,6 +26,21 @@ const App = () => {
          blogService.setToken(user.token)
       }
    }, [])
+
+   let blogs = []
+   {
+      const result = useQuery({
+         queryKey: ["blogs"],
+         queryFn: () => axios.get("/api/blogs").then((res) => res.data),
+      })
+      console.log(JSON.parse(JSON.stringify(result)))
+
+      if (result.isLoading) {
+         return <div>loading data...</div>
+      }
+
+      blogs = result.data
+   }
 
    const handleLogin = async (event) => {
       event.preventDefault()
@@ -71,7 +83,7 @@ const App = () => {
       //lataa uudestaan
       const blogs = await blogService.getAll()
       console.log(blogs)
-      setBlogs(blogs)
+      //setBlogs(blogs)
    }
 
    const like = (id) => {
@@ -83,7 +95,7 @@ const App = () => {
          }
          return blog
       })
-      setBlogs(copyofblogs)
+      //setBlogs(copyofblogs)
    }
 
    const remove = (id) => {
@@ -96,7 +108,7 @@ const App = () => {
             return true
          }
       })
-      setBlogs(copyofblogs)
+      //setBlogs(copyofblogs)
    }
 
    const logOut = () => {
