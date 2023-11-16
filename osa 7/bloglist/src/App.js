@@ -27,19 +27,13 @@ const App = () => {
       }
    }, [])
 
-   let blogs = []
-   {
-      const result = useQuery({
-         queryKey: ["blogs"],
-         queryFn: () => axios.get("/api/blogs").then((res) => res.data),
-      })
-      console.log(JSON.parse(JSON.stringify(result)))
+   let blogs = useQuery({
+      queryKey: ["blogs"],
+      queryFn: blogService.getAll,
+   }).data
 
-      if (result.isLoading) {
-         return <div>loading data...</div>
-      }
-
-      blogs = result.data
+   if (blogs == null) {
+      return <div>loading data...</div>
    }
 
    const handleLogin = async (event) => {
