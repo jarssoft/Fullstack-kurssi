@@ -34,6 +34,20 @@ const App = ({ client }) => {
       },
    })
 
+   const updateNoteMutation = useMutation({
+      mutationFn: blogService.put,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["blogs"] })
+      },
+   })
+
+   const removeNoteMutation = useMutation({
+      mutationFn: blogService.remove,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["blogs"] })
+      },
+   })
+
    const { data, refetch } = useQuery({
       queryKey: ["blogs"],
       queryFn: blogService.getAll,
@@ -72,7 +86,6 @@ const App = ({ client }) => {
       blogObject.user = user
 
       //await blogService.create(blogObject)
-
       newNoteMutation.mutate({ ...blogObject, likes: 0 })
 
       console.log(blogObject)
@@ -94,8 +107,9 @@ const App = ({ client }) => {
       const newblogs = data.map((blog) => {
          if (blog.id === id) {
             console.log(`like ${blog.title}`)
-            blog.likes += 1
-            blogService.put(blog)
+            //blog.likes += 1
+            //blogService.put(blog)
+            updateNoteMutation.mutate({ ...blog, likes: blog.likes + 1 })
          }
          return blog
       })
@@ -106,7 +120,8 @@ const App = ({ client }) => {
       const newblogs = data.filter((blog) => {
          if (blog.id === id) {
             console.log(`remove ${blog.title}`)
-            blogService.remove(blog)
+            //blogService.remove(blog)
+            removeNoteMutation.mutate(blog)
             console.log(`removed ${blog.title}`)
             return false
          } else {
