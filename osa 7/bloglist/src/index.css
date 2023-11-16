@@ -1,0 +1,11 @@
+.note {
+    color: grey;
+    padding-top: 5px;
+    font-size: 15px;
+  }
+
+  .error {
+    color: red;
+    padding-top: 5px;
+    font-size: 15px;
+  }
