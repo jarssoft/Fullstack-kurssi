@@ -5,11 +5,10 @@ import AddBlog from "./components/AddBlog"
 import Togglable from "./components/Toggable"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
-import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
 
-const App = () => {
+const App = ({ client }) => {
    const [user, setUser] = useState(null)
    const [username, setUsername] = useState("")
    const [password, setPassword] = useState("")
@@ -17,6 +16,7 @@ const App = () => {
    const [noticeMessage, setNoticeMessage] = useState(null)
 
    const blogFormRef = useRef()
+   const queryClient = useQueryClient()
 
    useEffect(() => {
       const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
@@ -27,12 +27,19 @@ const App = () => {
       }
    }, [])
 
-   let blogs = useQuery({
+   const newNoteMutation = useMutation({
+      mutationFn: blogService.create,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["blogs"] })
+      },
+   })
+
+   const { data, refetch } = useQuery({
       queryKey: ["blogs"],
       queryFn: blogService.getAll,
-   }).data
+   })
 
-   if (blogs == null) {
+   if (data == null) {
       return <div>loading data...</div>
    }
 
@@ -63,7 +70,10 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
 
       blogObject.user = user
-      await blogService.create(blogObject)
+
+      //await blogService.create(blogObject)
+
+      newNoteMutation.mutate({ ...blogObject, likes: 0 })
 
       console.log(blogObject)
 
@@ -75,13 +85,13 @@ const App = () => {
       }, 5000)
 
       //lataa uudestaan
-      const blogs = await blogService.getAll()
-      console.log(blogs)
+      //blogs = await blogService.getAll()
+      //console.log(blogs)
       //setBlogs(blogs)
    }
 
    const like = (id) => {
-      let copyofblogs = blogs.map((blog) => {
+      const newblogs = data.map((blog) => {
          if (blog.id === id) {
             console.log(`like ${blog.title}`)
             blog.likes += 1
@@ -89,20 +99,22 @@ const App = () => {
          }
          return blog
       })
-      //setBlogs(copyofblogs)
+      refetch()
    }
 
-   const remove = (id) => {
-      let copyofblogs = blogs.filter((blog) => {
+   const remove = async (id) => {
+      const newblogs = data.filter((blog) => {
          if (blog.id === id) {
             console.log(`remove ${blog.title}`)
             blogService.remove(blog)
+            console.log(`removed ${blog.title}`)
             return false
          } else {
             return true
          }
       })
-      //setBlogs(copyofblogs)
+      client.setQueryData("blogs", newblogs)
+      refetch()
    }
 
    const logOut = () => {
@@ -160,7 +172,7 @@ const App = () => {
 
          <h2>blogs</h2>
 
-         {blogs
+         {data
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
                <Blog
