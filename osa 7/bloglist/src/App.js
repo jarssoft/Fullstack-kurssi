@@ -59,10 +59,6 @@ const App = ({ client }) => {
    const loginDispatch = useLoginDispatch()
    const user = useLoginValue()
 
-   if (data == null) {
-      return <div>loading data...</div>
-   }
-
    const handleLogin = async (event) => {
       event.preventDefault()
       //console.log('logging in with', username, password)
@@ -144,66 +140,69 @@ const App = ({ client }) => {
       window.localStorage.removeItem("loggedNoteappUser")
    }
 
-   if (user === null) {
-      return (
-         <div>
-            <Messages />
-
-            <h2>Log in to application</h2>
-            <form onSubmit={handleLogin}>
-               <div>
-                  username
-                  <input
-                     type="text"
-                     value={username}
-                     name="Username"
-                     id="username"
-                     onChange={({ target }) => setUsername(target.value)}
-                  />
-               </div>
-               <div>
-                  password
-                  <input
-                     type="password"
-                     value={password}
-                     name="Password"
-                     id="password"
-                     onChange={({ target }) => setPassword(target.value)}
-                  />
-               </div>
-               <button type="submit" id="login-button">
-                  login
-               </button>
-            </form>
-         </div>
-      )
+   if (data == null) {
+      return <div>loading data...</div>
    }
 
    return (
       <div>
          <Messages />
+         {user === null ? (
+            <>
+               <h2>Log in to application</h2>
+               <form onSubmit={handleLogin}>
+                  <div>
+                     username
+                     <input
+                        type="text"
+                        value={username}
+                        name="Username"
+                        id="username"
+                        onChange={({ target }) => setUsername(target.value)}
+                     />
+                  </div>
+                  <div>
+                     password
+                     <input
+                        type="password"
+                        value={password}
+                        name="Password"
+                        id="password"
+                        onChange={({ target }) => setPassword(target.value)}
+                     />
+                  </div>
+                  <button type="submit" id="login-button">
+                     login
+                  </button>
+               </form>
+            </>
+         ) : (
+            <>
+               <p>{user.name} logged in</p>
+               <button onClick={logOut}>Log out</button>
 
-         <p>{user.name} logged in</p>
-         <button onClick={logOut}>Log out</button>
+               <h2>create new</h2>
 
-         <h2>create new</h2>
+               <Togglable buttonLabel="Add a blog..." ref={blogFormRef}>
+                  <AddBlog createBlog={createBlog} />
+               </Togglable>
 
-         <Togglable buttonLabel="Add a blog..." ref={blogFormRef}>
-            <AddBlog createBlog={createBlog} />
-         </Togglable>
+               <h2>blogs</h2>
 
-         <h2>blogs</h2>
-
-         {data
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-               <Blog
-                  key={blog.id}
-                  blog={blog}
-                  like={like}
-                  remove={user.username === blog.user.username ? remove : null}
-               />
-            ))}
+               {data
+                  .sort((a, b) => b.likes - a.likes)
+                  .map((blog) => (
+                     <Blog
+                        key={blog.id}
+                        blog={blog}
+                        like={like}
+                        remove={
+                           user.username === blog.user.username ? remove : null
+                        }
+                     />
+                  ))}
+            </>
+         )}
       </div>
    )
 }
