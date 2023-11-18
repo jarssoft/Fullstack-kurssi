@@ -5,6 +5,7 @@ import AddBlog from "./components/AddBlog"
 import Togglable from "./components/Toggable"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
+import { useMessageDispatch } from "./MessageContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
 
@@ -53,6 +54,8 @@ const App = ({ client }) => {
       queryFn: blogService.getAll,
    })
 
+   const dispatch = useMessageDispatch()
+
    if (data == null) {
       return <div>loading data...</div>
    }
@@ -73,9 +76,13 @@ const App = ({ client }) => {
          setUsername("")
          setPassword("")
       } catch (exception) {
-         setErrorMessage("wrong credentials")
+         dispatch({
+            type: "ERR",
+            payload: `Wrong credentials!`,
+         })
+
          setTimeout(() => {
-            setErrorMessage(null)
+            dispatch({ type: "CLR" })
          }, 5000)
       }
    }
@@ -90,11 +97,13 @@ const App = ({ client }) => {
 
       console.log(blogObject)
 
-      setNoticeMessage(
-         `A new blog ${blogObject.title} by ${blogObject.author} added.`
-      )
+      dispatch({
+         type: "NTC",
+         payload: `A new blog ${blogObject.title} by ${blogObject.author} added.`,
+      })
+
       setTimeout(() => {
-         setNoticeMessage(null)
+         dispatch({ type: "CLR" })
       }, 5000)
 
       //lataa uudestaan
@@ -140,7 +149,7 @@ const App = ({ client }) => {
    if (user === null) {
       return (
          <div>
-            <Messages error={errorMessage} notice={noticeMessage} />
+            <Messages />
 
             <h2>Log in to application</h2>
             <form onSubmit={handleLogin}>
@@ -174,7 +183,7 @@ const App = ({ client }) => {
 
    return (
       <div>
-         <Messages error={errorMessage} notice={noticeMessage} />
+         <Messages />
 
          <p>{user.name} logged in</p>
          <button onClick={logOut}>Log out</button>

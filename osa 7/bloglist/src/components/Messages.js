@@ -1,8 +1,14 @@
 import PropTypes from "prop-types"
+import { useMessageValue } from "../MessageContext"
 
-const Messages = ({ error, notice }) =>
-   (error && <div className="error">{error}</div>) ||
-   (notice && <div className="note">{notice}</div>)
+const Messages = () => {
+   const { error, notice } = useMessageValue()
+
+   return (
+      (error && <div className="error">{error}</div>) ||
+      (notice && <div className="note">{notice}</div>)
+   )
+}
 
 Messages.propTypes = {
    error: PropTypes.string,
