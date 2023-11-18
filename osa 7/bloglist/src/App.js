@@ -6,11 +6,12 @@ import Togglable from "./components/Toggable"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import { useMessageDispatch } from "./MessageContext"
+import { useLoginDispatch, useLoginValue } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
 
 const App = ({ client }) => {
-   const [user, setUser] = useState(null)
+   //const [user, setUser] = useState(null)
    const [username, setUsername] = useState("")
    const [password, setPassword] = useState("")
    const [errorMessage, setErrorMessage] = useState(null)
@@ -23,7 +24,11 @@ const App = ({ client }) => {
       const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
       if (loggedUserJSON) {
          const user = JSON.parse(loggedUserJSON)
-         setUser(user)
+         //setUser(user)
+         loginDispatch({
+            type: "LOGIN",
+            payload: user,
+         })
          blogService.setToken(user.token)
       }
    }, [])
@@ -54,7 +59,9 @@ const App = ({ client }) => {
       queryFn: blogService.getAll,
    })
 
-   const dispatch = useMessageDispatch()
+   const messageDispatch = useMessageDispatch()
+   const loginDispatch = useLoginDispatch()
+   const user = useLoginValue()
 
    if (data == null) {
       return <div>loading data...</div>
@@ -72,17 +79,21 @@ const App = ({ client }) => {
          window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user))
 
          blogService.setToken(user.token)
-         setUser(user)
+         //setUser(user)
+         loginDispatch({
+            type: "LOGIN",
+            payload: user,
+         })
          setUsername("")
          setPassword("")
       } catch (exception) {
-         dispatch({
+         messageDispatch({
             type: "ERR",
             payload: `Wrong credentials!`,
          })
 
          setTimeout(() => {
-            dispatch({ type: "CLR" })
+            messageDispatch({ type: "CLR" })
          }, 5000)
       }
    }
@@ -97,13 +108,13 @@ const App = ({ client }) => {
 
       console.log(blogObject)
 
-      dispatch({
+      messageDispatch({
          type: "NTC",
          payload: `A new blog ${blogObject.title} by ${blogObject.author} added.`,
       })
 
       setTimeout(() => {
-         dispatch({ type: "CLR" })
+         messageDispatch({ type: "CLR" })
       }, 5000)
 
       //lataa uudestaan
@@ -142,7 +153,8 @@ const App = ({ client }) => {
    }
 
    const logOut = () => {
-      setUser(null)
+      //setUser(null)
+      loginDispatch({ type: "LOGOUT" })
       window.localStorage.removeItem("loggedNoteappUser")
    }
 
