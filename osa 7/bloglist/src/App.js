@@ -11,11 +11,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
 
 const App = ({ client }) => {
-   //const [user, setUser] = useState(null)
    const [username, setUsername] = useState("")
    const [password, setPassword] = useState("")
-   const [errorMessage, setErrorMessage] = useState(null)
-   const [noticeMessage, setNoticeMessage] = useState(null)
 
    const blogFormRef = useRef()
    const queryClient = useQueryClient()
@@ -24,7 +21,6 @@ const App = ({ client }) => {
       const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
       if (loggedUserJSON) {
          const user = JSON.parse(loggedUserJSON)
-         //setUser(user)
          loginDispatch({
             type: "LOGIN",
             payload: user,
@@ -79,7 +75,6 @@ const App = ({ client }) => {
          window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user))
 
          blogService.setToken(user.token)
-         //setUser(user)
          loginDispatch({
             type: "LOGIN",
             payload: user,
@@ -116,19 +111,12 @@ const App = ({ client }) => {
       setTimeout(() => {
          messageDispatch({ type: "CLR" })
       }, 5000)
-
-      //lataa uudestaan
-      //blogs = await blogService.getAll()
-      //console.log(blogs)
-      //setBlogs(blogs)
    }
 
    const like = (id) => {
       const newblogs = data.map((blog) => {
          if (blog.id === id) {
             console.log(`like ${blog.title}`)
-            //blog.likes += 1
-            //blogService.put(blog)
             updateNoteMutation.mutate({ ...blog, likes: blog.likes + 1 })
          }
          return blog
@@ -140,7 +128,6 @@ const App = ({ client }) => {
       const newblogs = data.filter((blog) => {
          if (blog.id === id) {
             console.log(`remove ${blog.title}`)
-            //blogService.remove(blog)
             removeNoteMutation.mutate(blog)
             console.log(`removed ${blog.title}`)
             return false
@@ -153,7 +140,6 @@ const App = ({ client }) => {
    }
 
    const logOut = () => {
-      //setUser(null)
       loginDispatch({ type: "LOGOUT" })
       window.localStorage.removeItem("loggedNoteappUser")
    }
