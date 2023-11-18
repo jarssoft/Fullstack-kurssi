@@ -6,7 +6,7 @@ import Togglable from "./components/Toggable"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import { useMessageDispatch } from "./MessageContext"
-import { useLoginDispatch, useLoginValue } from "./LoginContext"
+import { useLoginContext } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
 
@@ -56,8 +56,7 @@ const App = ({ client }) => {
    })
 
    const messageDispatch = useMessageDispatch()
-   const loginDispatch = useLoginDispatch()
-   const user = useLoginValue()
+   const [user, loginDispatch] = useLoginContext()
 
    const handleLogin = async (event) => {
       event.preventDefault()

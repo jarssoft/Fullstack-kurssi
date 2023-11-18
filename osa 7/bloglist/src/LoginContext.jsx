@@ -23,12 +23,8 @@ export const LoginContextProvider = (props) => {
    )
 }
 
-export const useLoginValue = () => {
-   return useContext(LoginContext)[0]
-}
-
-export const useLoginDispatch = () => {
-   return useContext(LoginContext)[1]
+export const useLoginContext = () => {
+   return useContext(LoginContext)
 }
 
 export default LoginContext
