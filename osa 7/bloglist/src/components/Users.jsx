@@ -1,3 +1,5 @@
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+
 const Users = ({ data, like, user, remove }) => {
    let users = {}
 
@@ -5,7 +7,7 @@ const Users = ({ data, like, user, remove }) => {
       if (blog.user.username in users) {
          users[blog.user.username] += 1
       } else {
-         users[blog.user.username] = 0
+         users[blog.user.username] = 1
       }
    })
 
@@ -16,7 +18,7 @@ const Users = ({ data, like, user, remove }) => {
          <p>Users and count of blogs.</p>
          {Object.keys(users).map((user) => (
             <p key={user}>
-               {user}: {users[user]}
+               <Link to={`/users/${user}`}>{user}</Link>: {users[user]}
             </p>
          ))}
       </>

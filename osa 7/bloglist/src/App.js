@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import Blogs from "./components/Blogs"
 import Users from "./components/Users"
+import User from "./components/User"
 import Messages from "./components/Messages"
 import AddBlog from "./components/AddBlog"
 import Togglable from "./components/Toggable"
@@ -10,7 +11,6 @@ import { useMessageDispatch } from "./MessageContext"
 import { useLoginContext } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
-
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 const App = ({ client }) => {
@@ -227,6 +227,7 @@ const App = ({ client }) => {
                         />
                      }
                   />
+                  <Route path="/users/:id" element={<User data={data} />} />
                </Routes>
             </Router>
          )}
