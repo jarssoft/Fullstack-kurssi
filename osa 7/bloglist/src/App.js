@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import Blogs from "./components/Blogs"
+import Users from "./components/Users"
 import Messages from "./components/Messages"
 import AddBlog from "./components/AddBlog"
 import Togglable from "./components/Toggable"
@@ -188,7 +189,7 @@ const App = ({ client }) => {
                      home
                   </Link>
                   <Link style={padding} to="/blogs">
-                     notes
+                     blogs
                   </Link>
                   <Link style={padding} to="/users">
                      users
@@ -208,6 +209,17 @@ const App = ({ client }) => {
                      path="/blogs"
                      element={
                         <Blogs
+                           data={data}
+                           like={like}
+                           remove={remove}
+                           user={user}
+                        />
+                     }
+                  />
+                  <Route
+                     path="/users"
+                     element={
+                        <Users
                            data={data}
                            like={like}
                            remove={remove}
