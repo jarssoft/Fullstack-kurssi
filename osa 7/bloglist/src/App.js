@@ -10,6 +10,8 @@ import { useLoginContext } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
 
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+
 const App = ({ client }) => {
    const [username, setUsername] = useState("")
    const [password, setPassword] = useState("")
@@ -57,6 +59,10 @@ const App = ({ client }) => {
 
    const messageDispatch = useMessageDispatch()
    const [user, loginDispatch] = useLoginContext()
+
+   const padding = {
+      padding: 5,
+   }
 
    const handleLogin = async (event) => {
       event.preventDefault()
@@ -144,7 +150,7 @@ const App = ({ client }) => {
    }
 
    return (
-      <div>
+      <>
          <Messages />
          {user === null ? (
             <>
@@ -176,9 +182,20 @@ const App = ({ client }) => {
                </form>
             </>
          ) : (
-            <>
-               <p>{user.name} logged in</p>
-               <button onClick={logOut}>Log out</button>
+            <Router>
+               <div>
+                  <Link style={padding} to="/">
+                     home
+                  </Link>
+                  <Link style={padding} to="/blogs">
+                     notes
+                  </Link>
+                  <Link style={padding} to="/users">
+                     users
+                  </Link>
+                  <span style={padding}>{user.name} logged in</span>
+                  <button onClick={logOut}>Log out</button>
+               </div>
 
                <h2>create new</h2>
 
@@ -200,9 +217,9 @@ const App = ({ client }) => {
                         }
                      />
                   ))}
-            </>
+            </Router>
          )}
-      </div>
+      </>
    )
 }
 
