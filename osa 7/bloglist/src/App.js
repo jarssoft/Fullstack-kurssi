@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import Blogs from "./components/Blogs"
+import Blog from "./components/Blog"
 import Users from "./components/Users"
 import User from "./components/User"
 import Messages from "./components/Messages"
@@ -220,6 +221,17 @@ const App = ({ client }) => {
                      path="/users"
                      element={
                         <Users
+                           data={data}
+                           like={like}
+                           remove={remove}
+                           user={user}
+                        />
+                     }
+                  />
+                  <Route
+                     path="/blogs/:id"
+                     element={
+                        <Blog
                            data={data}
                            like={like}
                            remove={remove}

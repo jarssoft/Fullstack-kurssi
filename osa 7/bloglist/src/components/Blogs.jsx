@@ -1,4 +1,4 @@
-import Blog from "./Blog"
+import Blog from "./BlogItem"
 
 const Blogs = ({ data, like, user, remove }) => (
    <>
