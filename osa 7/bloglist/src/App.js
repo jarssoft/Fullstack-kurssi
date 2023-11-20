@@ -4,15 +4,20 @@ import Blog from "./components/Blog"
 import Users from "./components/Users"
 import User from "./components/User"
 import Messages from "./components/Messages"
-import AddBlog from "./components/AddBlog"
-import Togglable from "./components/Toggable"
+
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import { useMessageDispatch } from "./MessageContext"
 import { useLoginContext } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import "./index.css"
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+import {
+   BrowserRouter as Router,
+   Routes,
+   Route,
+   Link,
+   useNavigate,
+} from "react-router-dom"
 
 const App = ({ client }) => {
    const [username, setUsername] = useState("")
@@ -20,6 +25,7 @@ const App = ({ client }) => {
 
    const blogFormRef = useRef()
    const queryClient = useQueryClient()
+   const navigate = useNavigate()
 
    useEffect(() => {
       const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
@@ -84,6 +90,7 @@ const App = ({ client }) => {
          })
          setUsername("")
          setPassword("")
+         navigate("/")
       } catch (exception) {
          messageDispatch({
             type: "ERR",
@@ -140,11 +147,14 @@ const App = ({ client }) => {
       })
       client.setQueryData("blogs", newblogs)
       refetch()
+      navigate("/")
    }
 
    const logOut = () => {
       loginDispatch({ type: "LOGOUT" })
       window.localStorage.removeItem("loggedNoteappUser")
+
+      navigate("/")
    }
 
    if (data == null) {
@@ -184,7 +194,7 @@ const App = ({ client }) => {
                </form>
             </>
          ) : (
-            <Router>
+            <>
                <div>
                   <Link style={padding} to="/">
                      home
@@ -199,12 +209,6 @@ const App = ({ client }) => {
                   <button onClick={logOut}>Log out</button>
                </div>
 
-               <h2>create new</h2>
-
-               <Togglable buttonLabel="Add a blog..." ref={blogFormRef}>
-                  <AddBlog createBlog={createBlog} />
-               </Togglable>
-
                <Routes>
                   <Route
                      path="/blogs"
@@ -214,6 +218,21 @@ const App = ({ client }) => {
                            like={like}
                            remove={remove}
                            user={user}
+                           createBlog={createBlog}
+                           blogFormRef={blogFormRef}
+                        />
+                     }
+                  />
+                  <Route
+                     path="/"
+                     element={
+                        <Blogs
+                           data={data}
+                           like={like}
+                           remove={remove}
+                           user={user}
+                           createBlog={createBlog}
+                           blogFormRef={blogFormRef}
                         />
                      }
                   />
@@ -241,7 +260,7 @@ const App = ({ client }) => {
                   />
                   <Route path="/users/:id" element={<User data={data} />} />
                </Routes>
-            </Router>
+            </>
          )}
       </>
    )
