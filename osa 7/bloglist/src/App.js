@@ -4,13 +4,11 @@ import Blog from "./components/Blog"
 import Users from "./components/Users"
 import User from "./components/User"
 import Messages from "./components/Messages"
-
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import { useMessageDispatch } from "./MessageContext"
 import { useLoginContext } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import "./index.css"
 import {
    BrowserRouter as Router,
    Routes,
@@ -18,6 +16,7 @@ import {
    Link,
    useNavigate,
 } from "react-router-dom"
+import "./index.css"
 
 const App = ({ client }) => {
    const [username, setUsername] = useState("")

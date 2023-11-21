@@ -22,11 +22,27 @@ const Blog = ({ data, like, remove, user }) => {
             <h1>{blog.title}</h1>
 
             <div>
+               <a href="{blog.url}">{blog.url}</a>
+            </div>
+
+            <div>
                likes <b id="likes">{blog.likes}</b>{" "}
                <button onClick={() => like(blog.id)}>Like</button>
             </div>
-            <div>{blog.user.name}</div>
+            <div>added by {blog.user.name}</div>
             <Poistonappi />
+            {blog.comments ? (
+               <div>
+                  <h2>comments</h2>
+                  <ul>
+                     {blog.comments.map((comment, i) => (
+                        <li key={i}>{comment}</li>
+                     ))}
+                  </ul>
+               </div>
+            ) : (
+               <p></p>
+            )}
          </>
       </>
    )
