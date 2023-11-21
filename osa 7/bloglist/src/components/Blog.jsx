@@ -23,7 +23,7 @@ const Blog = ({ data, like, remove, user, createComment }) => {
             <h1>{blog.title}</h1>
 
             <div>
-               <a href="{blog.url}">{blog.url}</a>
+               <a href={blog.url}>{blog.url}</a>
             </div>
 
             <div>

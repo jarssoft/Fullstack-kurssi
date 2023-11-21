@@ -104,7 +104,7 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
     const newblog = {
       title: blog.title,
       author: blog.author,
-      url: "blog.url",
+      url: blog.url,
       likes: blog.likes,
       comments: comments,
     };
