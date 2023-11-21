@@ -1,7 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
-
+import {
+   BrowserRouter as Router,
+   Routes,
+   Route,
+   Link as RouterLink,
+} from "react-router-dom"
 import PropTypes from "prop-types"
 import { useState } from "react"
+import { Container, Toolbar, AppBar, Link } from "@mui/material"
 
 const Blog = ({ blog, like, remove }) => {
    const [viewable, setViewable] = useState(false)
@@ -12,6 +17,7 @@ const Blog = ({ blog, like, remove }) => {
       border: "solid",
       borderWidth: 1,
       marginBottom: 5,
+      borderColor: "green",
    }
 
    const toggleview = () => {
@@ -21,7 +27,9 @@ const Blog = ({ blog, like, remove }) => {
    const Lisatieto = () => (
       <>
          <div>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            <Link component={RouterLink} to={`/blogs/${blog.id}`}>
+               {blog.title}
+            </Link>
          </div>
       </>
    )

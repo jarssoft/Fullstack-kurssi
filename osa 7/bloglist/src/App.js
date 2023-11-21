@@ -216,19 +216,32 @@ const App = ({ client }) => {
                <Toolbar>
                   <Link
                      className="valikko"
+                     style={{ padding: "0px 20px" }}
                      component={RouterLink}
-                     style={menuStyle}
                      to="/"
                   >
                      home
-                  </Link>
-                  <Link component={RouterLink} style={menuStyle} to="/blogs">
+                  </Link>{" "}
+                  |
+                  <Link
+                     className="valikko"
+                     style={{ padding: "0px 20px" }}
+                     component={RouterLink}
+                     to="/blogs"
+                  >
                      blogs
-                  </Link>
-                  <Link component={RouterLink} style={menuStyle} to="/users">
+                  </Link>{" "}
+                  |
+                  <Link
+                     className="valikko"
+                     style={{ padding: "0px 20px" }}
+                     component={RouterLink}
+                     to="/users"
+                  >
                      users
-                  </Link>
-                  <span style={menuStyle}>
+                  </Link>{" "}
+                  |
+                  <span className="valikko" style={{ padding: "0px 20px" }}>
                      {user.name} logged in
                      <button onClick={logOut}>Log out</button>
                   </span>

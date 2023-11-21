@@ -2,10 +2,12 @@ import {
    BrowserRouter as Router,
    Routes,
    Route,
-   Link,
+   Link as RouterLink,
    useParams,
 } from "react-router-dom"
 import AddComment from "./AddComment"
+import "../index.css"
+import { Container, Toolbar, AppBar, Link } from "@mui/material"
 
 const Blog = ({ data, like, remove, user, createComment }) => {
    const id = useParams().id
@@ -22,8 +24,10 @@ const Blog = ({ data, like, remove, user, createComment }) => {
          <>
             <h1>{blog.title}</h1>
 
-            <div>
-               <a href={blog.url}>{blog.url}</a>
+            <div style={{ padding: "20px 0px" }}>
+               <Link component={RouterLink} to={blog.url}>
+                  {blog.url}
+               </Link>
             </div>
 
             <div>
@@ -31,8 +35,10 @@ const Blog = ({ data, like, remove, user, createComment }) => {
                <button onClick={() => like(blog.id)}>Like</button>
             </div>
 
-            <div>added by {blog.user.name}</div>
-            <Poistonappi />
+            <div>
+               added by {blog.user.name} <Poistonappi />
+            </div>
+
             <h2>comments</h2>
             <AddComment blog={blog} createComment={createComment} />
          </>

@@ -6,11 +6,12 @@ const Blogs = ({ data, like, user, remove, createBlog, blogFormRef }) => {
    return (
       <>
          <h2>blogs</h2>
-         <h2>create new</h2>
 
-         <Togglable buttonLabel="Add a blog..." ref={blogFormRef}>
-            <AddBlog createBlog={createBlog} />
-         </Togglable>
+         <div style={{ padding: "20px 0px" }}>
+            <Togglable buttonLabel="Add a blog..." ref={blogFormRef}>
+               <AddBlog createBlog={createBlog} />
+            </Togglable>
+         </div>
 
          {data
             .sort((a, b) => b.likes - a.likes)

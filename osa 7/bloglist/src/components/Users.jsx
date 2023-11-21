@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+import {
+   BrowserRouter as Router,
+   Routes,
+   Route,
+   Link as RouterLink,
+} from "react-router-dom"
+import { Container, Toolbar, AppBar, Link } from "@mui/material"
 
 const Users = ({ data, like, user, remove }) => {
    let users = {}
@@ -18,7 +24,10 @@ const Users = ({ data, like, user, remove }) => {
          <p>Users and count of blogs.</p>
          {Object.keys(users).map((user) => (
             <p key={user}>
-               <Link to={`/users/${user}`}>{user}</Link>: {users[user]}
+               <Link component={RouterLink} to={`/users/${user}`}>
+                  {user}
+               </Link>
+               : {users[user]}
             </p>
          ))}
       </>
