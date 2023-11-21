@@ -122,6 +122,21 @@ const App = ({ client }) => {
       }, 5000)
    }
 
+   const createComment = async (newComment) => {
+      //await blogService.create(blogObject)
+
+      console.log(newComment)
+
+      messageDispatch({
+         type: "NTC",
+         payload: `A new comment added.`,
+      })
+
+      setTimeout(() => {
+         messageDispatch({ type: "CLR" })
+      }, 5000)
+   }
+
    const like = (id) => {
       const newblogs = data.map((blog) => {
          if (blog.id === id) {
@@ -254,6 +269,7 @@ const App = ({ client }) => {
                            like={like}
                            remove={remove}
                            user={user}
+                           createComment={createComment}
                         />
                      }
                   />

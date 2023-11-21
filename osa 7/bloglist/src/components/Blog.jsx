@@ -5,8 +5,9 @@ import {
    Link,
    useParams,
 } from "react-router-dom"
+import AddComment from "./AddComment"
 
-const Blog = ({ data, like, remove, user }) => {
+const Blog = ({ data, like, remove, user, createComment }) => {
    const id = useParams().id
 
    let users = {}
@@ -31,9 +32,10 @@ const Blog = ({ data, like, remove, user }) => {
             </div>
             <div>added by {blog.user.name}</div>
             <Poistonappi />
+            <h2>comments</h2>
+            <AddComment createComment={createComment} />
             {blog.comments ? (
                <div>
-                  <h2>comments</h2>
                   <ul>
                      {blog.comments.map((comment, i) => (
                         <li key={i}>{comment}</li>

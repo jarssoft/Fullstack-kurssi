@@ -1,6 +1,7 @@
 import Blog from "./BlogItem"
 import AddBlog from "./AddBlog"
 import Togglable from "./Toggable"
+
 const Blogs = ({ data, like, user, remove, createBlog, blogFormRef }) => {
    return (
       <>
@@ -24,4 +25,5 @@ const Blogs = ({ data, like, user, remove, createBlog, blogFormRef }) => {
       </>
    )
 }
+
 export default Blogs
