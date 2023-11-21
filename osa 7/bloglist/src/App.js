@@ -122,10 +122,11 @@ const App = ({ client }) => {
       }, 5000)
    }
 
-   const createComment = async (newComment) => {
-      //await blogService.create(blogObject)
-
-      console.log(newComment)
+   const createComment = async (id, newComment) => {
+      console.log(id, newComment)
+      await blogService.createComment(id, {
+         comment: newComment,
+      })
 
       messageDispatch({
          type: "NTC",

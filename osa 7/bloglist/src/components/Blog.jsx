@@ -30,21 +30,11 @@ const Blog = ({ data, like, remove, user, createComment }) => {
                likes <b id="likes">{blog.likes}</b>{" "}
                <button onClick={() => like(blog.id)}>Like</button>
             </div>
+
             <div>added by {blog.user.name}</div>
             <Poistonappi />
             <h2>comments</h2>
-            <AddComment createComment={createComment} />
-            {blog.comments ? (
-               <div>
-                  <ul>
-                     {blog.comments.map((comment, i) => (
-                        <li key={i}>{comment}</li>
-                     ))}
-                  </ul>
-               </div>
-            ) : (
-               <p></p>
-            )}
+            <AddComment blog={blog} createComment={createComment} />
          </>
       </>
    )
