@@ -1,19 +1,12 @@
-import {
-   BrowserRouter as Router,
-   Routes,
-   Route,
-   Link as RouterLink,
-   useParams,
-} from "react-router-dom"
+import { Link as RouterLink, useParams } from "react-router-dom"
 import AddComment from "./AddComment"
 import "../index.css"
-import { Container, Toolbar, AppBar, Link } from "@mui/material"
+import { Link } from "@mui/material"
 
-const Blog = ({ data, like, remove, user, createComment }) => {
+const Blog = ({ blogs, like, remove, user, createComment }) => {
    const id = useParams().id
 
-   let users = {}
-   const blog = data.filter((blog) => blog.id == id)[0]
+   const blog = blogs.filter((blog) => blog.id == id)[0]
    remove = user.username === blog.user.username ? remove : null
 
    const Poistonappi = () =>

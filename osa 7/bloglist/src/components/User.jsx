@@ -1,10 +1,4 @@
-import {
-   BrowserRouter as Router,
-   Routes,
-   Route,
-   Link,
-   useParams,
-} from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 const User = ({ data }) => {
    const username = useParams().id

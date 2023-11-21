@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import Blogs from "./components/Blogs"
 import Blog from "./components/Blog"
 import Users from "./components/Users"
 import User from "./components/User"
+import Login from "./components/Login"
 import Messages from "./components/Messages"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
@@ -10,19 +11,15 @@ import { useMessageDispatch } from "./MessageContext"
 import { useLoginContext } from "./LoginContext"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import {
-   BrowserRouter as Router,
    Routes,
    Route,
    Link as RouterLink,
    useNavigate,
 } from "react-router-dom"
 import "./index.css"
-import { Container, Toolbar, AppBar, Link } from "@mui/material"
+import { Container, Toolbar, Link } from "@mui/material"
 
 const App = ({ client }) => {
-   const [username, setUsername] = useState("")
-   const [password, setPassword] = useState("")
-
    const blogFormRef = useRef()
    const queryClient = useQueryClient()
    const navigate = useNavigate()
@@ -60,7 +57,7 @@ const App = ({ client }) => {
       },
    })
 
-   const { data, refetch } = useQuery({
+   const { data: blogs, refetch } = useQuery({
       queryKey: ["blogs"],
       queryFn: blogService.getAll,
    })
@@ -68,15 +65,7 @@ const App = ({ client }) => {
    const messageDispatch = useMessageDispatch()
    const [user, loginDispatch] = useLoginContext()
 
-   const menuStyle = {
-      padding: 13,
-      borderStyle: "solid",
-      borderColor: "red",
-   }
-
-   const handleLogin = async (event) => {
-      event.preventDefault()
-      //console.log('logging in with', username, password)
+   const logIn = async (username, password) => {
       try {
          const user = await loginService.login({
             username,
@@ -90,8 +79,7 @@ const App = ({ client }) => {
             type: "LOGIN",
             payload: user,
          })
-         setUsername("")
-         setPassword("")
+
          navigate("/")
       } catch (exception) {
          messageDispatch({
@@ -110,7 +98,6 @@ const App = ({ client }) => {
 
       blogObject.user = user
 
-      //await blogService.create(blogObject)
       newNoteMutation.mutate({ ...blogObject, likes: 0 })
 
       console.log(blogObject)
@@ -142,18 +129,17 @@ const App = ({ client }) => {
    }
 
    const like = (id) => {
-      const newblogs = data.map((blog) => {
+      blogs.forEach((blog) => {
          if (blog.id === id) {
             console.log(`like ${blog.title}`)
             updateNoteMutation.mutate({ ...blog, likes: blog.likes + 1 })
          }
          return blog
       })
-      refetch()
    }
 
    const remove = async (id) => {
-      const newblogs = data.filter((blog) => {
+      const newblogs = blogs.filter((blog) => {
          if (blog.id === id) {
             console.log(`remove ${blog.title}`)
             removeNoteMutation.mutate(blog)
@@ -164,141 +150,85 @@ const App = ({ client }) => {
          }
       })
       client.setQueryData("blogs", newblogs)
-      refetch()
       navigate("/")
    }
 
    const logOut = () => {
       loginDispatch({ type: "LOGOUT" })
       window.localStorage.removeItem("loggedNoteappUser")
-
       navigate("/")
-   }
-
-   if (data == null) {
-      return <div>loading data...</div>
    }
 
    return (
       <Container>
          <Messages />
          {user === null ? (
-            <>
-               <h2>Log in to application</h2>
-               <form onSubmit={handleLogin}>
-                  <div>
-                     username
-                     <input
-                        type="text"
-                        value={username}
-                        name="Username"
-                        id="username"
-                        onChange={({ target }) => setUsername(target.value)}
-                     />
-                  </div>
-                  <div>
-                     password
-                     <input
-                        type="password"
-                        value={password}
-                        name="Password"
-                        id="password"
-                        onChange={({ target }) => setPassword(target.value)}
-                     />
-                  </div>
-                  <button type="submit" id="login-button">
-                     login
-                  </button>
-               </form>
-            </>
+            <Login handleLogin={logIn} />
          ) : (
             <>
                <Toolbar>
                   <Link
-                     className="valikko"
-                     style={{ padding: "0px 20px" }}
-                     component={RouterLink}
-                     to="/"
-                  >
-                     home
-                  </Link>{" "}
-                  |
-                  <Link
-                     className="valikko"
                      style={{ padding: "0px 20px" }}
                      component={RouterLink}
                      to="/blogs"
                   >
                      blogs
-                  </Link>{" "}
+                  </Link>
                   |
                   <Link
-                     className="valikko"
                      style={{ padding: "0px 20px" }}
                      component={RouterLink}
                      to="/users"
                   >
                      users
-                  </Link>{" "}
+                  </Link>
                   |
-                  <span className="valikko" style={{ padding: "0px 20px" }}>
+                  <span style={{ padding: "0px 20px" }}>
                      {user.name} logged in
                      <button onClick={logOut}>Log out</button>
                   </span>
                </Toolbar>
 
-               <Routes>
-                  <Route
-                     path="/blogs"
-                     element={
-                        <Blogs
-                           data={data}
-                           like={like}
-                           remove={remove}
-                           user={user}
-                           createBlog={createBlog}
-                           blogFormRef={blogFormRef}
-                        />
-                     }
-                  />
-                  <Route
-                     path="/"
-                     element={
-                        <Blogs
-                           data={data}
-                           like={like}
-                           remove={remove}
-                           user={user}
-                           createBlog={createBlog}
-                           blogFormRef={blogFormRef}
-                        />
-                     }
-                  />
-                  <Route
-                     path="/users"
-                     element={
-                        <Users
-                           data={data}
-                           like={like}
-                           remove={remove}
-                           user={user}
-                        />
-                     }
-                  />
-                  <Route
-                     path="/blogs/:id"
-                     element={
-                        <Blog
-                           data={data}
-                           like={like}
-                           remove={remove}
-                           user={user}
-                           createComment={createComment}
-                        />
-                     }
-                  />
-                  <Route path="/users/:id" element={<User data={data} />} />
-               </Routes>
+               {blogs == null ? (
+                  <div style={{ padding: "0px 20px" }}>loading data...</div>
+               ) : (
+                  <Routes>
+                     <Route
+                        path="/blogs"
+                        element={
+                           <Blogs
+                              blogs={blogs}
+                              createBlog={createBlog}
+                              blogFormRef={blogFormRef}
+                           />
+                        }
+                     />
+                     <Route
+                        path="/"
+                        element={
+                           <Blogs
+                              blogs={blogs}
+                              createBlog={createBlog}
+                              blogFormRef={blogFormRef}
+                           />
+                        }
+                     />
+                     <Route path="/users" element={<Users data={blogs} />} />
+                     <Route
+                        path="/blogs/:id"
+                        element={
+                           <Blog
+                              blogs={blogs}
+                              like={like}
+                              remove={remove}
+                              user={user}
+                              createComment={createComment}
+                           />
+                        }
+                     />
+                     <Route path="/users/:id" element={<User data={blogs} />} />
+                  </Routes>
+               )}
             </>
          )}
       </Container>

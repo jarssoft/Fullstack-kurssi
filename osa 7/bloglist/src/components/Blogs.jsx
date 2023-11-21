@@ -1,8 +1,8 @@
-import Blog from "./BlogItem"
+import BlogItem from "./BlogItem"
 import AddBlog from "./AddBlog"
 import Togglable from "./Toggable"
 
-const Blogs = ({ data, like, user, remove, createBlog, blogFormRef }) => {
+const Blogs = ({ blogs, createBlog, blogFormRef }) => {
    return (
       <>
          <h2>blogs</h2>
@@ -13,15 +13,10 @@ const Blogs = ({ data, like, user, remove, createBlog, blogFormRef }) => {
             </Togglable>
          </div>
 
-         {data
+         {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-               <Blog
-                  key={blog.id}
-                  blog={blog}
-                  like={like}
-                  remove={user.username === blog.user.username ? remove : null}
-               />
+               <BlogItem key={blog.id} blog={blog} />
             ))}
       </>
    )

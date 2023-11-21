@@ -1,12 +1,7 @@
-import {
-   BrowserRouter as Router,
-   Routes,
-   Route,
-   Link as RouterLink,
-} from "react-router-dom"
-import { Container, Toolbar, AppBar, Link } from "@mui/material"
+import { Link as RouterLink } from "react-router-dom"
+import { Link } from "@mui/material"
 
-const Users = ({ data, like, user, remove }) => {
+const Users = ({ data }) => {
    let users = {}
 
    data.forEach((blog) => {
