@@ -84,3 +84,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp6c
 {
       "comment": "Tuli kova jytky!"
 }
+
+###
+GET http://localhost:3003/api/blogs/655c86b68abbfd356e0a033f

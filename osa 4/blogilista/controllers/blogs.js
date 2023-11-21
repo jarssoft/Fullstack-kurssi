@@ -120,21 +120,15 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
   } catch (exception) {
     next(exception);
   }
+});
 
-  /*
-  const body = request.body;
-
-  const person = {
-    comments: [body.comment],
-  };
-
+blogsRouter.get("/:id/", async (request, response, next) => {
   try {
-    await Blog.findByIdAndUpdate(request.params.id, person, { new: true });
-    response.status(204).end();
+    let blog = await Blog.findById(request.params.id);
+    response.json(blog);
   } catch (exception) {
     next(exception);
   }
-  */
 });
 
 module.exports = blogsRouter;
