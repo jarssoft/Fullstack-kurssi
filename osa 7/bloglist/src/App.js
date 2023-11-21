@@ -13,10 +13,11 @@ import {
    BrowserRouter as Router,
    Routes,
    Route,
-   Link,
+   Link as RouterLink,
    useNavigate,
 } from "react-router-dom"
 import "./index.css"
+import { Container, Toolbar, AppBar, Link } from "@mui/material"
 
 const App = ({ client }) => {
    const [username, setUsername] = useState("")
@@ -67,8 +68,10 @@ const App = ({ client }) => {
    const messageDispatch = useMessageDispatch()
    const [user, loginDispatch] = useLoginContext()
 
-   const padding = {
-      padding: 5,
+   const menuStyle = {
+      padding: 13,
+      borderStyle: "solid",
+      borderColor: "red",
    }
 
    const handleLogin = async (event) => {
@@ -177,7 +180,7 @@ const App = ({ client }) => {
    }
 
    return (
-      <>
+      <Container>
          <Messages />
          {user === null ? (
             <>
@@ -210,19 +213,26 @@ const App = ({ client }) => {
             </>
          ) : (
             <>
-               <div>
-                  <Link style={padding} to="/">
+               <Toolbar>
+                  <Link
+                     className="valikko"
+                     component={RouterLink}
+                     style={menuStyle}
+                     to="/"
+                  >
                      home
                   </Link>
-                  <Link style={padding} to="/blogs">
+                  <Link component={RouterLink} style={menuStyle} to="/blogs">
                      blogs
                   </Link>
-                  <Link style={padding} to="/users">
+                  <Link component={RouterLink} style={menuStyle} to="/users">
                      users
                   </Link>
-                  <span style={padding}>{user.name} logged in</span>
-                  <button onClick={logOut}>Log out</button>
-               </div>
+                  <span style={menuStyle}>
+                     {user.name} logged in
+                     <button onClick={logOut}>Log out</button>
+                  </span>
+               </Toolbar>
 
                <Routes>
                   <Route
@@ -278,7 +288,7 @@ const App = ({ client }) => {
                </Routes>
             </>
          )}
-      </>
+      </Container>
    )
 }
 

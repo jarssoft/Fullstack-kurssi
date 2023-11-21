@@ -9,3 +9,14 @@
    padding-top: 5px;
    font-size: 15px;
 }
+
+.valikko {
+   padding: 13;
+   border-style: "solid";
+   border-color: "red";
+}
+h2,
+h1,
+h3 {
+   color: green;
+}

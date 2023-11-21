@@ -1,12 +1,13 @@
 import PropTypes from "prop-types"
 import { useMessageValue } from "../MessageContext"
+import { Alert } from "@mui/material"
 
 const Messages = () => {
    const { error, notice } = useMessageValue()
 
    return (
-      (error && <div className="error">{error}</div>) ||
-      (notice && <div className="note">{notice}</div>)
+      (error && <Alert severity="error">{error}</Alert>) ||
+      (notice && <Alert severity="success">{notice}</Alert>)
    )
 }
 
