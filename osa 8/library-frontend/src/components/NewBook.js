@@ -1,32 +1,39 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { CREATE_BOOK, ALL_BOOKS, ALL_PERSONS } from "../queries";
 
 const NewBook = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [published, setPublished] = useState('')
-  const [genre, setGenre] = useState('')
-  const [genres, setGenres] = useState([])
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [published, setPublished] = useState("");
+  const [genre, setGenre] = useState("");
+  const [genres, setGenres] = useState([]);
+
+  const [createPerson] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_PERSONS }],
+  });
 
   if (!props.show) {
-    return null
+    return null;
   }
 
   const submit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    console.log('add book...')
+    console.log("add book...");
+    createPerson({ variables: { title, author, published, genres } });
 
-    setTitle('')
-    setPublished('')
-    setAuthor('')
-    setGenres([])
-    setGenre('')
-  }
+    setTitle("");
+    setPublished(0);
+    setAuthor("");
+    setGenres([]);
+    setGenre("");
+  };
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
-    setGenre('')
-  }
+    setGenres(genres.concat(genre));
+    setGenre("");
+  };
 
   return (
     <div>
@@ -50,7 +57,7 @@ const NewBook = (props) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(parseInt(target.value))}
           />
         </div>
         <div>
@@ -62,11 +69,11 @@ const NewBook = (props) => {
             add genre
           </button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
+        <div>genres: {genres.join(" ")}</div>
         <button type="submit">create book</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default NewBook
+export default NewBook;
