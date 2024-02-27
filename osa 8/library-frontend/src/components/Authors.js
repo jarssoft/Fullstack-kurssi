@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { ALL_PERSONS } from "../queries";
+import { ALL_PERSONS, EDIT_BIRTH } from "../queries";
+import { useMutation } from "@apollo/client";
 
 const Authors = (props) => {
   const [name, setName] = useState("");
-  const [born, setBorn] = useState("");
+  const [born, setBorn] = useState(1900);
+
   const result = useQuery(ALL_PERSONS);
+  const [editBirth] = useMutation(EDIT_BIRTH, {
+    refetchQueries: [{ query: ALL_PERSONS }],
+  });
 
   if (result.loading) {
     return <div>loading...</div>;
@@ -19,10 +24,11 @@ const Authors = (props) => {
     event.preventDefault();
 
     console.log("set birth...");
+    editBirth({ variables: { name, born } });
     //createPerson({ variables: { title, author, published, genres } });
 
     //setName("");
-    setBorn(0);
+    setBorn(1900);
   };
 
   const authors = result.data.allAuthors;
@@ -60,7 +66,7 @@ const Authors = (props) => {
           born
           <input
             value={born}
-            onChange={({ target }) => setBorn(target.value)}
+            onChange={({ target }) => setBorn(parseInt(target.value))}
           />
         </div>
         <button type="submit">set</button>
