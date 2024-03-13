@@ -70,19 +70,17 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      // filters missing
       filter = {};
-
       if (args.author) {
-        //  filter = { name: args.author };
-        //}
-        //return null;
         const authors = await Author.find({ name: args.author });
         if (authors.length == 1) {
-          filter = { author: authors[0]._id };
+          filter = { ...filter, author: authors[0]._id };
         } else {
           return [];
         }
+      }
+      if (args.genre) {
+        filter = { ...filter, genres: args.genre };
       }
       return Book.find(filter).populate("author");
     },
