@@ -71,7 +71,20 @@ const resolvers = {
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       // filters missing
-      return Book.find({}).populate("author");
+      filter = {};
+
+      if (args.author) {
+        //  filter = { name: args.author };
+        //}
+        //return null;
+        const authors = await Author.find({ name: args.author });
+        if (authors.length == 1) {
+          filter = { author: authors[0]._id };
+        } else {
+          return [];
+        }
+      }
+      return Book.find(filter).populate("author");
     },
     /*
     allBooks: (root, args) =>
