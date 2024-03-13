@@ -83,7 +83,14 @@ const resolvers = {
       */
     allAuthors: async (root, args) => {
       // filters missing
-      return Author.find({});
+      const authors = await Author.find({});
+
+      return authors.map((oldauthor) => {
+        oldauthor.bookCount = Book.collection.countDocuments({
+          author: oldauthor._id,
+        });
+        return oldauthor;
+      });
     },
   },
 
