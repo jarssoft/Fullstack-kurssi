@@ -67,11 +67,11 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    //bookCount: () => books.length,
+    bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       // filters missing
-      return Book.find({});
+      return Book.find({}).populate("author");
     },
     /*
     allBooks: (root, args) =>
