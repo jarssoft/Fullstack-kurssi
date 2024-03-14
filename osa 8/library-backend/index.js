@@ -116,8 +116,11 @@ const resolvers = {
     addBook: async (root, args) => {
       //Author.findOne({ name: args.author }),
       //const author = { name: args.author, id: uuid() };
-      const author = new Author({ name: args.author, bookCount: 1 });
-      await author.save();
+      let author = await Author.findOne({ name: args.author });
+      if (author == null) {
+        author = new Author({ name: args.author, bookCount: 1 });
+        await author.save();
+      }
       const book = new Book({ ...args, author: author });
       //author.save();
       return book.save();
