@@ -48,6 +48,7 @@ const typeDefs = `
 
   type User {
     username: String!
+    favoriteGenre: String!
     id: ID!
   }
   
@@ -76,6 +77,7 @@ const typeDefs = `
     ): Author
     createUser(
       username: String!
+      favoriteGenre: String!
     ): User
     login(
       username: String!
@@ -208,14 +210,15 @@ const resolvers = {
       return author.save();
     },
 
-    createUser: async (root, args, context) => {
-      const user = new User({ username: args.username });
+    createUser: async (root, args) => {
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
 
-      if (context.currentUser == null) {
-        return null;
-      }
-
-      return user.save().catch((error) => {
+      try {
+        await user.save();
+      } catch (error) {
         throw new GraphQLError("Creating the user failed", {
           extensions: {
             code: "BAD_USER_INPUT",
@@ -223,7 +226,8 @@ const resolvers = {
             error,
           },
         });
-      });
+      }
+      return user;
     },
 
     login: async (root, args) => {
