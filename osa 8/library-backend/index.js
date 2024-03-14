@@ -131,20 +131,12 @@ const resolvers = {
       return book;
       */
     },
-    /*
-    editAuthor: (root, args) => {
-      match = authors.filter((author) => author.name === args.name);
-      if (match.length > 0) {
-        const updateauthor = { ...match[0], born: args.setBornTo };
-        authors = authors.map((oldauthor) =>
-          oldauthor.name === args.name ? updateauthor : oldauthor
-        );
-        return updateauthor;
-      } else {
-        return null;
-      }
+
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name });
+      author.born = args.setBornTo;
+      return author.save();
     },
-    */
   },
 };
 
