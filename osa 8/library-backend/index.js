@@ -137,7 +137,11 @@ const resolvers = {
   },
   */
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      if (context.currentUser == null) {
+        return null;
+      }
+
       //Author.findOne({ name: args.author }),
       //const author = { name: args.author, id: uuid() };
       let author = await Author.findOne({ name: args.author });
@@ -183,8 +187,12 @@ const resolvers = {
       */
     },
 
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
       const author = await Author.findOne({ name: args.name });
+
+      if (context.currentUser == null) {
+        return null;
+      }
 
       try {
         author.born = args.setBornTo;
@@ -200,8 +208,12 @@ const resolvers = {
       return author.save();
     },
 
-    createUser: async (root, args) => {
+    createUser: async (root, args, context) => {
       const user = new User({ username: args.username });
+
+      if (context.currentUser == null) {
+        return null;
+      }
 
       return user.save().catch((error) => {
         throw new GraphQLError("Creating the user failed", {
