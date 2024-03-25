@@ -57,28 +57,37 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <h2>Set birth</h2>
 
-      <form onSubmit={submit}>
-        <div>
-          name
-          <select value={name} onChange={handleChange}>
-            {authors.map((a) => (
-              <option key={a.name} value={a.name}>
-                {a.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          born
-          <input
-            value={born}
-            onChange={({ target }) => setBorn(parseInt(target.value))}
-          />
-        </div>
-        <button type="submit">set</button>
-      </form>
+      {props.logged ? (
+        <>
+          <h2>Set birth</h2>
+
+          <form onSubmit={submit}>
+            <div>
+              name
+              <select value={name} onChange={handleChange}>
+                {authors.map((a) => (
+                  <option key={a.name} value={a.name}>
+                    {a.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              born
+              <input
+                value={born}
+                onChange={({ target }) => setBorn(parseInt(target.value))}
+              />
+            </div>
+            <button type="submit">set</button>
+          </form>
+        </>
+      ) : (
+        <>
+          <p>Please login to set birth.</p>
+        </>
+      )}
     </div>
   );
 };
