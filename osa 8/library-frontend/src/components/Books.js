@@ -4,9 +4,11 @@ import { useState } from "react";
 import styles from "./book.css";
 
 const Books = (props) => {
-  const result = useQuery(ALL_BOOKS);
   const [genre, setGenre] = useState();
-
+  const result = useQuery(ALL_BOOKS, {
+    variables: { genre },
+  });
+  //console.log(result);
   if (result.loading) {
     return <div>loading...</div>;
   }
@@ -14,6 +16,12 @@ const Books = (props) => {
   if (!props.show) {
     return null;
   }
+
+  if (!result.data) {
+    return null;
+  }
+
+  //console.log(genre);
 
   const books = result.data.allBooks;
 
@@ -29,25 +37,23 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-
-      <div>
-        {Object.keys(counts).map((key, index) => (
-          <button
-            key={key}
-            className={key === genre ? "bigblue" : ""}
-            onClick={() => setGenre(key)}
-          >
-            {key + " (" + counts[key] + ")"}
-          </button>
-        ))}
-      </div>
       {genre ? (
         <p>
           In genre {genre}. <button onClick={() => setGenre()}>Show all</button>
           .
         </p>
       ) : (
-        <p></p>
+        <p>
+          {Object.keys(counts).map((key, index) => (
+            <button
+              key={key}
+              className={key === genre ? "bigblue" : ""}
+              onClick={() => setGenre(key)}
+            >
+              {key + " (" + counts[key] + ")"}
+            </button>
+          ))}
+        </p>
       )}
 
       <table>

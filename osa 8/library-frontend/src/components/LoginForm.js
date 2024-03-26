@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { LOGIN } from "../queries";
+import { LOGIN, ME } from "../queries";
 
 const LoginForm = ({ show, setToken }) => {
   const [username, setUsername] = useState("");
@@ -10,6 +10,7 @@ const LoginForm = ({ show, setToken }) => {
     //nError: (error) => {
     //  setError(error.graphQLErrors[0].message);
     //},
+    //refetchQueries: [{ query: ME }],
   });
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const LoginForm = ({ show, setToken }) => {
   if (!show) {
     return null;
   }
+
   const submit = async (event) => {
     event.preventDefault();
 
