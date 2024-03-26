@@ -10,6 +10,7 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([]);
 
   const [createPerson] = useMutation(CREATE_BOOK, {
+    //kirjojen näkymä säilyy ajantasaisena
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_PERSONS }],
   });
 
