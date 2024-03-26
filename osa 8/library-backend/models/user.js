@@ -9,7 +9,7 @@ const schema = new mongoose.Schema({
   favoriteGenre: {
     type: String,
     required: true,
-    minlength: 3,
+    minlength: 2,
   },
 });
 
