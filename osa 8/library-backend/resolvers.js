@@ -36,14 +36,7 @@ const resolvers = {
         */
     allAuthors: async (root, args) => {
       // filters missing
-      const authors = await Author.find({});
-
-      return authors.map((oldauthor) => {
-        oldauthor.bookCount = Book.collection.countDocuments({
-          author: oldauthor._id,
-        });
-        return oldauthor;
-      });
+      return await Author.find({});
     },
 
     me: (root, args, context) => {
@@ -51,13 +44,14 @@ const resolvers = {
     },
   },
 
-  /*
-    Author: {
-      bookCount: (root) => {
-        return books.filter((book) => book.author === root.name).length;
-      },
+  Author: {
+    bookCount: (root) => {
+      return Book.collection.countDocuments({
+        author: root._id,
+      });
     },
-    */
+  },
+
   Mutation: {
     addBook: async (root, args, context) => {
       if (context.currentUser == null) {
