@@ -5,16 +5,24 @@ import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import Recommend from "./components/Recommend";
 import { useQuery, useApolloClient, useSubscription } from "@apollo/client";
-import { BOOK_ADDED } from "./queries.js";
+import { ALL_BOOKS, BOOK_ADDED } from "./queries.js";
 
 const App = () => {
   const [page, setPage] = useState("authors");
   const [token, setToken] = useState(null);
   const client = useApolloClient();
+
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
       console.log(data);
       alert("Uusi kirja on juuri lisätty luetteloon.");
+
+      const added = data.data.bookAdded;
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(added),
+        };
+      });
     },
   });
 
