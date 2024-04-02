@@ -46,9 +46,13 @@ const resolvers = {
 
   Author: {
     bookCount: (root) => {
-      return Book.collection.countDocuments({
-        author: root._id,
-      });
+      if (root.bookCount) {
+        return root.bookCount;
+      } else {
+        return Book.collection.countDocuments({
+          author: root._id,
+        });
+      }
     },
   },
 
@@ -63,18 +67,23 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author });
       if (author == null) {
         author = new Author({ name: args.author, bookCount: 1 });
+      } else {
+        author.bookCount =
+          (await Book.collection.countDocuments({
+            author: author._id,
+          })) + 1;
+      }
 
-        try {
-          await author.save();
-        } catch (error) {
-          throw new GraphQLError("Saving book failed", {
-            extensions: {
-              code: "BAD_USER_INPUT",
-              invalidArgs: args.author,
-              error,
-            },
-          });
-        }
+      try {
+        await author.save();
+      } catch (error) {
+        throw new GraphQLError("Saving book failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.author,
+            error,
+          },
+        });
       }
 
       const book = new Book({ ...args, author: author });
