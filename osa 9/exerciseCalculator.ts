@@ -1,12 +1,27 @@
-const calculateExercises = (days: number[], target: number): unknown => {
+interface Result {
+  periodLength: number;
+  trainingDays: number;
+  success: boolean;
+  rating: number;
+  ratingDescription: string;
+  target: number;
+  average: number;
+}
+
+const ratinratingDescriptions: string[] = ["you lazy", "not good", "OK"];
+
+const calculateExercises = (days: number[], target: number): Result => {
+  const average: number =
+    days.reduce((total, hours) => total + hours, 0) / days.length;
   return {
-    periodLength: 7,
-    trainingDays: 5,
-    success: false,
-    rating: 2,
-    ratingDescription: "not too bad but could be better",
-    target: 2,
-    average: 1.9285714285714286,
+    periodLength: days.length,
+    trainingDays: days.reduce((total, hours) => total + (hours ? 1 : 0), 0),
+    success: average > target,
+    rating: Math.floor((average / target) * 2) + 1,
+    ratingDescription:
+      ratinratingDescriptions[Math.floor((average / target) * 2)],
+    target: target,
+    average: average,
   };
 };
 
