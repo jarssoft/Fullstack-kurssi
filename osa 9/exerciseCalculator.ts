@@ -7,7 +7,7 @@ const parseArgumentArray = (args: string[]): Exercises => {
   if (args.length < 4) throw new Error("Not enough arguments");
 
   if (!isNaN(Number(args[2]))) {
-    let days = args.slice(3, 3 + args.length).map((day) => Number(day));
+    const days = args.slice(3, 3 + args.length).map((day) => Number(day));
     if (days.findIndex((n) => Number.isNaN(n)) >= 0) {
       throw new Error("Provided values were not numbers!");
     }
