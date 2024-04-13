@@ -3,6 +3,8 @@ import calculateBmi from "./bmiCalculator";
 import { parseArguments } from "./bmiCalculator";
 const app = express();
 
+app.use(express.json());
+
 app.get("/hello", (_req, res) => {
   res.send("Hello Full Stack!");
 });
@@ -31,6 +33,13 @@ app.get("/bmi", (req, res) => {
       error: "malformatted parameters",
     });
   }
+});
+
+app.post("/exercises", (_request, response) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //const note = request.body;
+  console.log("note");
+  response.json("note");
 });
 
 const PORT = 3003;
