@@ -1,6 +1,7 @@
 import express from "express";
 import calculateBmi from "./bmiCalculator";
 import { parseArguments } from "./bmiCalculator";
+import { calculateExercises } from "./exerciseCalculator";
 const app = express();
 
 app.use(express.json());
@@ -8,6 +9,11 @@ app.use(express.json());
 app.get("/hello", (_req, res) => {
   res.send("Hello Full Stack!");
 });
+
+interface Exercises {
+  daily_exercises: number[];
+  target: number;
+}
 
 app.get("/bmi", (req, res) => {
   if (req.query.weight && req.query.height) {
@@ -35,11 +41,10 @@ app.get("/bmi", (req, res) => {
   }
 });
 
-app.post("/exercises", (_request, response) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //const note = request.body;
-  console.log("note");
-  response.json("note");
+app.post("/exercises", (request, response) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const body = request.body as Exercises;
+  response.json(calculateExercises(body.daily_exercises, body.target));
 });
 
 const PORT = 3003;

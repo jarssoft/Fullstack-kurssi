@@ -33,7 +33,7 @@ interface Result {
 
 const ratinratingDescriptions: string[] = ["you lazy", "not good", "OK"];
 
-const calculateExercises = (days: number[], target: number): Result => {
+export const calculateExercises = (days: number[], target: number): Result => {
   const average: number =
     days.reduce((total, hours) => total + hours, 0) / days.length;
   return {
