@@ -1,16 +1,82 @@
 import { Genrer, NewPatient } from "./types";
 
-const toNewPatient = (object: unknown): NewPatient => {
-  console.log(object); // now object is no longer unused
-  const newEntry: NewPatient = {
-    dateOfBirth: "e",
-    gender: Genrer.Male,
-    name: "d",
-    occupation: "ghh",
-    ssn: "ffs",
-  };
+// type predicates
 
-  return newEntry;
+const isString = (text: unknown): text is string => {
+  return typeof text === "string" || text instanceof String;
+};
+
+const isGender = (param: string): param is Genrer => {
+  return Object.values(Genrer)
+    .map((v) => v.toString())
+    .includes(param);
+};
+
+// safe parsing
+
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
+};
+
+const parseDateOfBirth = (dateOfBirth: unknown): string => {
+  if (!isString(dateOfBirth) || !isDate(dateOfBirth)) {
+    throw new Error("Incorrect dateOfBirth: " + dateOfBirth);
+  }
+  return dateOfBirth;
+};
+
+const parseGender = (Gender: unknown): Genrer => {
+  if (!isString(Gender) || !isGender(Gender)) {
+    throw new Error("Incorrect Gender: " + Gender);
+  }
+  return Gender;
+};
+
+const parseName = (Name: unknown): string => {
+  if (!isString(Name)) {
+    throw new Error("Incorrect Name: " + Name);
+  }
+  return Name;
+};
+
+const parseOccupation = (Occupation: unknown): string => {
+  if (!isString(Occupation)) {
+    throw new Error("Incorrect Occupation: " + Occupation);
+  }
+  return Occupation;
+};
+
+const parseSSN = (SSN: unknown): string => {
+  if (!isString(SSN)) {
+    throw new Error("Incorrect SSN: " + SSN);
+  }
+  return SSN;
+};
+
+const toNewPatient = (object: unknown): NewPatient => {
+  if (!object || typeof object !== "object") {
+    throw new Error("Incorrect or missing data");
+  }
+
+  if (
+    "dateOfBirth" in object &&
+    "gender" in object &&
+    "name" in object &&
+    "occupation" in object &&
+    "ssn" in object
+  ) {
+    const newEntry: NewPatient = {
+      dateOfBirth: parseDateOfBirth(object.dateOfBirth),
+      gender: parseGender(object.gender),
+      name: parseName(object.name),
+      occupation: parseOccupation(object.occupation),
+      ssn: parseSSN(object.ssn),
+    };
+
+    return newEntry;
+  }
+
+  throw new Error("Incorrect data: some fields are missing");
 };
 
 export default toNewPatient;
