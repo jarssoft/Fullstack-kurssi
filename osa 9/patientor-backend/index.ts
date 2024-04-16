@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import diagnoses from "./data/diagnoses";
 import { getNonSensitiveEntries, addPatient } from "./services/patientservice";
+import toNewPatient from "./utils";
 
 const app = express();
 app.use(express.json());
@@ -23,9 +24,8 @@ app.get("/api/patients", (_req, res) => {
 });
 
 app.post("/api/patients", (req, res) => {
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-  const addedEntry = addPatient({ name, dateOfBirth, ssn, gender, occupation });
+  const newPatient = toNewPatient(req.body);
+  const addedEntry = addPatient(newPatient);
   res.json(addedEntry);
 });
 
