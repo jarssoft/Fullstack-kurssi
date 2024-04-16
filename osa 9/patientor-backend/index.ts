@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import diagnoses from "./data/diagnoses";
-import { getNonSensitiveEntries } from "./services/patientservice";
+import { getNonSensitiveEntries, addPatient } from "./services/patientservice";
 
 const app = express();
 app.use(express.json());
@@ -20,6 +20,13 @@ app.get("/api/diagnoses", (_req, res) => {
 
 app.get("/api/patients", (_req, res) => {
   res.send(getNonSensitiveEntries());
+});
+
+app.post("/api/patients", (req, res) => {
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+  const addedEntry = addPatient({ name, dateOfBirth, ssn, gender, occupation });
+  res.json(addedEntry);
 });
 
 app.listen(PORT, () => {

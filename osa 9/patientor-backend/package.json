@@ -22,7 +22,9 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.8",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
   }
 }
