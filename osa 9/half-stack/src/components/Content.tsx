@@ -1,20 +1,15 @@
-export interface Course {
-  name: string;
-  exerciseCount: number;
-}
+import CoursePart from "../types";
+import Part from "./Part";
 
-const Content = ({ courseParts }: { courseParts: Course[] }) => {
+const Content = ({ courseParts }: { courseParts: CoursePart[] }) => {
   return (
     <div>
-      <p>
-        {courseParts[0].name} {courseParts[0].exerciseCount}
-      </p>
-      <p>
-        {courseParts[1].name} {courseParts[1].exerciseCount}
-      </p>
-      <p>
-        {courseParts[2].name} {courseParts[2].exerciseCount}
-      </p>
+      {courseParts.map((part) => (
+        <div key={part.name}>
+          <Part part={part}></Part>
+          <br></br>
+        </div>
+      ))}{" "}
     </div>
   );
 };
