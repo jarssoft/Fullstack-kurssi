@@ -7,7 +7,7 @@ interface CreateProps {
 
 const empty: NewDiaryEntry = {
   date: "2024-04-19",
-  visibility: Visibility.Ok,
+  visibility: Visibility.Great,
   weather: Weather.Sunny,
   comment: "",
 };
@@ -32,41 +32,35 @@ const Create = (props: CreateProps) => {
           setNewentry({ ...newentry, date: event.target.value })
         }
       />
-      visibility:
       <div>
-        Good
-        <input
-          type="radio"
-          name="visibility"
-          onChange={() =>
-            setNewentry({ ...newentry, visibility: Visibility.Good })
-          }
-        />
-        OK
-        <input
-          type="radio"
-          name="visibility"
-          onChange={() =>
-            setNewentry({ ...newentry, visibility: Visibility.Ok })
-          }
-        />
+        visibility:
+        {Object.values(Visibility).map((v) => (
+          <label key={v.toString()}>
+            <input
+              type="radio"
+              name="visibility"
+              checked={newentry.visibility == v}
+              onChange={() => setNewentry({ ...newentry, visibility: v })}
+            ></input>
+            {v.toString()}
+          </label>
+        ))}
       </div>
-      <input
-        value={newentry.visibility}
-        onChange={(event) =>
-          setNewentry({
-            ...newentry,
-            visibility: event.target.value as Visibility,
-          })
-        }
-      />
-      weather:
-      <input
-        value={newentry.weather}
-        onChange={(event) =>
-          setNewentry({ ...newentry, weather: event.target.value as Weather })
-        }
-      />
+      <div>
+        weather:
+        {Object.values(Weather).map((v) => (
+          <label key={v.toString()}>
+            <input
+              type="radio"
+              name="weather"
+              key={v.toString()}
+              checked={newentry.weather == v}
+              onChange={() => setNewentry({ ...newentry, weather: v })}
+            ></input>
+            {v.toString()}
+          </label>
+        ))}
+      </div>
       comment:
       <input
         value={newentry.comment}
