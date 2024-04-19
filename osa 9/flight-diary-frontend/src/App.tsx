@@ -6,6 +6,7 @@ import diaryservices from "./services/diaries";
 
 function App() {
   const [entries, setEntries] = useState<NonSensitiveDiaryEntry[]>([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchPatientList = async () => {
@@ -15,13 +16,19 @@ function App() {
     void fetchPatientList();
   }, []);
 
-  const noteCreation = (newentry: NewDiaryEntry) => {
-    diaryservices.create(newentry);
-    setEntries(entries.concat({ ...newentry, id: entries.length + 1 }));
+  const noteCreation = async (newentry: NewDiaryEntry) => {
+    const res = await diaryservices.create(newentry);
+    if (res.ok) {
+      setMessage("");
+      setEntries(entries.concat({ ...newentry, id: entries.length + 1 }));
+    } else {
+      setMessage(res.error);
+    }
   };
 
   return (
     <>
+      <b style={{ color: "red" }}>{message}</b>
       <Create create={noteCreation}></Create>
       {entries.map((entry) => (
         <Entry key={entry.id} entry={entry} />

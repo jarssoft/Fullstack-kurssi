@@ -5,18 +5,20 @@ interface CreateProps {
   create: (nd: NewDiaryEntry) => void;
 }
 
+const empty: NewDiaryEntry = {
+  date: "",
+  visibility: Visibility.Ok,
+  weather: Weather.Sunny,
+  comment: "",
+};
+
 const Create = (props: CreateProps) => {
-  const [newentry, setNewentry] = useState<NewDiaryEntry>({
-    date: "",
-    visibility: Visibility.Good,
-    weather: Weather.Rainy,
-    comment: "",
-  });
+  const [newentry, setNewentry] = useState<NewDiaryEntry>(empty);
 
   const create = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    console.log(newentry);
     props.create(newentry);
+    //setNewentry(empty);
   };
 
   return (
