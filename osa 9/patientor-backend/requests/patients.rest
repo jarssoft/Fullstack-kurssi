@@ -1,3 +1,9 @@
+GET http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667
+
+###
+GET http://localhost:3001/api/patients
+
+###
 POST http://localhost:3001/api/patients
 content-type: application/json
 

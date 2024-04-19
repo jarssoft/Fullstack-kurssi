@@ -3,6 +3,7 @@ import cors from "cors";
 import diagnoses from "./data/diagnoses";
 import { getNonSensitiveEntries, addPatient } from "./services/patientservice";
 import toNewPatient from "./utils";
+import patients from "./data/patients";
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,12 @@ app.get("/api/diagnoses", (_req, res) => {
 
 app.get("/api/patients", (_req, res) => {
   res.send(getNonSensitiveEntries());
+});
+
+app.get("/api/patients/:id", (request, response) => {
+  const id = request.params.id;
+  const patient = patients.find((patient) => patient.id === id);
+  response.json(patient);
 });
 
 app.post("/api/patients", (req, res) => {
