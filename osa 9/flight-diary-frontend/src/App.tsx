@@ -10,8 +10,12 @@ function App() {
 
   useEffect(() => {
     const fetchPatientList = async () => {
-      const patients = await diaryservices.getAll();
-      setEntries(patients);
+      try {
+        const loadedEntries = await diaryservices.getAll();
+        setEntries(loadedEntries);
+      } catch {
+        setMessage("Error! Cannot load entries!");
+      }
     };
     void fetchPatientList();
   }, []);
@@ -29,10 +33,14 @@ function App() {
   return (
     <>
       <b style={{ color: "red" }}>{message}</b>
+      <h3>Add entry</h3>
       <Create create={noteCreation}></Create>
-      {entries.map((entry) => (
-        <Entry key={entry.id} entry={entry} />
-      ))}
+      <h3>Diary</h3>
+      <table>
+        {entries.map((entry) => (
+          <Entry key={entry.id} entry={entry} />
+        ))}
+      </table>
     </>
   );
 }

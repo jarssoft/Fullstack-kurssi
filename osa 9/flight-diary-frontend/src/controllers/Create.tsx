@@ -23,7 +23,6 @@ const Create = (props: CreateProps) => {
 
   return (
     <form onSubmit={create}>
-      <h3>Add entry</h3>
       date:
       <input
         type="date"
