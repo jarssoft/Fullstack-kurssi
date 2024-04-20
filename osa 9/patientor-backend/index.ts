@@ -16,7 +16,7 @@ app.get("/api/ping", (_req, res) => {
   res.send("pong");
 });
 
-app.get("/api/diagnoses", (_req, res) => {
+app.get("/api/diagnosis", (_req, res) => {
   res.send(diagnoses);
 });
 

@@ -1,20 +1,22 @@
 import { Patient } from "../../types";
+import { Diagnosis } from "../../types";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import patientService from "../../services/patients";
+import diagnosiservice from "../../services/diagnosis";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
+  const [diagnosis, setDiagnosis] = useState<Diagnosis[]>();
 
   const id = useParams().id;
-  console.log(`ìd=${id}`);
 
   useEffect(() => {
     const fetchPatientList = async () => {
       if (id) {
-        console.log(`ìd=${id}`);
         setPatient(await patientService.get(id));
       }
+      setDiagnosis(await diagnosiservice.getAll());
     };
     void fetchPatientList();
   }, [id]);
@@ -25,19 +27,30 @@ const PatientPage = (): JSX.Element => {
       {patient.ssn} {patient.dateOfBirth} {patient.gender}
       <p>occupation: {patient.occupation}</p>
       <h3>Entries</h3>
-      <p>
+      <div>
         {patient.entries.map((entry) => (
-          <>
+          <div key={entry.id}>
             <h4>{entry.date}</h4>
             <p>{entry.description}</p>
-            <p>
+            <div>
               {entry.diagnosisCodes
-                ? entry.diagnosisCodes.map((code) => <>{code}, </>)
+                ? entry.diagnosisCodes.map((code) => (
+                    <span key={code}>
+                      {code}&nbsp;
+                      {diagnosis
+                        ? diagnosis
+                            .filter((diagnose) => diagnose.code == code)
+                            .map((diagnose) => (
+                              <span key={diagnose.code}>{diagnose.name}, </span>
+                            ))
+                        : ""}
+                    </span>
+                  ))
                 : ""}
-            </p>
-          </>
+            </div>
+          </div>
         ))}
-      </p>
+      </div>
     </>
   ) : (
     <></>
