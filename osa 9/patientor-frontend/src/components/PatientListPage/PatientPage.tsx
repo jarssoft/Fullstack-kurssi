@@ -24,8 +24,11 @@ const PatientPage = (): JSX.Element => {
 
   return patient ? (
     <>
-      <h3>{patient.name}</h3>
-      {patient.ssn} {patient.dateOfBirth} {patient.gender}
+      <h2>{patient.name}</h2>
+      {patient.ssn}
+      <p>
+        {patient.dateOfBirth} {patient.gender}
+      </p>
       <p>occupation: {patient.occupation}</p>
       <h3>Entries</h3>
       <div>
@@ -48,8 +51,9 @@ const PatientPage = (): JSX.Element => {
                     </span>
                   ))
                 : ""}
-
-              <EntryDetails entry={entry}></EntryDetails>
+              <p>
+                Details: <EntryDetails entry={entry}></EntryDetails>
+              </p>
             </div>
           </div>
         ))}

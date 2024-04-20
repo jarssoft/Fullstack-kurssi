@@ -4,34 +4,24 @@ const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
   switch (entry.entry.type) {
     case "Hospital":
       return (
-        <p>
-          Hospital
-          <p>
-            {entry.entry.discharge.date} {entry.entry.discharge.criteria}
-          </p>
-        </p>
+        <>
+          Discharge:&nbsp;{entry.entry.discharge.date}{" "}
+          {entry.entry.discharge.criteria}
+        </>
       );
     case "HealthCheck":
-      return (
-        <p>
-          HealthCheck<p>{entry.entry.healthCheckRating}</p>
-        </p>
-      );
+      return <>CheckRating:&nbsp;{entry.entry.healthCheckRating}</>;
     case "OccupationalHealthcare":
       return (
-        <p>
-          OccupationalHealthcare
-          <li>{entry.entry.employerName}</li>
-          {entry.entry.sickLeave ? (
-            <li>
-              {entry.entry.sickLeave?.startDate +
-                "-" +
-                entry.entry.sickLeave?.endDate}
-            </li>
-          ) : (
-            ""
-          )}
-        </p>
+        <>
+          Employer:&nbsp;
+          {entry.entry.employerName}&nbsp;
+          {entry.entry.sickLeave
+            ? entry.entry.sickLeave?.startDate +
+              "–" +
+              entry.entry.sickLeave?.endDate
+            : ""}
+        </>
       );
     default:
       return <>ERROR</>;
