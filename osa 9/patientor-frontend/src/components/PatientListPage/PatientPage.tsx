@@ -24,7 +24,20 @@ const PatientPage = (): JSX.Element => {
       <h3>{patient.name}</h3>
       {patient.ssn} {patient.dateOfBirth} {patient.gender}
       <p>occupation: {patient.occupation}</p>
-      <p>entries: {patient.entries.length}</p>
+      <h3>Entries</h3>
+      <p>
+        {patient.entries.map((entry) => (
+          <>
+            <h4>{entry.date}</h4>
+            <p>{entry.description}</p>
+            <p>
+              {entry.diagnosisCodes
+                ? entry.diagnosisCodes.map((code) => <>{code}, </>)
+                : ""}
+            </p>
+          </>
+        ))}
+      </p>
     </>
   ) : (
     <></>
