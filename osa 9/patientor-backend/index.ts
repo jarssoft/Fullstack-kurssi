@@ -1,7 +1,11 @@
 import express from "express";
 import cors from "cors";
 import diagnoses from "./data/diagnoses";
-import { getNonSensitiveEntries, addPatient } from "./services/patientservice";
+import {
+  getNonSensitiveEntries,
+  addPatient,
+  addEntry,
+} from "./services/patientservice";
 import toNewPatient from "./utils";
 import patients from "./data/patients";
 
@@ -33,6 +37,12 @@ app.get("/api/patients/:id", (request, response) => {
 app.post("/api/patients", (req, res) => {
   const newPatient = toNewPatient(req.body);
   const addedEntry = addPatient(newPatient);
+  res.json(addedEntry);
+});
+
+app.post("/api/patients/:id/entries", (req, res) => {
+  const id = req.params.id;
+  const addedEntry = addEntry(id, req.body);
   res.json(addedEntry);
 });
 

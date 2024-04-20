@@ -16,4 +16,16 @@ content-type: application/json
   }
 
 ###
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {    
+    "date": "2019-10-20",
+    "specialist": "MD House",
+    "type": "HealthCheck",
+    "description": "Yearly control visit. Cholesterol levels back to normal.",
+    "healthCheckRating": 0
+  }
+
+###
 GET http://localhost:3001/api/diagnosis

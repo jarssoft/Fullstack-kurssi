@@ -1,3 +1,8 @@
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
 interface BaseEntry {
   id: string;
   description: string;
@@ -65,3 +70,6 @@ export interface Patient {
 export type PatientWithoutSSN = Omit<Patient, "ssn" | "entries">;
 
 export type NewPatient = Omit<Patient, "id">;
+
+// Define Entry without the 'id' property
+export type NewEntry = UnionOmit<Entry, "id">;

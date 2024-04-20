@@ -1,6 +1,6 @@
 import patients from "../data/patients";
 import { PatientWithoutSSN } from "../types";
-import { NewPatient, Patient } from "../types";
+import { NewPatient, NewEntry, Patient, Entry } from "../types";
 import { v1 as uuid } from "uuid";
 
 export const getNonSensitiveEntries = (): PatientWithoutSSN[] => {
@@ -20,5 +20,20 @@ export const addPatient = (entry: NewPatient): Patient => {
   };
 
   patients.push(newDiaryEntry);
+  return newDiaryEntry;
+};
+
+export const addEntry = (id: string, entry: NewEntry): Entry => {
+  const newDiaryEntry: Entry = {
+    id: uuid(),
+    ...entry,
+  };
+  console.log(id);
+
+  let patient = patients.find((patient) => patient.id == id);
+
+  if (patient) {
+    patient.entries.push(newDiaryEntry);
+  }
   return newDiaryEntry;
 };
