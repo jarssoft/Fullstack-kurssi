@@ -1,8 +1,11 @@
-interface BaseEntry {
+export type Entrytypes = "HealthCheck" | "Hospital" | "OccupationalHealthcare";
+
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
   specialist: string;
+  type: "HealthCheck" | "Hospital" | "OccupationalHealthcare";
   diagnosisCodes?: Array<Diagnosis["code"]>;
 }
 

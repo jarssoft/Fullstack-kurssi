@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import patientService from "../../services/patients";
 import diagnosiservice from "../../services/diagnosis";
+import EntryDetails from "./EntryDetails";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
@@ -47,6 +48,8 @@ const PatientPage = (): JSX.Element => {
                     </span>
                   ))
                 : ""}
+
+              <EntryDetails entry={entry}></EntryDetails>
             </div>
           </div>
         ))}
