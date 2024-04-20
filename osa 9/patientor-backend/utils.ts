@@ -1,4 +1,4 @@
-import { Genrer, NewPatient } from "./types";
+import { Gender, NewPatient } from "./types";
 
 // type predicates
 
@@ -6,8 +6,8 @@ const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
 };
 
-const isGender = (param: string): param is Genrer => {
-  return Object.values(Genrer)
+const isGender = (param: string): param is Gender => {
+  return Object.values(Gender)
     .map((v) => v.toString())
     .includes(param);
 };
@@ -25,7 +25,7 @@ const parseDateOfBirth = (dateOfBirth: unknown): string => {
   return dateOfBirth;
 };
 
-const parseGender = (Gender: unknown): Genrer => {
+const parseGender = (Gender: unknown): Gender => {
   if (!isString(Gender) || !isGender(Gender)) {
     throw new Error("Incorrect Gender: " + Gender);
   }
