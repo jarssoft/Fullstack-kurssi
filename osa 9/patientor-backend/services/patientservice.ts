@@ -30,7 +30,7 @@ export const addEntry = (id: string, entry: NewEntry): Entry => {
   };
   console.log(id);
 
-  let patient = patients.find((patient) => patient.id == id);
+  const patient = patients.find((patient) => patient.id == id);
 
   if (patient) {
     patient.entries.push(newDiaryEntry);

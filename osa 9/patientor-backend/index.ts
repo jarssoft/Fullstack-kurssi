@@ -7,6 +7,7 @@ import {
   addEntry,
 } from "./services/patientservice";
 import toNewPatient from "./utils";
+import toNewEntry from "./utils-entry";
 import patients from "./data/patients";
 
 const app = express();
@@ -42,7 +43,9 @@ app.post("/api/patients", (req, res) => {
 
 app.post("/api/patients/:id/entries", (req, res) => {
   const id = req.params.id;
-  const addedEntry = addEntry(id, req.body);
+  const newPatient = toNewEntry(req.body);
+  const addedEntry = addEntry(id, newPatient);
+  //const addedEntry = addEntry(id, req.body);
   res.json(addedEntry);
 });
 
