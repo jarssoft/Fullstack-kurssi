@@ -40,7 +40,7 @@ const toNewEntry = (object: unknown): NewEntry => {
   }
 
   switch (object.type) {
-    case "Hospital": {
+    case "Hospital":
       if (!("discharge" in object)) {
         throw new Error("Incorrect data: discharge is missing");
       }
@@ -71,14 +71,13 @@ const toNewEntry = (object: unknown): NewEntry => {
           criteria: object.discharge.criteria,
         },
       };
-    }
 
-    case "HealthCheck": {
+    case "HealthCheck":
       if (!("healthCheckRating" in object)) {
-        throw new Error("Incorrect data: discharge is missing");
+        throw new Error("Incorrect data: healthCheckRating is missing");
       }
       if (!isNumber(object.healthCheckRating)) {
-        throw new Error("Incorrect data: discharge fields are missing");
+        throw new Error("Incorrect data: healthCheckRating fields are missing");
       }
 
       return {
@@ -92,7 +91,26 @@ const toNewEntry = (object: unknown): NewEntry => {
         description: object.description,
         healthCheckRating: object.healthCheckRating,
       };
-    }
+
+    case "OccupationalHealthcare":
+      if (!("employerName" in object)) {
+        throw new Error("Incorrect data: employerName is missing");
+      }
+      if (!isString(object.employerName)) {
+        throw new Error("Incorrect data: employerName fields are missing");
+      }
+      return {
+        ...object,
+        date: object.date,
+        type: object.type,
+        specialist: object.specialist,
+        diagnosisCodes:
+          "diagnosisCodes" in object
+            ? parseDiagnosisCodes(object.diagnosisCodes)
+            : [],
+        description: object.description,
+        employerName: object.employerName,
+      };
   }
 
   throw new Error("Incorrect data: no corret type-field.");
