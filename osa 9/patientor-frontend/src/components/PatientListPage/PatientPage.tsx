@@ -1,71 +1,29 @@
 import { Patient } from "../../types";
 import { Diagnosis } from "../../types";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect } from "react";
 import patientService from "../../services/patients";
 import diagnosiservice from "../../services/diagnosis";
 import EntryDetails from "./EntryDetails";
-import { NewEntry } from "../../types";
-import Alert from "@mui/material/Alert";
-
-const isDate = (date: string): boolean => {
-  return Boolean(Date.parse(date));
-};
+import AddEntry from "./AddEntry";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
   const [diagnosis, setDiagnosis] = useState<Diagnosis[]>();
 
-  const [date, setDate] = useState("2024-04-21");
-  const [description, setDescriptionn] = useState("");
-  const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState(0);
-
-  const [message, setMessage] = useState<string | undefined>("");
-
   const id = useParams().id;
 
   useEffect(() => {
     const fetchPatientList = async () => {
-      if (id) {
-        setPatient(await patientService.get(id));
-      }
+      update();
       setDiagnosis(await diagnosiservice.getAll());
     };
     void fetchPatientList();
   }, [id]);
 
-  const createEntry = async (event: SyntheticEvent) => {
-    event.preventDefault();
-    console.log(date);
-
-    if (patient) {
-      if (healthCheckRating < 0 || healthCheckRating > 3) {
-        setMessage("Incorrect value on healtCheckRating.");
-        return;
-      } else if (!isDate(date)) {
-        setMessage("Incorrect value on date.");
-        return;
-      } else if (specialist.length < 1) {
-        setMessage("Incorrect value on specialist.");
-        return;
-      } else {
-        setMessage(undefined);
-
-        const newEntry: NewEntry = {
-          type: "HealthCheck",
-          date: date,
-          description: description,
-          specialist: specialist,
-          healthCheckRating: healthCheckRating,
-        };
-        const addedEntry = await patientService.createEntry(
-          patient.id,
-          newEntry
-        );
-        setPatient({ ...patient, entries: patient.entries.concat(addedEntry) });
-        console.log(addedEntry);
-      }
+  const update = async () => {
+    if (id) {
+      setPatient(await patientService.get(id));
     }
   };
 
@@ -107,47 +65,7 @@ const PatientPage = (): JSX.Element => {
         ))}
       </div>
 
-      <h4>New HealthCheckEntry</h4>
-
-      {message ? <Alert severity="error">{message}</Alert> : <></>}
-
-      <form onSubmit={createEntry}>
-        <p>
-          Date:&nbsp;
-          <input
-            size={14}
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
-          ></input>
-          &ensp;Specialist:&nbsp;
-          <input
-            value={specialist}
-            size={25}
-            onChange={(event) => setSpecialist(event.target.value)}
-          ></input>
-        </p>
-        <p>
-          Description:&nbsp;
-          <input
-            value={description}
-            size={60}
-            onChange={(event) => setDescriptionn(event.target.value)}
-          ></input>
-        </p>
-        <p>
-          CheckRating:&nbsp;
-          <input
-            value={healthCheckRating}
-            size={4}
-            type="number"
-            onChange={(event) =>
-              setHealthCheckRating(Number(event.target.value))
-            }
-          ></input>
-        </p>
-        <input type="submit" value="Add"></input>
-      </form>
-      <div></div>
+      <AddEntry patientId={patient.id} update={update}></AddEntry>
     </>
   ) : (
     <></>
