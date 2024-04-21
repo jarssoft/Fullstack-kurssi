@@ -5,8 +5,8 @@ const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
     case "Hospital":
       return (
         <>
-          Discharge:&nbsp;{entry.entry.discharge.date}{" "}
-          {entry.entry.discharge.criteria}
+          Discharge&nbsp;at&nbsp;{entry.entry.discharge.date}
+          &nbsp;Crit:&nbsp;{entry.entry.discharge.criteria}
         </>
       );
 
@@ -16,11 +16,10 @@ const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
     case "OccupationalHealthcare":
       return (
         <>
-          Employer:&nbsp;
-          {entry.entry.employerName}&nbsp;
+          Empl:&nbsp;{entry.entry.employerName}&nbsp; Leav:&nbsp;
           {entry.entry.sickLeave
             ? entry.entry.sickLeave?.startDate +
-              "–" +
+              " – " +
               entry.entry.sickLeave?.endDate
             : ""}
         </>

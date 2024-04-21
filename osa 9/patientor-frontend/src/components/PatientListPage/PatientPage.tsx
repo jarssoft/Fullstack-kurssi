@@ -40,8 +40,8 @@ const PatientPage = (): JSX.Element => {
         {patient.entries.map((entry) => (
           <div key={entry.id}>
             <h4>{entry.date}</h4>
-            <p>{entry.description}</p>
-            <p>{entry.specialist}</p>
+            <p>Desc: {entry.description}</p>
+            <p>Spec: {entry.specialist}</p>
             <div>
               {entry.diagnosisCodes
                 ? entry.diagnosisCodes.map((code) => (
