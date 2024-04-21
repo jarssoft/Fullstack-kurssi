@@ -9,8 +9,10 @@ const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
           {entry.entry.discharge.criteria}
         </>
       );
+
     case "HealthCheck":
       return <>CheckRating:&nbsp;{entry.entry.healthCheckRating}</>;
+
     case "OccupationalHealthcare":
       return (
         <>
@@ -23,6 +25,7 @@ const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
             : ""}
         </>
       );
+
     default:
       return <>ERROR</>;
   }

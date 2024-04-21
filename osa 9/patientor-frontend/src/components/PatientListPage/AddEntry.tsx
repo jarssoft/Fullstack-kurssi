@@ -23,9 +23,9 @@ const AddEntry = (props: Props): JSX.Element => {
   const [dischargeDate, setDischargeDate] = useState("2012-04-21");
   const [dischargeCriteria, setDischargeCriteria] = useState("");
 
-  //const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
-  //const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
-  //const [employerName, setEmployerName] = useState("");
+  const [employerName, setEmployerName] = useState("");
+  const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
+  const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
 
   const [message, setMessage] = useState<string | undefined>("");
 
@@ -69,6 +69,25 @@ const AddEntry = (props: Props): JSX.Element => {
             discharge: {
               date: dischargeDate,
               criteria: dischargeCriteria,
+            },
+          };
+
+        case "OccupationalHealthcare":
+          if (employerName.length == 0) {
+            setMessage("Incorrect employer.");
+            return;
+          }
+          if (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd)) {
+            setMessage("Incorrect sickLeave time.");
+            return;
+          }
+          return {
+            ...base,
+            type: "OccupationalHealthcare",
+            employerName: employerName,
+            sickLeave: {
+              startDate: sickLeaveStart,
+              endDate: sickLeaveEnd,
             },
           };
       }
@@ -130,23 +149,32 @@ const AddEntry = (props: Props): JSX.Element => {
           </>
         );
 
-      //const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
-      //const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
-      //const [employerName, setEmployerName] = useState("");
-
       case "OccupationalHealthcare":
         return (
-          <p>
-            CheckRating:&nbsp;
-            <input
-              value={healthCheckRating}
-              size={4}
-              type="number"
-              onChange={(event) =>
-                setHealthCheckRating(Number(event.target.value))
-              }
-            ></input>
-          </p>
+          <>
+            <p>
+              EmployerName:&nbsp;
+              <input
+                value={employerName}
+                size={20}
+                onChange={(event) => setEmployerName(event.target.value)}
+              ></input>
+            </p>
+            <p>
+              sickLeave:&nbsp;
+              <input
+                value={sickLeaveStart}
+                size={20}
+                onChange={(event) => setSickLeaveStart(event.target.value)}
+              ></input>
+              &nbsp;–&nbsp;
+              <input
+                value={sickLeaveEnd}
+                size={20}
+                onChange={(event) => setSickLeaveEnd(event.target.value)}
+              ></input>
+            </p>
+          </>
         );
     }
   };
