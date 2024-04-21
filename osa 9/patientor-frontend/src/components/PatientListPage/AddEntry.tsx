@@ -16,7 +16,16 @@ const AddEntry = (props: Props): JSX.Element => {
   const [date, setDate] = useState("2024-04-21");
   const [description, setDescriptionn] = useState("");
   const [specialist, setSpecialist] = useState("");
+  const [type, setType] = useState("HealthCheck");
+
   const [healthCheckRating, setHealthCheckRating] = useState(0);
+
+  const [dischargeDate, setDischargeDate] = useState("2012-04-21");
+  const [dischargeCriteria, setDischargeCriteria] = useState("");
+
+  //const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
+  //const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
+  //const [employerName, setEmployerName] = useState("");
 
   const [message, setMessage] = useState<string | undefined>("");
 
@@ -53,9 +62,69 @@ const AddEntry = (props: Props): JSX.Element => {
     }
   };
 
+  const extrainputs = (type: string) => {
+    switch (type) {
+      case "HealthCheck":
+        return (
+          <p>
+            CheckRating:&nbsp;
+            <input
+              value={healthCheckRating}
+              size={4}
+              type="number"
+              onChange={(event) =>
+                setHealthCheckRating(Number(event.target.value))
+              }
+            ></input>
+          </p>
+        );
+
+      case "Hospital":
+        return (
+          <>
+            <p>
+              discharge date:&nbsp;
+              <input
+                value={dischargeDate}
+                size={10}
+                onChange={(event) => setDischargeDate(event.target.value)}
+              ></input>
+            </p>
+            <p>
+              criteria:&nbsp;
+              <input
+                value={dischargeCriteria}
+                size={30}
+                onChange={(event) => setDischargeCriteria(event.target.value)}
+              ></input>
+            </p>
+          </>
+        );
+
+      //const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
+      //const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
+      //const [employerName, setEmployerName] = useState("");
+
+      case "OccupationalHealthcare":
+        return (
+          <p>
+            CheckRating:&nbsp;
+            <input
+              value={healthCheckRating}
+              size={4}
+              type="number"
+              onChange={(event) =>
+                setHealthCheckRating(Number(event.target.value))
+              }
+            ></input>
+          </p>
+        );
+    }
+  };
+
   return (
     <>
-      <h4>New HealthCheckEntry</h4>
+      <h4>New Entry</h4>
 
       {message ? <Alert severity="error">{message}</Alert> : <></>}
 
@@ -82,17 +151,39 @@ const AddEntry = (props: Props): JSX.Element => {
             onChange={(event) => setDescriptionn(event.target.value)}
           ></input>
         </p>
-        <p>
-          CheckRating:&nbsp;
+        <label>
           <input
-            value={healthCheckRating}
-            size={4}
-            type="number"
-            onChange={(event) =>
-              setHealthCheckRating(Number(event.target.value))
-            }
+            type="radio"
+            name="type"
+            value="HealthCheck"
+            checked={type == "HealthCheck"}
+            onChange={() => setType("HealthCheck")}
           ></input>
-        </p>
+          HealthCheck
+        </label>
+        &nbsp;
+        <label>
+          <input
+            type="radio"
+            name="type"
+            value="Hospital"
+            checked={type == "Hospital"}
+            onChange={() => setType("Hospital")}
+          ></input>
+          Hospital
+        </label>
+        &nbsp;
+        <label>
+          <input
+            type="radio"
+            name="type"
+            value="OccupationalHealthcare"
+            checked={type == "OccupationalHealthcare"}
+            onChange={() => setType("OccupationalHealthcare")}
+          ></input>
+          OccupationalHealthcare
+        </label>
+        {extrainputs(type)}
         <input type="submit" value="Add"></input>
       </form>
     </>
