@@ -1,4 +1,4 @@
-import { Entrytypes, Entry } from "../../types";
+import { Entry } from "../../types";
 
 const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
   switch (entry.entry.type) {

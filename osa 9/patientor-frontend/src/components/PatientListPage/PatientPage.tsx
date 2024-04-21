@@ -6,6 +6,11 @@ import patientService from "../../services/patients";
 import diagnosiservice from "../../services/diagnosis";
 import EntryDetails from "./EntryDetails";
 import { NewEntry } from "../../types";
+import Alert from "@mui/material/Alert";
+
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
+};
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
@@ -15,6 +20,8 @@ const PatientPage = (): JSX.Element => {
   const [description, setDescriptionn] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [healthCheckRating, setHealthCheckRating] = useState(0);
+
+  const [message, setMessage] = useState<string | undefined>("");
 
   const id = useParams().id;
 
@@ -33,16 +40,32 @@ const PatientPage = (): JSX.Element => {
     console.log(date);
 
     if (patient) {
-      const newEntry: NewEntry = {
-        type: "HealthCheck",
-        date: date,
-        description: description,
-        specialist: specialist,
-        healthCheckRating: healthCheckRating,
-      };
-      const addedEntry = await patientService.createEntry(patient.id, newEntry);
-      setPatient({ ...patient, entries: patient.entries.concat(addedEntry) });
-      console.log(addedEntry);
+      if (healthCheckRating < 0 || healthCheckRating > 3) {
+        setMessage("Incorrect value on healtCheckRating.");
+        return;
+      } else if (!isDate(date)) {
+        setMessage("Incorrect value on date.");
+        return;
+      } else if (specialist.length < 1) {
+        setMessage("Incorrect value on specialist.");
+        return;
+      } else {
+        setMessage(undefined);
+
+        const newEntry: NewEntry = {
+          type: "HealthCheck",
+          date: date,
+          description: description,
+          specialist: specialist,
+          healthCheckRating: healthCheckRating,
+        };
+        const addedEntry = await patientService.createEntry(
+          patient.id,
+          newEntry
+        );
+        setPatient({ ...patient, entries: patient.entries.concat(addedEntry) });
+        console.log(addedEntry);
+      }
     }
   };
 
@@ -83,7 +106,11 @@ const PatientPage = (): JSX.Element => {
           </div>
         ))}
       </div>
+
       <h4>New HealthCheckEntry</h4>
+
+      {message ? <Alert severity="error">{message}</Alert> : <></>}
+
       <form onSubmit={createEntry}>
         <p>
           Date:&nbsp;
