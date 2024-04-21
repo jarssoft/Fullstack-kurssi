@@ -151,38 +151,18 @@ const AddEntry = (props: Props): JSX.Element => {
             onChange={(event) => setDescriptionn(event.target.value)}
           ></input>
         </p>
-        <label>
-          <input
-            type="radio"
-            name="type"
-            value="HealthCheck"
-            checked={type == "HealthCheck"}
-            onChange={() => setType("HealthCheck")}
-          ></input>
-          HealthCheck
-        </label>
-        &nbsp;
-        <label>
-          <input
-            type="radio"
-            name="type"
-            value="Hospital"
-            checked={type == "Hospital"}
-            onChange={() => setType("Hospital")}
-          ></input>
-          Hospital
-        </label>
-        &nbsp;
-        <label>
-          <input
-            type="radio"
-            name="type"
-            value="OccupationalHealthcare"
-            checked={type == "OccupationalHealthcare"}
-            onChange={() => setType("OccupationalHealthcare")}
-          ></input>
-          OccupationalHealthcare
-        </label>
+        {["HealthCheck", "Hospital", "OccupationalHealthcare"].map((t) => (
+          <label>
+            <input
+              type="radio"
+              name="type"
+              value={t}
+              checked={type == t}
+              onChange={() => setType(t)}
+            ></input>
+            {t}
+          </label>
+        ))}
         {extrainputs(type)}
         <input type="submit" value="Add"></input>
       </form>
