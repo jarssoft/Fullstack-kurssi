@@ -1,6 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 import patientService from "../../services/patients";
-import { NewEntry } from "../../types";
+import { NewEntry, Entrytypes } from "../../types";
 import Alert from "@mui/material/Alert";
 
 const isDate = (date: string): boolean => {
@@ -12,11 +12,17 @@ interface Props {
   update: () => void;
 }
 
+const types: Entrytypes[] = [
+  "HealthCheck",
+  "Hospital",
+  "OccupationalHealthcare",
+];
+
 const AddEntry = (props: Props): JSX.Element => {
   const [date, setDate] = useState("2024-04-21");
   const [description, setDescriptionn] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [type, setType] = useState("HealthCheck");
+  const [type, setType] = useState<Entrytypes>("HealthCheck");
 
   const [healthCheckRating, setHealthCheckRating] = useState(0);
 
@@ -37,8 +43,6 @@ const AddEntry = (props: Props): JSX.Element => {
       setMessage("Incorrect value on specialist.");
       return;
     } else {
-      setMessage(undefined);
-
       let base = {
         date: date,
         description: description,
@@ -101,12 +105,9 @@ const AddEntry = (props: Props): JSX.Element => {
     const entry = newEntry();
 
     if (entry) {
-      const addedEntry = await patientService.createEntry(
-        props.patientId,
-        entry
-      );
+      await patientService.createEntry(props.patientId, entry);
       props.update();
-      console.log(addedEntry);
+      setMessage(undefined);
     }
   };
 
@@ -208,7 +209,8 @@ const AddEntry = (props: Props): JSX.Element => {
             onChange={(event) => setDescriptionn(event.target.value)}
           ></input>
         </p>
-        {["HealthCheck", "Hospital", "OccupationalHealthcare"].map((t) => (
+
+        {types.map((t) => (
           <label>
             <input
               type="radio"

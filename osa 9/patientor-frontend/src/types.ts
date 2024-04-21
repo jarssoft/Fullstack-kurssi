@@ -10,7 +10,7 @@ interface BaseEntry {
   description: string;
   date: string;
   specialist: string;
-  type: "HealthCheck" | "Hospital" | "OccupationalHealthcare";
+  type: Entrytypes;
   diagnosisCodes?: Array<Diagnosis["code"]>;
 }
 
