@@ -33,10 +33,7 @@ const AddEntry = (props: Props): JSX.Element => {
     event.preventDefault();
     console.log(date);
 
-    if (healthCheckRating < 0 || healthCheckRating > 3) {
-      setMessage("Incorrect value on healtCheckRating.");
-      return;
-    } else if (!isDate(date)) {
+    if (!isDate(date)) {
       setMessage("Incorrect value on date.");
       return;
     } else if (specialist.length < 1) {
@@ -45,20 +42,49 @@ const AddEntry = (props: Props): JSX.Element => {
     } else {
       setMessage(undefined);
 
-      const newEntry: NewEntry = {
-        type: "HealthCheck",
-        date: date,
-        description: description,
-        specialist: specialist,
-        healthCheckRating: healthCheckRating,
-      };
-      const addedEntry = await patientService.createEntry(
-        props.patientId,
-        newEntry
-      );
+      let newEntry: NewEntry | undefined;
 
-      props.update();
-      console.log(addedEntry);
+      switch (type) {
+        case "HealthCheck":
+          if (healthCheckRating < 0 || healthCheckRating > 3) {
+            setMessage("Incorrect value on healtCheckRating.");
+            return;
+          }
+          newEntry = {
+            type: "HealthCheck",
+            date: date,
+            description: description,
+            specialist: specialist,
+            healthCheckRating: healthCheckRating,
+          };
+          break;
+
+        case "Hospital":
+          if (!isDate(dischargeDate) || dischargeCriteria.length == 0) {
+            setMessage("Incorrect value on healtCheckRating.");
+            return;
+          }
+          newEntry = {
+            type: "Hospital",
+            date: date,
+            description: description,
+            specialist: specialist,
+            discharge: {
+              date: dischargeDate,
+              criteria: dischargeCriteria,
+            },
+          };
+          break;
+      }
+
+      if (newEntry) {
+        const addedEntry = await patientService.createEntry(
+          props.patientId,
+          newEntry
+        );
+        props.update();
+        console.log(addedEntry);
+      }
     }
   };
 
