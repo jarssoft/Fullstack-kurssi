@@ -29,10 +29,7 @@ const AddEntry = (props: Props): JSX.Element => {
 
   const [message, setMessage] = useState<string | undefined>("");
 
-  const createEntry = async (event: SyntheticEvent) => {
-    event.preventDefault();
-    console.log(date);
-
+  const newEntry = (): NewEntry | undefined => {
     if (!isDate(date)) {
       setMessage("Incorrect value on date.");
       return;
@@ -42,7 +39,11 @@ const AddEntry = (props: Props): JSX.Element => {
     } else {
       setMessage(undefined);
 
-      let newEntry: NewEntry | undefined;
+      let base = {
+        date: date,
+        description: description,
+        specialist: specialist,
+      };
 
       switch (type) {
         case "HealthCheck":
@@ -50,41 +51,43 @@ const AddEntry = (props: Props): JSX.Element => {
             setMessage("Incorrect value on healtCheckRating.");
             return;
           }
-          newEntry = {
+
+          return {
+            ...base,
             type: "HealthCheck",
-            date: date,
-            description: description,
-            specialist: specialist,
             healthCheckRating: healthCheckRating,
           };
-          break;
 
         case "Hospital":
           if (!isDate(dischargeDate) || dischargeCriteria.length == 0) {
-            setMessage("Incorrect value on healtCheckRating.");
+            setMessage("Incorrect value on discharge.");
             return;
           }
-          newEntry = {
+          return {
+            ...base,
             type: "Hospital",
-            date: date,
-            description: description,
-            specialist: specialist,
             discharge: {
               date: dischargeDate,
               criteria: dischargeCriteria,
             },
           };
-          break;
       }
+    }
+  };
 
-      if (newEntry) {
-        const addedEntry = await patientService.createEntry(
-          props.patientId,
-          newEntry
-        );
-        props.update();
-        console.log(addedEntry);
-      }
+  const createEntry = async (event: SyntheticEvent) => {
+    event.preventDefault();
+    console.log(date);
+
+    const entry = newEntry();
+
+    if (entry) {
+      const addedEntry = await patientService.createEntry(
+        props.patientId,
+        entry
+      );
+      props.update();
+      console.log(addedEntry);
     }
   };
 

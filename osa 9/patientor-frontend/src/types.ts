@@ -5,7 +5,7 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown
 
 export type Entrytypes = "HealthCheck" | "Hospital" | "OccupationalHealthcare";
 
-export interface BaseEntry {
+interface BaseEntry {
   id: string;
   description: string;
   date: string;
