@@ -1,7 +1,14 @@
 import { useState, SyntheticEvent } from "react";
-import patientService from "../../services/patients";
-import { NewEntry, Entrytypes, NewBaseEntry, EntryTypeList } from "../../types";
+
+import {
+  Entrytypes,
+  NewBaseEntry,
+  EntryTypeList as entryTypeList,
+  ExtraEntry,
+} from "../../types";
 import Alert from "@mui/material/Alert";
+import OccupationalHealthcareExtra from "./ExtraForms/OccupationalHealthcare";
+import patientService from "../../services/patients";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -19,25 +26,23 @@ const AddEntry = (props: Props): JSX.Element => {
   const [diagnosis, setDiagnosis] = useState("");
   const [type, setType] = useState<Entrytypes>("HealthCheck");
 
+  //const [base, setBase] = useState<NewBaseEntry | undefined>();
+  const [extra, setExtra] = useState<ExtraEntry | undefined>();
+
   const [healthCheckRating, setHealthCheckRating] = useState(0);
 
   const [dischargeDate, setDischargeDate] = useState("2012-04-21");
   const [dischargeCriteria, setDischargeCriteria] = useState("");
 
-  const [employerName, setEmployerName] = useState("");
-  const [hasSickLeave, setHasSickLeave] = useState(false);
-  const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
-  const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
-
   const [message, setMessage] = useState<string | undefined>("");
 
-  const newEntry = (): NewEntry | undefined => {
+  const newEntry = (): NewBaseEntry | undefined => {
     if (!isDate(date)) {
       setMessage("Incorrect value on date.");
-      return;
+      return undefined;
     } else if (specialist.length < 1) {
       setMessage("Incorrect value on specialist.");
-      return;
+      return undefined;
     } else {
       const base: NewBaseEntry = {
         date: date,
@@ -50,7 +55,9 @@ const AddEntry = (props: Props): JSX.Element => {
       };
 
       console.log(base);
-
+      return base;
+      //setBase(base);
+      /*
       switch (type) {
         case "HealthCheck":
           if (healthCheckRating < 0 || healthCheckRating > 3) {
@@ -79,42 +86,27 @@ const AddEntry = (props: Props): JSX.Element => {
           };
 
         case "OccupationalHealthcare":
-          if (employerName.length == 0) {
-            setMessage("Incorrect employer.");
-            return;
-          }
-          if (
-            hasSickLeave &&
-            (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd))
-          ) {
-            setMessage("Incorrect sickLeave time.");
-            return;
-          }
-          return {
-            ...base,
-            type: "OccupationalHealthcare",
-            employerName: employerName,
-            sickLeave: hasSickLeave
-              ? {
-                  startDate: sickLeaveStart,
-                  endDate: sickLeaveEnd,
-                }
-              : undefined,
-          };
       }
+      */
     }
   };
 
   const createEntry = async (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log(date);
 
-    const entry = newEntry();
+    //console.log({ ...newEntry(), ...extra });
+    //return;
 
-    if (entry) {
-      await patientService.createEntry(props.patientId, entry);
-      props.update();
-      setMessage(undefined);
+    const base = newEntry();
+
+    if (base && extra) {
+      const entry = { ...base, ...extra };
+
+      if (entry && base) {
+        await patientService.createEntry(props.patientId, entry);
+        props.update();
+        setMessage(undefined);
+      }
     }
   };
 
@@ -159,42 +151,10 @@ const AddEntry = (props: Props): JSX.Element => {
 
       case "OccupationalHealthcare":
         return (
-          <>
-            <p>
-              EmployerName:&nbsp;
-              <input
-                value={employerName}
-                size={20}
-                onChange={(event) => setEmployerName(event.target.value)}
-              ></input>
-            </p>
-            <p>
-              <label>
-                <input
-                  type="checkbox"
-                  id="hasSickLeave"
-                  name="hasSickLeave"
-                  checked={hasSickLeave}
-                  onChange={(event) => setHasSickLeave(event.target.checked)}
-                />
-                &nbsp;sickLeave:
-              </label>
-              &nbsp;
-              <input
-                value={sickLeaveStart}
-                size={20}
-                disabled={!hasSickLeave}
-                onChange={(event) => setSickLeaveStart(event.target.value)}
-              ></input>
-              &nbsp;–&nbsp;
-              <input
-                value={sickLeaveEnd}
-                size={20}
-                disabled={!hasSickLeave}
-                onChange={(event) => setSickLeaveEnd(event.target.value)}
-              ></input>
-            </p>
-          </>
+          <OccupationalHealthcareExtra
+            setMessage={setMessage}
+            update={setExtra}
+          ></OccupationalHealthcareExtra>
         );
     }
   };
@@ -237,7 +197,7 @@ const AddEntry = (props: Props): JSX.Element => {
           ></input>
         </p>
 
-        {EntryTypeList.map((t) => (
+        {entryTypeList.map((t) => (
           <label>
             <input
               type="radio"

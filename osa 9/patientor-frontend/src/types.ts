@@ -1,5 +1,5 @@
 // Define special omit for unions
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+export type UnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
   : never;
 
@@ -11,12 +11,12 @@ export const EntryTypeList: Entrytypes[] = [
   "OccupationalHealthcare",
 ];
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
   specialist: string;
-  type: Entrytypes;
+  //type: Entrytypes;
   diagnosisCodes?: Array<Diagnosis["code"]>;
 }
 
@@ -40,7 +40,7 @@ interface HospitalEntry extends BaseEntry {
   };
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareExtra {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: {
@@ -48,6 +48,12 @@ interface OccupationalHealthcareEntry extends BaseEntry {
     endDate: string;
   };
 }
+
+export interface ExtraEntry extends OccupationalHealthcareExtra {}
+
+export interface OccupationalHealthcareEntry
+  extends OccupationalHealthcareExtra,
+    BaseEntry {}
 
 export type Entry =
   | HospitalEntry
