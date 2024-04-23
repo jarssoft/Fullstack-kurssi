@@ -8,6 +8,10 @@ const isNumber = (text: unknown): text is number => {
   return typeof text === "number" || text instanceof Number;
 };
 
+const isDate = (date: string): boolean => {
+  return Boolean(Date.parse(date));
+};
+
 const parseDiagnosisCodes = (object: unknown): Array<Diagnosis["code"]> => {
   if (!object || typeof object !== "object" || !("diagnosisCodes" in object)) {
     // we will just trust the data to be in correct form
@@ -26,10 +30,12 @@ const toNewEntry = (object: unknown): NewEntry => {
     !(
       "date" in object &&
       isString(object.date) &&
+      isDate(object.date) &&
       "type" in object &&
       isString(object.type) &&
       "specialist" in object &&
       isString(object.specialist) &&
+      object.specialist.length > 0 &&
       "description" in object &&
       isString(object.description)
     )
@@ -38,6 +44,13 @@ const toNewEntry = (object: unknown): NewEntry => {
       "Incorrect data parsing BaseEntry: some fields are missing"
     );
   }
+
+  const base = {
+    date: object.date,
+    specialist: object.specialist,
+    diagnosisCodes: parseDiagnosisCodes(object),
+    description: object.description,
+  };
 
   switch (object.type) {
     case "Hospital":
@@ -58,14 +71,8 @@ const toNewEntry = (object: unknown): NewEntry => {
       }
 
       return {
-        date: object.date,
-        type: object.type,
-        specialist: object.specialist,
-        diagnosisCodes:
-          "diagnosisCodes" in object
-            ? parseDiagnosisCodes(object.diagnosisCodes)
-            : [],
-        description: object.description,
+        ...base,
+        type: "Hospital",
         discharge: {
           date: object.discharge.date,
           criteria: object.discharge.criteria,
@@ -77,17 +84,19 @@ const toNewEntry = (object: unknown): NewEntry => {
         throw new Error("Incorrect data: healthCheckRating is missing");
       }
       if (!isNumber(object.healthCheckRating)) {
-        throw new Error("Incorrect data: healthCheckRating fields are missing");
+        throw new Error("Incorrect data: healthCheckRating is not number.");
+      }
+      if (object.healthCheckRating < 0 || object.healthCheckRating > 3) {
+        throw new Error("Incorrect data: Wrong number in healthCheckRating.");
       }
 
       return {
+        ...base,
         date: object.date,
-        type: object.type,
+        type: "HealthCheck",
         specialist: object.specialist,
         diagnosisCodes:
-          "diagnosisCodes" in object
-            ? parseDiagnosisCodes(object.diagnosisCodes)
-            : [],
+          "diagnosisCodes" in object ? parseDiagnosisCodes(object) : [],
         description: object.description,
         healthCheckRating: object.healthCheckRating,
       };
@@ -100,14 +109,13 @@ const toNewEntry = (object: unknown): NewEntry => {
         throw new Error("Incorrect data: employerName fields are missing");
       }
       return {
+        ...base,
         ...object,
         date: object.date,
-        type: object.type,
+        type: "OccupationalHealthcare",
         specialist: object.specialist,
         diagnosisCodes:
-          "diagnosisCodes" in object
-            ? parseDiagnosisCodes(object.diagnosisCodes)
-            : [],
+          "diagnosisCodes" in object ? parseDiagnosisCodes(object) : [],
         description: object.description,
         employerName: object.employerName,
       };

@@ -20,7 +20,6 @@ POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/ent
 content-type: application/json
 
   {
-    "id": "d811e46d-70b3-4d90-b090-4535c7cf8fb1",
     "date": "2015-01-02",
     "type": "Hospital",
     "specialist": "MD House",
@@ -38,7 +37,6 @@ POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/ent
 content-type: application/json
 
   {
-    "id": "54a8746e-34c4-4cf4-bf72-bfecd039be9a",
     "date": "2019-05-01",
     "type": "HealthCheck",
     "specialist": "Dr Byte House",    
@@ -63,7 +61,7 @@ content-type: application/json
     }
   }
 
-###VIRHEELLINEN
+###VIRHEELLINEN, date puuttuu
 POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
 content-type: application/json
 
@@ -72,9 +70,21 @@ content-type: application/json
     "type": "HealthCheck",
     "description": "Yearly control visit. Cholesterol levels back to normal.",
     "healthCheckRating": 0
+  }
+
+###VIRHEELLINEN, date vääärässä muodossa
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {    
+    "date": "zzzzzz",
+    "specialist": "MD House",
+    "type": "HealthCheck",
+    "description": "Yearly control visit. Cholesterol levels back to normal.",
+    "healthCheckRating": 0
   }  
 
-###HealthCheck
+###HealthCheckRating puuttuu
 POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
 content-type: application/json
 
@@ -86,5 +96,58 @@ content-type: application/json
     "description": "Digital overdose, very bytestatic. Otherwise healthy."
   }  
 
+###HealthCheck on merkkijono
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {
+    "date": "2019-05-01",
+    "type": "HealthCheck",
+    "specialist": "Dr Byte House",    
+    "description": "Digital overdose, very bytestatic. Otherwise healthy.",
+    "healthCheckRating": "0"
+  }  
+
+###diagnosisCodes on tuntematon
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {    
+    "date": "2019-09-10",
+    "specialist": "MD House",
+    "type": "OccupationalHealthcare",
+    "employerName": "FBI",
+    "description": "Prescriptions renewed.",
+    "diagnosisCodes": ["99999.1", "Z74.3", "M51.2"],
+    "sickLeave": {
+      "startDate": "2019-08-05",
+      "endDate": "2019-08-28"
+    }
+  }
+
+###HealthCheck, wrong number
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {
+    "date": "2019-05-01",
+    "type": "HealthCheck",
+    "specialist": "Dr Byte House",    
+    "description": "Digital overdose, very bytestatic. Otherwise healthy.",
+    "healthCheckRating": -3
+  }  
+
+
+###Too short specialist name
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {
+    "date": "2019-05-01",
+    "type": "HealthCheck",
+    "specialist": "",    
+    "description": "Digital overdose, very bytestatic. Otherwise healthy.",
+    "healthCheckRating": 0
+  }  
 ###
 GET http://localhost:3001/api/diagnosis

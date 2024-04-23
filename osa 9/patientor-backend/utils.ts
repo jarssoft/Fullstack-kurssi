@@ -79,32 +79,5 @@ const toNewPatient = (object: unknown): NewPatient => {
 
   throw new Error("Incorrect data: some fields are missing");
 };
-/*
-const toNewEntry = (object: unknown): NewEntry => {
-  if (!object || typeof object !== "object") {
-    throw new Error("Incorrect or missing data");
-  }
 
-  if (
-    "dateOfBirth" in object &&
-    "gender" in object &&
-    "name" in object &&
-    "occupation" in object &&
-    "ssn" in object
-  ) {
-    const newEntry: NewEntry = {
-      dateOfBirth: parseDateOfBirth(object.dateOfBirth),
-      gender: parseGender(object.gender),
-      name: parseName(object.name),
-      occupation: parseOccupation(object.occupation),
-      ssn: parseSSN(object.ssn),
-      entries: [],
-    };
-
-    return newEntry;
-  }
-
-  throw new Error("Incorrect data: some fields are missing");
-};
-*/
 export default toNewPatient;

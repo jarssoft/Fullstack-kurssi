@@ -45,7 +45,6 @@ app.post("/api/patients/:id/entries", (req, res) => {
   const id = req.params.id;
   const newPatient = toNewEntry(req.body);
   const addedEntry = addEntry(id, newPatient);
-  //const addedEntry = addEntry(id, req.body);
   res.json(addedEntry);
 });
 
