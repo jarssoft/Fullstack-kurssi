@@ -2,7 +2,6 @@ import { useState, SyntheticEvent } from "react";
 import patientService from "../../services/patients";
 import { NewEntry, Entrytypes, NewBaseEntry } from "../../types";
 import Alert from "@mui/material/Alert";
-import diagnosis from "../../services/diagnosis";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -46,7 +45,7 @@ const AddEntry = (props: Props): JSX.Element => {
       setMessage("Incorrect value on specialist.");
       return;
     } else {
-      let base: NewBaseEntry = {
+      const base: NewBaseEntry = {
         date: date,
         description: description,
         specialist: specialist,

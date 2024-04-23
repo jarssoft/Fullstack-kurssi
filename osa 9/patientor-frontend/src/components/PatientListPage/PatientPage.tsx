@@ -1,7 +1,7 @@
 import { Patient } from "../../types";
 import { Diagnosis } from "../../types";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import patientService from "../../services/patients";
 import diagnosiservice from "../../services/diagnosis";
 import EntryDetails from "./EntryDetails";
@@ -10,22 +10,23 @@ import AddEntry from "./AddEntry";
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
   const [diagnosis, setDiagnosis] = useState<Diagnosis[]>();
-
   const id = useParams().id;
 
-  useEffect(() => {
-    const fetchPatientList = async () => {
-      update();
-      setDiagnosis(await diagnosiservice.getAll());
-    };
-    void fetchPatientList();
-  }, [id]);
-
-  const update = async () => {
+  const fetchPatients = useCallback(async () => {
     if (id) {
       setPatient(await patientService.get(id));
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchPatients();
+  }, [id]);
+
+  useEffect(() => {
+    (async () => {
+      setDiagnosis(await diagnosiservice.getAll());
+    })();
+  }, []);
 
   return patient ? (
     <>
@@ -65,7 +66,7 @@ const PatientPage = (): JSX.Element => {
         ))}
       </div>
 
-      <AddEntry patientId={patient.id} update={update}></AddEntry>
+      <AddEntry patientId={patient.id} update={fetchPatients}></AddEntry>
     </>
   ) : (
     <></>
