@@ -12,6 +12,7 @@ import Hospital from "./ExtraInputs/Hospital";
 import HealthCheck from "./ExtraInputs/HealthCheck";
 import patientService from "../../services/patients";
 import DiagnoseList from "./DiagnoseList";
+import { Button } from "@mui/material";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -131,7 +132,10 @@ const AddEntry = (props: Props): JSX.Element => {
         ) : (
           <></>
         )}
-        <input type="submit" value="Add"></input>
+
+        <Button variant="contained" onClick={createEntry}>
+          Add
+        </Button>
       </form>
     </>
   );

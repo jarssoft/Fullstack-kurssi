@@ -5,6 +5,7 @@ import patientService from "../../services/patients";
 import EntryDetails from "./EntryDetails";
 import AddEntry from "./AddEntry";
 import DiagnoseList from "./DiagnoseList";
+import { Box, Typography } from "@mui/material";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
@@ -23,7 +24,13 @@ const PatientPage = (): JSX.Element => {
 
   return patient ? (
     <>
-      <h2>{patient.name}</h2>
+      <Typography
+        variant="h4"
+        style={{ marginTop: "1.0em", marginBottom: "0.0em" }}
+      >
+        {patient.name}
+      </Typography>
+
       {patient.ssn}
       <p>
         {patient.dateOfBirth} {patient.gender}
@@ -33,22 +40,40 @@ const PatientPage = (): JSX.Element => {
       <div>
         {patient.entries.map((entry) => (
           <div key={entry.id}>
-            <h4>{entry.date}</h4>
-            <p>Spec: {entry.specialist}</p>
-            <p>Desc: {entry.description}</p>
-            <p>
-              <DiagnoseList diagnoses={entry.diagnosisCodes} />
-            </p>
-            <div>
+            <Box
+              borderTop={4}
+              borderLeft={0}
+              borderRight={0}
+              borderColor="primary.main"
+              borderRadius="4"
+            >
+              <h4>{entry.date}</h4>
+              <p>Spec: {entry.specialist}</p>
+              <p>Desc: {entry.description}</p>
               <p>
-                Details: <EntryDetails entry={entry}></EntryDetails>
+                <DiagnoseList diagnoses={entry.diagnosisCodes} />
               </p>
-            </div>
+              <div>
+                <p>
+                  Details: <EntryDetails entry={entry}></EntryDetails>
+                </p>
+              </div>
+            </Box>
           </div>
         ))}
       </div>
 
-      <AddEntry patientId={patient.id} update={fetchPatients}></AddEntry>
+      <Typography
+        variant="body1"
+        style={{
+          padding: "1.5em",
+          borderBlock: "1.5em",
+          backgroundColor: "lightgray",
+          borderWidth: "1em",
+        }}
+      >
+        <AddEntry patientId={patient.id} update={fetchPatients}></AddEntry>
+      </Typography>
     </>
   ) : (
     <></>
