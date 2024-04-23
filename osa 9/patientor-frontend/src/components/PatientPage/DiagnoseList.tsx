@@ -17,21 +17,19 @@ const DiagnoseList = (props: Props): JSX.Element => {
 
   return (
     <>
-      {props.diagnoses ? (
+      {props.diagnoses && diagnosis ? (
         props.diagnoses.map((code) => (
           <span key={code}>
             <b>{code}</b>&nbsp;
             {diagnosis
-              ? diagnosis
-                  .filter((diagnose) => diagnose.code == code)
-                  .map((diagnose) => (
-                    <span key={diagnose.code}>{diagnose.name}, </span>
-                  ))
-              : ""}
+              .filter((diagnose) => diagnose.code == code)
+              .map((diagnose) => (
+                <span key={diagnose.code}>{diagnose.name}, </span>
+              ))}
           </span>
         ))
       ) : (
-        <></>
+        <>No diagnoses</>
       )}
     </>
   );
