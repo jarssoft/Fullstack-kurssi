@@ -1,6 +1,6 @@
 import { useState, SyntheticEvent } from "react";
 import patientService from "../../services/patients";
-import { NewEntry, Entrytypes, NewBaseEntry } from "../../types";
+import { NewEntry, Entrytypes, NewBaseEntry, EntryTypeList } from "../../types";
 import Alert from "@mui/material/Alert";
 
 const isDate = (date: string): boolean => {
@@ -11,12 +11,6 @@ interface Props {
   patientId: string;
   update: () => void;
 }
-
-const types: Entrytypes[] = [
-  "HealthCheck",
-  "Hospital",
-  "OccupationalHealthcare",
-];
 
 const AddEntry = (props: Props): JSX.Element => {
   const [date, setDate] = useState("2024-04-21");
@@ -243,7 +237,7 @@ const AddEntry = (props: Props): JSX.Element => {
           ></input>
         </p>
 
-        {types.map((t) => (
+        {EntryTypeList.map((t) => (
           <label>
             <input
               type="radio"
