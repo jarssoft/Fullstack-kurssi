@@ -1,7 +1,8 @@
 import { useState, SyntheticEvent } from "react";
 import patientService from "../../services/patients";
-import { NewEntry, Entrytypes } from "../../types";
+import { NewEntry, Entrytypes, NewBaseEntry } from "../../types";
 import Alert from "@mui/material/Alert";
+import diagnosis from "../../services/diagnosis";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -22,6 +23,7 @@ const AddEntry = (props: Props): JSX.Element => {
   const [date, setDate] = useState("2024-04-21");
   const [description, setDescriptionn] = useState("");
   const [specialist, setSpecialist] = useState("");
+  const [diagnosis, setDiagnosis] = useState("");
   const [type, setType] = useState<Entrytypes>("HealthCheck");
 
   const [healthCheckRating, setHealthCheckRating] = useState(0);
@@ -44,11 +46,17 @@ const AddEntry = (props: Props): JSX.Element => {
       setMessage("Incorrect value on specialist.");
       return;
     } else {
-      let base = {
+      let base: NewBaseEntry = {
         date: date,
         description: description,
         specialist: specialist,
+        diagnosisCodes: diagnosis
+          .split(",")
+          .map((code) => code.trim())
+          .filter((code) => code.length > 0),
       };
+
+      console.log(base);
 
       switch (type) {
         case "HealthCheck":
@@ -225,6 +233,14 @@ const AddEntry = (props: Props): JSX.Element => {
             value={description}
             size={60}
             onChange={(event) => setDescriptionn(event.target.value)}
+          ></input>
+        </p>
+        <p>
+          Diagnosis&nbsp;(comma-separated):&nbsp;
+          <input
+            value={diagnosis}
+            size={40}
+            onChange={(event) => setDiagnosis(event.target.value)}
           ></input>
         </p>
 

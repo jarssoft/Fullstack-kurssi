@@ -73,3 +73,6 @@ export interface Patient {
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
 export type NewEntry = UnionOmit<Entry, "id">;
+
+//if type is not known
+export type NewBaseEntry = UnionOmit<BaseEntry, "id" | "type">;
