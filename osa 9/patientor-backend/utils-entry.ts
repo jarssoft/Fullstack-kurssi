@@ -110,7 +110,6 @@ const toNewEntry = (object: unknown): NewEntry => {
       }
       return {
         ...base,
-        ...object,
         date: object.date,
         type: "OccupationalHealthcare",
         specialist: object.specialist,
@@ -118,6 +117,19 @@ const toNewEntry = (object: unknown): NewEntry => {
           "diagnosisCodes" in object ? parseDiagnosisCodes(object) : [],
         description: object.description,
         employerName: object.employerName,
+        sickLeave:
+          "sickLeave" in object &&
+          object.sickLeave &&
+          typeof object.sickLeave === "object" &&
+          "startDate" in object.sickLeave &&
+          isString(object.sickLeave.startDate) &&
+          "endDate" in object.sickLeave &&
+          isString(object.sickLeave.endDate)
+            ? {
+                startDate: object.sickLeave.startDate,
+                endDate: object.sickLeave.endDate,
+              }
+            : undefined,
       };
   }
 

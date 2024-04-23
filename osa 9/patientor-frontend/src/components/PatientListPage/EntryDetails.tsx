@@ -16,12 +16,17 @@ const EntryDetails = (entry: { entry: Entry }): JSX.Element => {
     case "OccupationalHealthcare":
       return (
         <>
-          Empl:&nbsp;{entry.entry.employerName}&nbsp; Leav:&nbsp;
-          {entry.entry.sickLeave
-            ? entry.entry.sickLeave?.startDate +
-              " – " +
-              entry.entry.sickLeave?.endDate
-            : ""}
+          Empl:&nbsp;{entry.entry.employerName}&nbsp;
+          {entry.entry.sickLeave ? (
+            <>
+              Leave:&nbsp;
+              {entry.entry.sickLeave?.startDate}
+              &nbsp;–&nbsp;
+              {entry.entry.sickLeave?.endDate}
+            </>
+          ) : (
+            <></>
+          )}
         </>
       );
 

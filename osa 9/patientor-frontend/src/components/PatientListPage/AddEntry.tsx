@@ -30,6 +30,7 @@ const AddEntry = (props: Props): JSX.Element => {
   const [dischargeCriteria, setDischargeCriteria] = useState("");
 
   const [employerName, setEmployerName] = useState("");
+  const [hasSickLeave, setHasSickLeave] = useState(false);
   const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
   const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
 
@@ -81,7 +82,10 @@ const AddEntry = (props: Props): JSX.Element => {
             setMessage("Incorrect employer.");
             return;
           }
-          if (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd)) {
+          if (
+            hasSickLeave &&
+            (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd))
+          ) {
             setMessage("Incorrect sickLeave time.");
             return;
           }
@@ -89,10 +93,12 @@ const AddEntry = (props: Props): JSX.Element => {
             ...base,
             type: "OccupationalHealthcare",
             employerName: employerName,
-            sickLeave: {
-              startDate: sickLeaveStart,
-              endDate: sickLeaveEnd,
-            },
+            sickLeave: hasSickLeave
+              ? {
+                  startDate: sickLeaveStart,
+                  endDate: sickLeaveEnd,
+                }
+              : undefined,
           };
       }
     }
@@ -162,16 +168,28 @@ const AddEntry = (props: Props): JSX.Element => {
               ></input>
             </p>
             <p>
-              sickLeave:&nbsp;
+              <label>
+                <input
+                  type="checkbox"
+                  id="hasSickLeave"
+                  name="hasSickLeave"
+                  checked={hasSickLeave}
+                  onChange={(event) => setHasSickLeave(event.target.checked)}
+                />
+                &nbsp;sickLeave:
+              </label>
+              &nbsp;
               <input
                 value={sickLeaveStart}
                 size={20}
+                disabled={!hasSickLeave}
                 onChange={(event) => setSickLeaveStart(event.target.value)}
               ></input>
               &nbsp;–&nbsp;
               <input
                 value={sickLeaveEnd}
                 size={20}
+                disabled={!hasSickLeave}
                 onChange={(event) => setSickLeaveEnd(event.target.value)}
               ></input>
             </p>

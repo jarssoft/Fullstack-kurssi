@@ -61,6 +61,19 @@ content-type: application/json
     }
   }
 
+###OccupationalHealthcare
+POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+  {    
+    "date": "2019-09-10",
+    "specialist": "MD House",
+    "type": "OccupationalHealthcare",
+    "employerName": "FBI",
+    "description": "Prescriptions renewed.",
+    "diagnosisCodes": ["Z57.1", "Z74.3", "M51.2"]
+  }  
+
 ###VIRHEELLINEN, date puuttuu
 POST http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
 content-type: application/json
@@ -149,5 +162,6 @@ content-type: application/json
     "description": "Digital overdose, very bytestatic. Otherwise healthy.",
     "healthCheckRating": 0
   }  
+
 ###
 GET http://localhost:3001/api/diagnosis
