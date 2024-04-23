@@ -2,14 +2,14 @@ import { useState, SyntheticEvent } from "react";
 import {
   Entrytypes,
   NewBaseEntry,
-  EntryTypeList as entryTypeList,
+  entryTypeList,
   ExtraEntry,
 } from "../../types";
 import Alert from "@mui/material/Alert";
-import OccupationalHealthcareExtra from "./ExtraInputs/OccupationalHealthcare";
-import patientService from "../../services/patients";
+import OccupationalHealthcare from "./ExtraInputs/OccupationalHealthcare";
 import Hospital from "./ExtraInputs/Hospital";
 import HealthCheck from "./ExtraInputs/HealthCheck";
+import patientService from "../../services/patients";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -29,7 +29,7 @@ const AddEntry = (props: Props): JSX.Element => {
   const [extra, setExtra] = useState<ExtraEntry | undefined>();
   const [message, setMessage] = useState<string | undefined>("");
 
-  const newBase = (): NewBaseEntry | undefined => {
+  const newBaseEntry = (): NewBaseEntry | undefined => {
     if (!isDate(date)) {
       setMessage("Incorrect value on date.");
       return undefined;
@@ -51,31 +51,12 @@ const AddEntry = (props: Props): JSX.Element => {
 
   const createEntry = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const base = newBase();
+    const base = newBaseEntry();
 
     if (base && extra) {
-      const entry = { ...base, ...extra };
-      await patientService.createEntry(props.patientId, entry);
+      await patientService.createEntry(props.patientId, { ...base, ...extra });
       props.update();
       setMessage(undefined);
-    }
-  };
-
-  const extrainputs = (type: Entrytypes) => {
-    switch (type) {
-      case "HealthCheck":
-        return (
-          <HealthCheck setMessage={setMessage} update={setExtra}></HealthCheck>
-        );
-      case "Hospital":
-        return <Hospital setMessage={setMessage} update={setExtra}></Hospital>;
-      case "OccupationalHealthcare":
-        return (
-          <OccupationalHealthcareExtra
-            setMessage={setMessage}
-            update={setExtra}
-          ></OccupationalHealthcareExtra>
-        );
     }
   };
 
@@ -129,7 +110,21 @@ const AddEntry = (props: Props): JSX.Element => {
             {t}
           </label>
         ))}
-        {extrainputs(type)}
+        {type === "HealthCheck" ? (
+          <HealthCheck setMessage={setMessage} update={setExtra} />
+        ) : (
+          <></>
+        )}
+        {type === "Hospital" ? (
+          <Hospital setMessage={setMessage} update={setExtra} />
+        ) : (
+          <></>
+        )}
+        {type === "OccupationalHealthcare" ? (
+          <OccupationalHealthcare setMessage={setMessage} update={setExtra} />
+        ) : (
+          <></>
+        )}
         <input type="submit" value="Add"></input>
       </form>
     </>

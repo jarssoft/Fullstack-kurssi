@@ -5,7 +5,7 @@ export type UnionOmit<T, K extends string | number | symbol> = T extends unknown
 
 export type Entrytypes = "HealthCheck" | "Hospital" | "OccupationalHealthcare";
 
-export const EntryTypeList: Entrytypes[] = [
+export const entryTypeList: Entrytypes[] = [
   "HealthCheck",
   "Hospital",
   "OccupationalHealthcare",
