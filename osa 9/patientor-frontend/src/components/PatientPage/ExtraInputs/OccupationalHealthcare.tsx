@@ -7,7 +7,6 @@ const isDate = (date: string): boolean => {
 
 interface Props {
   update: (extra: OccupationalHealthcareExtra | undefined) => void;
-  setMessage: (message: string) => void;
 }
 
 const OccupationalHealthcare = (props: Props): JSX.Element => {
@@ -18,11 +17,9 @@ const OccupationalHealthcare = (props: Props): JSX.Element => {
 
   const newExtra = (): OccupationalHealthcareExtra | undefined => {
     if (employerName.length == 0) {
-      props.setMessage("Incorrect employer.");
       return;
     }
     if (hasSickLeave && (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd))) {
-      props.setMessage("Incorrect sickLeave time.");
       return;
     }
     return {

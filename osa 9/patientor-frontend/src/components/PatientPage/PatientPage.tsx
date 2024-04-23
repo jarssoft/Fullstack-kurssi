@@ -1,15 +1,14 @@
 import { Patient } from "../../types";
-import { Diagnosis } from "../../types";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import patientService from "../../services/patients";
-import diagnosiservice from "../../services/diagnosis";
 import EntryDetails from "./EntryDetails";
 import AddEntry from "./AddEntry";
+import DiagnoseList from "./DiagnoseList";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
-  const [diagnosis, setDiagnosis] = useState<Diagnosis[]>();
+
   const id = useParams().id;
 
   const fetchPatients = useCallback(async () => {
@@ -21,12 +20,6 @@ const PatientPage = (): JSX.Element => {
   useEffect(() => {
     fetchPatients();
   }, [id]);
-
-  useEffect(() => {
-    (async () => {
-      setDiagnosis(await diagnosiservice.getAll());
-    })();
-  }, []);
 
   return patient ? (
     <>
@@ -41,23 +34,12 @@ const PatientPage = (): JSX.Element => {
         {patient.entries.map((entry) => (
           <div key={entry.id}>
             <h4>{entry.date}</h4>
-            <p>Desc: {entry.description}</p>
             <p>Spec: {entry.specialist}</p>
+            <p>Desc: {entry.description}</p>
+            <p>
+              <DiagnoseList diagnoses={entry.diagnosisCodes} />
+            </p>
             <div>
-              {entry.diagnosisCodes
-                ? entry.diagnosisCodes.map((code) => (
-                    <span key={code}>
-                      {code}&nbsp;
-                      {diagnosis
-                        ? diagnosis
-                            .filter((diagnose) => diagnose.code == code)
-                            .map((diagnose) => (
-                              <span key={diagnose.code}>{diagnose.name}, </span>
-                            ))
-                        : ""}
-                    </span>
-                  ))
-                : ""}
               <p>
                 Details: <EntryDetails entry={entry}></EntryDetails>
               </p>

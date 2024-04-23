@@ -3,7 +3,6 @@ import { HealthCheckExtra } from "../../../types";
 
 interface Props {
   update: (extra: HealthCheckExtra | undefined) => void;
-  setMessage: (message: string) => void;
 }
 
 const HealthCheck = (props: Props): JSX.Element => {
@@ -11,7 +10,6 @@ const HealthCheck = (props: Props): JSX.Element => {
 
   const newExtra = (): HealthCheckExtra | undefined => {
     if (healthCheckRating < 0 || healthCheckRating > 3) {
-      props.setMessage("Incorrect value on healtCheckRating.");
       return;
     }
 

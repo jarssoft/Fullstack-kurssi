@@ -4,12 +4,14 @@ import {
   NewBaseEntry,
   entryTypeList,
   ExtraEntry,
+  Diagnosis,
 } from "../../types";
 import Alert from "@mui/material/Alert";
 import OccupationalHealthcare from "./ExtraInputs/OccupationalHealthcare";
 import Hospital from "./ExtraInputs/Hospital";
 import HealthCheck from "./ExtraInputs/HealthCheck";
 import patientService from "../../services/patients";
+import DiagnoseList from "./DiagnoseList";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -41,19 +43,28 @@ const AddEntry = (props: Props): JSX.Element => {
         date: date,
         description: description,
         specialist: specialist,
-        diagnosisCodes: diagnosis
-          .split(",")
-          .map((code) => code.trim())
-          .filter((code) => code.length > 0),
+        diagnosisCodes: parseDiagnosis(diagnosis),
       };
     }
+  };
+
+  const parseDiagnosis = (diagnosis: string): Array<Diagnosis["code"]> => {
+    return diagnosis
+      .split(",")
+      .map((code) => code.trim())
+      .filter((code) => code.length > 0);
   };
 
   const createEntry = async (event: SyntheticEvent) => {
     event.preventDefault();
     const base = newBaseEntry();
 
-    if (base && extra) {
+    if (!extra) {
+      setMessage("Error in extra information!");
+      return;
+    }
+
+    if (base) {
       await patientService.createEntry(props.patientId, { ...base, ...extra });
       props.update();
       setMessage(undefined);
@@ -96,6 +107,9 @@ const AddEntry = (props: Props): JSX.Element => {
             size={40}
             onChange={(event) => setDiagnosis(event.target.value)}
           ></input>
+          <div>
+            <DiagnoseList diagnoses={parseDiagnosis(diagnosis)} />
+          </div>
         </p>
 
         {entryTypeList.map((t) => (
@@ -110,18 +124,10 @@ const AddEntry = (props: Props): JSX.Element => {
             {t}
           </label>
         ))}
-        {type === "HealthCheck" ? (
-          <HealthCheck setMessage={setMessage} update={setExtra} />
-        ) : (
-          <></>
-        )}
-        {type === "Hospital" ? (
-          <Hospital setMessage={setMessage} update={setExtra} />
-        ) : (
-          <></>
-        )}
+        {type === "HealthCheck" ? <HealthCheck update={setExtra} /> : <></>}
+        {type === "Hospital" ? <Hospital update={setExtra} /> : <></>}
         {type === "OccupationalHealthcare" ? (
-          <OccupationalHealthcare setMessage={setMessage} update={setExtra} />
+          <OccupationalHealthcare update={setExtra} />
         ) : (
           <></>
         )}

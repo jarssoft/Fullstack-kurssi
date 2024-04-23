@@ -7,7 +7,6 @@ const isDate = (date: string): boolean => {
 
 interface Props {
   update: (extra: HospitalExtra | undefined) => void;
-  setMessage: (message: string) => void;
 }
 
 const Hospital = (props: Props): JSX.Element => {
@@ -16,7 +15,6 @@ const Hospital = (props: Props): JSX.Element => {
 
   const newExtra = (): HospitalExtra | undefined => {
     if (!isDate(dischargeDate) || dischargeCriteria.length == 0) {
-      props.setMessage("Incorrect value on discharge.");
       return;
     }
     return {
