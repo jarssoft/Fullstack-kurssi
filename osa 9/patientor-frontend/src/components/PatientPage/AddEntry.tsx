@@ -6,10 +6,10 @@ import {
   ExtraEntry,
 } from "../../types";
 import Alert from "@mui/material/Alert";
-import OccupationalHealthcareExtra from "./ExtraForms/OccupationalHealthcare";
+import OccupationalHealthcareExtra from "./ExtraInputs/OccupationalHealthcare";
 import patientService from "../../services/patients";
-import Hospital from "./ExtraForms/Hospital";
-import HealthCheck from "./ExtraForms/HealthCheck";
+import Hospital from "./ExtraInputs/Hospital";
+import HealthCheck from "./ExtraInputs/HealthCheck";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
