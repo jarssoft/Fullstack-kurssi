@@ -37,6 +37,7 @@ const Hospital = (props: Props): JSX.Element => {
         <input
           value={dischargeDate}
           size={10}
+          type="date"
           onChange={(event) => setDischargeDate(event.target.value)}
         ></input>
       </p>

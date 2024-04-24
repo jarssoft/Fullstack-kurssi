@@ -63,6 +63,7 @@ const OccupationalHealthcare = (props: Props): JSX.Element => {
         <input
           value={sickLeaveStart}
           size={20}
+          type="date"
           disabled={!hasSickLeave}
           onChange={(event) => setSickLeaveStart(event.target.value)}
         ></input>
@@ -70,6 +71,7 @@ const OccupationalHealthcare = (props: Props): JSX.Element => {
         <input
           value={sickLeaveEnd}
           size={20}
+          type="date"
           disabled={!hasSickLeave}
           onChange={(event) => setSickLeaveEnd(event.target.value)}
         ></input>

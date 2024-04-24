@@ -76,7 +76,13 @@ const AddEntry = (props: Props): JSX.Element => {
     <>
       <h4>New Entry</h4>
 
-      {message ? <Alert severity="error">{message}</Alert> : <></>}
+      {message ? (
+        <Alert variant="outlined" severity="error">
+          {message}
+        </Alert>
+      ) : (
+        <></>
+      )}
 
       <form onSubmit={createEntry}>
         <p>
@@ -84,6 +90,7 @@ const AddEntry = (props: Props): JSX.Element => {
           <input
             size={14}
             value={date}
+            type="date"
             onChange={(event) => setDate(event.target.value)}
           ></input>
           &ensp;Specialist:&nbsp;
@@ -109,7 +116,11 @@ const AddEntry = (props: Props): JSX.Element => {
             onChange={(event) => setDiagnosis(event.target.value)}
           ></input>
           <div>
-            <DiagnoseList diagnoses={parseDiagnosis(diagnosis)} />
+            {diagnosis.length > 0 ? (
+              <DiagnoseList diagnoses={parseDiagnosis(diagnosis)} />
+            ) : (
+              <i>For example Z57.1, Z74.3, M51.2...</i>
+            )}
           </div>
         </p>
 

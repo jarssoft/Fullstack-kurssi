@@ -30,6 +30,8 @@ const HealthCheck = (props: Props): JSX.Element => {
         value={healthCheckRating}
         size={4}
         type="number"
+        min={0}
+        max={3}
         onChange={(event) => setHealthCheckRating(Number(event.target.value))}
       ></input>
     </p>
