@@ -6,6 +6,9 @@ import EntryDetails from "./EntryDetails";
 import AddEntry from "./AddEntry";
 import DiagnoseList from "./DiagnoseList";
 import { Box, Typography } from "@mui/material";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import WorkIcon from "@mui/icons-material/Work";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
@@ -36,7 +39,14 @@ const PatientPage = (): JSX.Element => {
         {patient.dateOfBirth} {patient.gender}
       </p>
       <p>occupation: {patient.occupation}</p>
-      <h3>Entries</h3>
+
+      <Typography
+        variant="h5"
+        style={{ marginTop: "1.0em", marginBottom: "0.0em" }}
+      >
+        Entries ({patient.entries.length})
+      </Typography>
+
       <div>
         {patient.entries.map((entry) => (
           <div key={entry.id}>
@@ -47,9 +57,21 @@ const PatientPage = (): JSX.Element => {
               borderColor="primary.main"
               borderRadius="4"
             >
-              <h4>{entry.date}</h4>
-              <p>Spec: {entry.specialist}</p>
-              <p>Desc: {entry.description}</p>
+              <h4>
+                {entry.type == "Hospital" ? (
+                  <LocalHospitalIcon></LocalHospitalIcon>
+                ) : entry.type == "HealthCheck" ? (
+                  <CheckCircleIcon></CheckCircleIcon>
+                ) : (
+                  <WorkIcon></WorkIcon>
+                )}
+                &nbsp;
+                {entry.date} {entry.specialist}
+              </h4>
+
+              <p>
+                Desc: <i>{entry.description}</i>
+              </p>
               <p>
                 <DiagnoseList diagnoses={entry.diagnosisCodes} />
               </p>
@@ -66,7 +88,7 @@ const PatientPage = (): JSX.Element => {
       <Typography
         variant="body1"
         style={{
-          padding: "1.5em",
+          padding: "0.5em",
           borderBlock: "1.5em",
           backgroundColor: "lightgray",
           borderWidth: "1em",
