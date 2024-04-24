@@ -2,13 +2,9 @@ import { Patient } from "../../types";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import patientService from "../../services/patients";
-import EntryDetails from "./EntryDetails";
+import EntryDetails from "./Entry";
 import AddEntry from "./AddEntry";
-import DiagnoseList from "./DiagnoseList";
-import { Box, Typography } from "@mui/material";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import WorkIcon from "@mui/icons-material/Work";
+import { Typography } from "@mui/material";
 
 const PatientPage = (): JSX.Element => {
   const [patient, setPatient] = useState<Patient>();
@@ -49,39 +45,7 @@ const PatientPage = (): JSX.Element => {
 
       <div>
         {patient.entries.map((entry) => (
-          <div key={entry.id}>
-            <Box
-              borderTop={4}
-              borderLeft={0}
-              borderRight={0}
-              borderColor="primary.main"
-              borderRadius="4"
-            >
-              <h4>
-                {entry.type == "Hospital" ? (
-                  <LocalHospitalIcon></LocalHospitalIcon>
-                ) : entry.type == "HealthCheck" ? (
-                  <CheckCircleIcon></CheckCircleIcon>
-                ) : (
-                  <WorkIcon></WorkIcon>
-                )}
-                &nbsp;
-                {entry.date} {entry.specialist}
-              </h4>
-
-              <p>
-                Desc: <i>{entry.description}</i>
-              </p>
-              <p>
-                <DiagnoseList diagnoses={entry.diagnosisCodes} />
-              </p>
-              <div>
-                <p>
-                  Details: <EntryDetails entry={entry}></EntryDetails>
-                </p>
-              </div>
-            </Box>
-          </div>
+          <EntryDetails entry={entry}></EntryDetails>
         ))}
       </div>
 
