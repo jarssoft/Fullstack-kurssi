@@ -15,11 +15,11 @@ const PatientPage = (): JSX.Element => {
     if (id) {
       setPatient(await patientService.get(id));
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetchPatients();
-  }, [id]);
+  }, [id, fetchPatients]);
 
   return patient ? (
     <>

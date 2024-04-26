@@ -8,20 +8,20 @@ interface Props {
 const HealthCheck = (props: Props): JSX.Element => {
   const [healthCheckRating, setHealthCheckRating] = useState(0);
 
-  const newExtra = (): HealthCheckExtra | undefined => {
-    if (healthCheckRating < 0 || healthCheckRating > 3) {
-      return;
-    }
-
-    return {
-      type: "HealthCheck",
-      healthCheckRating: healthCheckRating,
-    };
-  };
-
   useEffect(() => {
+    const newExtra = (): HealthCheckExtra | undefined => {
+      if (healthCheckRating < 0 || healthCheckRating > 3) {
+        return;
+      }
+
+      return {
+        type: "HealthCheck",
+        healthCheckRating: healthCheckRating,
+      };
+    };
+
     props.update(newExtra());
-  }, [healthCheckRating]);
+  }, [healthCheckRating, props]);
 
   return (
     <p>

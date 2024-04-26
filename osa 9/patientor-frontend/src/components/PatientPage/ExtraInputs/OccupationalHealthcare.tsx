@@ -15,28 +15,27 @@ const OccupationalHealthcare = (props: Props): JSX.Element => {
   const [sickLeaveStart, setSickLeaveStart] = useState("2012-04-21");
   const [sickLeaveEnd, setSickLeaveEnd] = useState("2012-04-21");
 
-  const newExtra = (): OccupationalHealthcareExtra | undefined => {
-    if (employerName.length == 0) {
-      return;
-    }
-    if (hasSickLeave && (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd))) {
-      return;
-    }
-    return {
-      type: "OccupationalHealthcare",
-      employerName: employerName,
-      sickLeave: hasSickLeave
-        ? {
-            startDate: sickLeaveStart,
-            endDate: sickLeaveEnd,
-          }
-        : undefined,
-    };
-  };
-
   useEffect(() => {
+    const newExtra = (): OccupationalHealthcareExtra | undefined => {
+      if (employerName.length == 0) {
+        return;
+      }
+      if (hasSickLeave && (!isDate(sickLeaveStart) || !isDate(sickLeaveEnd))) {
+        return;
+      }
+      return {
+        type: "OccupationalHealthcare",
+        employerName: employerName,
+        sickLeave: hasSickLeave
+          ? {
+              startDate: sickLeaveStart,
+              endDate: sickLeaveEnd,
+            }
+          : undefined,
+      };
+    };
     props.update(newExtra());
-  }, [employerName, hasSickLeave, sickLeaveStart, sickLeaveEnd]);
+  }, [employerName, hasSickLeave, sickLeaveStart, sickLeaveEnd, props]);
 
   return (
     <>

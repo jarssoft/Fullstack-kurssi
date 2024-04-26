@@ -13,22 +13,21 @@ const Hospital = (props: Props): JSX.Element => {
   const [dischargeDate, setDischargeDate] = useState("2012-04-21");
   const [dischargeCriteria, setDischargeCriteria] = useState("");
 
-  const newExtra = (): HospitalExtra | undefined => {
-    if (!isDate(dischargeDate) || dischargeCriteria.length == 0) {
-      return;
-    }
-    return {
-      type: "Hospital",
-      discharge: {
-        date: dischargeDate,
-        criteria: dischargeCriteria,
-      },
-    };
-  };
-
   useEffect(() => {
+    const newExtra = (): HospitalExtra | undefined => {
+      if (!isDate(dischargeDate) || dischargeCriteria.length == 0) {
+        return;
+      }
+      return {
+        type: "Hospital",
+        discharge: {
+          date: dischargeDate,
+          criteria: dischargeCriteria,
+        },
+      };
+    };
     props.update(newExtra());
-  }, [dischargeDate, dischargeCriteria]);
+  }, [dischargeDate, dischargeCriteria, props]);
 
   return (
     <>
